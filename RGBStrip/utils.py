@@ -5,6 +5,8 @@ import math
 
 
 def get_rgb_rainbow(steps, max_rgb=127):
+    if max_rgb < 0 or max_rgb > 255:
+        raise Exception('max_rgb must be in the range 0-255!')
     # Thanks to http://stackoverflow.com/questions/876853/generating-color-ranges-in-python
     HSV_tuples = [
         (x*1.0/steps, 1, 1)

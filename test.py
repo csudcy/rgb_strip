@@ -1,10 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
+from RGBStrip import utils
 from RGBStrip.controller import RGBStripController
 from RGBStrip.displays.cursesd import CursesDisplay
 from RGBStrip.displays.tk import TkDisplay
 from RGBStrip.manager import RGBStripManager
 from RGBStrip.section import SectionController
+from RGBStrip.renderers.patch import PatchRenderer
 from RGBStrip.renderers.rainbow import RainbowRenderer
 
 
@@ -17,25 +19,33 @@ def main():
         rsm = RGBStripManager(rsc)
 
         print 'Initialising sections...'
-        rss1 = SectionController(rsc, 0, 0, 30, 1)
+        rss_tl = SectionController(rsc, 0, 0, 30, 1)
+        rss_tr = SectionController(rsc, 30, 0, 30, 1)
+        rss_b = SectionController(rsc, 0, 1, 60, 1)
+        rss_p1 = SectionController(rsc, 5, 0, 5, 2)
+        rss_p2 = SectionController(rsc, 15, 0, 5, 2)
 
         print 'Initialising renderers...'
-        # r = PatchRenderer(5, 2)
-        # r.add_output('Patch-Red', rgb_strip, 5, 0)
-
-        # r = PatchRenderer(5, 2, RGBStrip.get_rgb_rainbow(250, max_rgb=32))
-        # r.add_output('Patch-Rainbow', rgb_strip, 15, 0)
-
+        # Rainbows
         rsm.add_renderer(
-            RainbowRenderer(rss1)
+            RainbowRenderer(rss_tl)
+        )
+        rsm.add_renderer(
+            RainbowRenderer(rss_tr, train_length=30)
+        )
+        rsm.add_renderer(
+            RainbowRenderer(rss_b)
         )
 
-        # r = RainbowRenderer(30, 1, train_length=30)
-        # r.add_output('RT-30x30', rgb_strip,  30, 0)
+        # Patches
+        rsm.add_renderer(
+            PatchRenderer(rss_p1)
+        )
+        rsm.add_renderer(
+            PatchRenderer(rss_p2, utils.get_rgb_rainbow(250), a=1)
+        )
 
-        # r = RainbowRenderer(60, 1)
-        # r.add_output('RT-60x10', rgb_strip,  0, 1)
-
+        # Clock
         # r = ClockRenderer()
         # r.add_output('Clock', rgb_strip, 0, 1)
 

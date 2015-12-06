@@ -20,8 +20,8 @@ HEX_LOOKUP = [
 ]
 
 def rgba_to_hex(r, g, b, a):
-    if a < 5:
-        return 'white'
+    if (a & 31) == 0:
+        return 'grey'
     return '#' + HEX_LOOKUP[r] + HEX_LOOKUP[g] + HEX_LOOKUP[b]
 
 
@@ -57,10 +57,10 @@ class ThreadedTk(Tk, Thread):
 
 class TkFrame(Frame):
     BORDER = 5
-    LED_SIZE = 10
+    LED_SIZE = 20
 
     def __init__(self, parent, controller):
-        Frame.__init__(self, parent, background='black')
+        Frame.__init__(self, parent)
         self.CONTROLLER = controller
 
         # Setup the layout method

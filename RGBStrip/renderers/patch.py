@@ -4,8 +4,8 @@ from .base import BaseRenderer
 
 
 class PatchRenderer(BaseRenderer):
-    def __init__(self, width, height=1, rgb_colours=((255, 0, 0), ), a=1):
-        super(PatchRenderer, self).__init__(width, height)
+    def __init__(self, controllers, rgb_colours=((255, 0, 0), ), a=1):
+        super(PatchRenderer, self).__init__(controllers)
 
         self.RGB_COLOURS = rgb_colours
         self.A = a
@@ -13,10 +13,10 @@ class PatchRenderer(BaseRenderer):
 
     def render(self):
         rgb_colour = self.RGB_COLOURS[self.INDEX]
-        for output in self.OUTPUTS:
+        for controller in self.CONTROLLERS:
             for x in xrange(self.WIDTH):
                 for y in xrange(self.HEIGHT):
-                    output.RGB_STRIP.add_led_xy(output.X + x, output.Y + y, *rgb_colour, a=self.A)
+                    controller.add_led_xy(x, y, *rgb_colour, a=self.A)
         self.INDEX = (self.INDEX + 1) % len(self.RGB_COLOURS)
 
 
