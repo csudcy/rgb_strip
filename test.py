@@ -49,6 +49,10 @@ def main():
         # r = ClockRenderer()
         # r.add_output('Clock', rgb_strip, 0, 1)
 
+        # Gravity shots
+
+        # Gravity Drips
+
         print 'Testing rgb_strip...'
         #with CursesDisplay(rsc) as rsd_curses:
         #    rsm.add_display(rsd_curses)
