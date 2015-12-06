@@ -4,7 +4,6 @@ from threading import Thread
 from Tkinter import Tk, Frame, BOTH, Canvas
 
 from .base import BaseDisplay
-from RGBStrip import utils
 
 """
 TODO:
