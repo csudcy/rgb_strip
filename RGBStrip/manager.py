@@ -5,7 +5,7 @@ import time
 
 class RGBStripManager(object):
     def __init__(self, controller):
-        self.controller = controller
+        self.CONTROLLER = controller
 
         # Setup a list of renderers & displays
         self.RENDERERS = []
@@ -31,13 +31,13 @@ class RGBStripManager(object):
         Display all registered displays
         """
         for display in self. DISPLAYS:
-            display.display(self.controller.BYTES)
+            display.display()
 
     def output(self):
         """
         Clear all LEDs, render and then display the results
         """
-        self.set_leds()
+        self.CONTROLLER.set_leds()
         self.render()
         self.display()
 

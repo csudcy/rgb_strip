@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 import colorsys
+import math
 
 
 def get_rgb_rainbow(steps, max_rgb=127):
@@ -41,3 +42,29 @@ def generate_binary_array_lookup(bit_count):
         ]
         for num in xrange(2**bit_count)
     ]
+
+
+COLOURS = {
+    # 0
+    (0, 0, 0): ' ',
+    # 1
+    (1, 0, 0): 'R',
+    (0, 1, 0): 'G',
+    (0, 0, 1): 'B',
+    # 2
+    (1, 1, 0): 'Y',
+    (0, 1, 1): 'C',
+    (1, 0, 1): 'M',
+    # 3
+    (1, 1, 1): 'W',
+}
+def classify_colour(r, g, b, a):
+    if (a & 31) == 0:
+        # Alpha is off; nothing will be displayed regardless of RGB values
+        return ' '
+    col = (
+        1 if r > 64 else 0,
+        1 if g > 64 else 0,
+        1 if b > 64 else 0,
+    )
+    return COLOURS[col]

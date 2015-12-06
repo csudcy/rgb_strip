@@ -85,3 +85,16 @@ class RGBStripController(object):
         self.BYTES[offset + 1] = int(b) & 255
         self.BYTES[offset + 2] = int(g) & 255
         self.BYTES[offset + 3] = int(r) & 255
+
+    def get_rgba(self, index):
+        offset = self._get_offset(index)
+        return (
+            self.BYTES[offset + 3],
+            self.BYTES[offset + 2],
+            self.BYTES[offset + 1],
+            self.BYTES[offset + 0]
+        )
+
+    def get_rgba_xy(self, x, y):
+        index = self._get_index(x, y)
+        return self.get_rgba(index)

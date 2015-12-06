@@ -2,23 +2,23 @@
 # -*- coding: utf8 -*-
 
 class BaseRenderer(object):
-    def __init__(self, width, height=1):
-        self.WIDTH = width
-        self.HEIGHT = height
+    def __init__(self, controllers):
+        # Allow single controllers to be passed in
+        if not hasattr(controllers, '__iter__'):
+            controllers = [controllers]
 
-        self.OUTPUTS = []
+        # Check we have some controllers
+        if not controllers:
+            raise Exception('To initialise a renderer, you must pass in at least 1 controller!')
 
-    def add_output(self, id, rgb_strip, x, y=0):
-        # Save this in my list of outputs
-        self.OUTPUTS.append(StripSection(
-            id,
-            rgb_strip,
-            x,
-            y
-        ))
+        # Check all controllers have the same dimensions
+        self.WIDTH = controllers[0].WIDTH
+        self.HEIGHT = controllers[0].HEIGHT
+        for controller in controllers[1:]:
+            if self.WIDTH != controller.WIDTH or self.HEIGHT != controller.HEIGHT:
+                raise Exception('All controllers assigned to a single renderer must have the same dimensions!')
 
-        # Register myself with the rgb_strip so I will get rendered & output
-        rgb_strip.add_renderer(self)
+        self.CONTROLLERS = controllers
 
     def render(self):
         raise Exception('render must be overridden by inheriting classes!')
