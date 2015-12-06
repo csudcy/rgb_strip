@@ -2,6 +2,7 @@
 # -*- coding: utf8 -*-
 from RGBStrip.controller import RGBStripController
 from RGBStrip.displays.cursesd import CursesDisplay
+from RGBStrip.displays.tk import TkDisplay
 from RGBStrip.manager import RGBStripManager
 from RGBStrip.section import SectionController
 from RGBStrip.renderers.rainbow import RainbowRenderer
@@ -39,9 +40,11 @@ def main():
         # r.add_output('Clock', rgb_strip, 0, 1)
 
         print 'Testing rgb_strip...'
-        with CursesDisplay(rsc) as rsd:
-        #with RPiSPIDisplay(rsc) as rsd:
-            rsm.add_display(rsd)
+        #with CursesDisplay(rsc) as rsd_curses:
+        #    rsm.add_display(rsd_curses)
+        with TkDisplay(rsc) as rsd_tk:
+            rsm.add_display(rsd_tk)
+            #with RPiSPIDisplay(rsc) as rsd:
             rsm.output_forever()
     except KeyboardInterrupt:
         pass
