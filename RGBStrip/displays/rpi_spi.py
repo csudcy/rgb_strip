@@ -59,7 +59,7 @@ def test_brightness(rgb_strip):
 
 def main():
     print 'Hello!'
-    rgb_strip = None
+    rsd = None
     try:
         print 'Initialising...'
         from RGBStrip.controller import RGBStripController

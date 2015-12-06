@@ -1,13 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-from .base import BaseRenderer
+from RGBStrip import utils
+from RGBStrip.renderers.base import BaseRenderer
 
 
-class RainbowTrainRenderer(BaseRenderer):
+class RainbowRenderer(BaseRenderer):
     def __init__(self, width, height=1, train_length=10, max_rgb=127):
-        super(RainbowTrainRenderer, self).__init__(width, height)
+        super(RainbowRenderer, self).__init__(width, height)
 
-        self.COLOURS = RGBStrip.get_rgb_rainbow(train_length, max_rgb=max_rgb)
+        self.COLOURS = utils.get_rgb_rainbow(train_length, max_rgb=max_rgb)
         self.X = 0
         self.Y = 0
 
@@ -28,7 +29,7 @@ def test_rainbow_train(rgb_strip):
     """
     Make a small rainbow move along the strip & cycle round
     """
-    rt = RainbowTrainRenderer(rgb_strip.WIDTH, rgb_strip.HEIGHT, 10)
+    rt = RainbowRenderer(rgb_strip.WIDTH, rgb_strip.HEIGHT, 10)
     rt.add_output('RT', rgb_strip, 0, 0)
     rgb_strip.output_forever()
 
@@ -37,7 +38,7 @@ def test_rainbow(rgb_strip):
     """
     Make the whole strip into a cycling rainbow
     """
-    rt = RainbowTrainRenderer(rgb_strip.WIDTH, rgb_strip.HEIGHT, rgb_strip.WIDTH * rgb_strip.HEIGHT)
+    rt = RainbowRenderer(rgb_strip.WIDTH, rgb_strip.HEIGHT, rgb_strip.WIDTH * rgb_strip.HEIGHT)
     rt.add_output('RT', rgb_strip, 0, 0)
     rgb_strip.output_forever()
 
