@@ -4,25 +4,17 @@ import spidev
 
 class RPiSPIDisplay(object):
     """
-    A simple interface for an APA102 RGB LED strip
+    A display module for RGBStrip to output to Raspberry Pi via the SPI chip.
     """
 
-    def __init__(
-            self,
-            rgb_strip,
-            pin_data,
-            pin_clock,
-        ):
-        self.RGB_STRIP = rgb_strip
-
-    def _init_spi(self):
+    def __init__(self, bus=0, device=0, speed_mhz=16):
         # Init the SPI bus
         self.SPI = spidev.SpiDev()
         self.SPI.open(
-            0, #bus
-            0, #device
+            bus,
+            device
         )
-        self.SPI.max_speed_hz = 16 * 1000 * 1000
+        self.SPI.max_speed_hz = speed_mhz * 1000 * 1000
 
     def display(self, bytes):
         self.SPI.writebytes(bytes)
@@ -70,10 +62,14 @@ def main():
     rgb_strip = None
     try:
         print 'Initialising...'
-        rgb_strip = RGBStrip(
-            width=60,
-            height=2,
-        )
+        from RGBStrip.controller import RGBStripController
+        from RGBStrip.manager import RGBStripManager
+
+        rsc = RGBStripController(60, 2)
+        rsd = RPiSPIDisplay()
+
+            rsd.display(rsc.BYTES)
+
 
         print 'Testing rgb_strip...'
         test_brightness(rgb_strip)
@@ -82,9 +78,8 @@ def main():
         pass
     finally:
         print 'Cleaning up...'
-        rgb_strip.SPI.close()
+        rsd.SPI.close()
     print 'Bye!'
-
 
 
 if __name__ == '__main__':

@@ -9,7 +9,7 @@ BITS_8 = utils.generate_binary_array_lookup(8)
 
 class RPiManualDisplay(object):
     """
-    A simple interface for an APA102 RGB LED strip
+    A display module for RGBStrip to output to Raspberry Pi via any 2 GPIO pins.
     """
 
     def __init__(
