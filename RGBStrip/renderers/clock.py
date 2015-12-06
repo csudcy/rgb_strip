@@ -6,12 +6,9 @@ from .base import BaseRenderer
 
 
 class ClockRenderer(BaseRenderer):
-    def __init__(self):
-        super(ClockRenderer, self).__init__(60, 1)
-
     def render(self):
         now = datetime.now()
-        for output in self.OUTPUTS:
-            output.RGB_STRIP.add_led_xy(output.X + now.hour, output.Y, r=255, a=1)
-            output.RGB_STRIP.add_led_xy(output.X + now.minute, output.Y, g=255, a=1)
-            output.RGB_STRIP.add_led_xy(output.X + now.second, output.Y, b=255, a=1)
+        for controller in self.CONTROLLERS:
+            controller.add_led_xy(now.hour, 0, r=255, a=1)
+            controller.add_led_xy(now.minute, 0, g=255, a=1)
+            controller.add_led_xy(now.second, 0, b=255, a=1)

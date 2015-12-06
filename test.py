@@ -6,6 +6,7 @@ from RGBStrip.displays.cursesd import CursesDisplay
 from RGBStrip.displays.tk import TkDisplay
 from RGBStrip.manager import RGBStripManager
 from RGBStrip.section import SectionController
+from RGBStrip.renderers.clock import ClockRenderer
 from RGBStrip.renderers.patch import PatchRenderer
 from RGBStrip.renderers.rainbow import RainbowRenderer
 
@@ -46,8 +47,9 @@ def main():
         )
 
         # Clock
-        # r = ClockRenderer()
-        # r.add_output('Clock', rgb_strip, 0, 1)
+        rsm.add_renderer(
+            ClockRenderer(rss_b)
+        )
 
         # Gravity shots
 
