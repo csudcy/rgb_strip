@@ -11,10 +11,14 @@ class RGBStripController(object):
     def __init__(
             self,
             width,
-            height=1
+            height=1,
+            reverse_x=False,
+            reverse_y=False
         ):
         self.WIDTH = width
         self.HEIGHT = height
+        self.REVERSE_X = reverse_x
+        self.REVERSE_Y = reverse_y
         self.LED_COUNT = width * height
 
         # Work out some byte counts
@@ -38,6 +42,10 @@ class RGBStripController(object):
         return self.BYTES_START + index * 4
 
     def _get_index(self, x, y):
+        if self.REVERSE_X:
+            x = self.WIDTH - x - 1
+        if self.REVERSE_Y:
+            y = self.HEIGHT - y - 1
         return (y * self.WIDTH) + (x if y % 2 == 0 else self.WIDTH - x - 1)
 
     def set_leds(self, r=0, g=0, b=0, a=0):

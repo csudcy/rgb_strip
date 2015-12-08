@@ -3,6 +3,7 @@
 from RGBStrip import utils
 from RGBStrip.controller import RGBStripController
 from RGBStrip.displays.cursesd import CursesDisplay
+from RGBStrip.displays.rpi_spi import RPiSPIDisplay
 from RGBStrip.displays.tk import TkDisplay
 from RGBStrip.manager import RGBStripManager
 from RGBStrip.section import SectionController
@@ -16,7 +17,7 @@ def main():
     rgb_strip = None
     try:
         print 'Initialising strip...'
-        rsc = RGBStripController(60, 2)
+        rsc = RGBStripController(60, 2, reverse_x=True)
         rsm = RGBStripManager(rsc)
 
         print 'Initialising sections...'
@@ -58,9 +59,10 @@ def main():
         print 'Testing rgb_strip...'
         #with CursesDisplay(rsc) as rsd_curses:
         #    rsm.add_display(rsd_curses)
-        with TkDisplay(rsc) as rsd_tk:
-            rsm.add_display(rsd_tk)
-            #with RPiSPIDisplay(rsc) as rsd:
+        #with TkDisplay(rsc) as rsd_tk:
+        #    rsm.add_display(rsd_tk)
+        with RPiSPIDisplay(rsc) as rsd_spi:
+            rsm.add_display(rsd_spi)
             rsm.output_forever()
     except KeyboardInterrupt:
         pass
