@@ -59,10 +59,10 @@ def main():
         print 'Testing rgb_strip...'
         #with CursesDisplay(rsc) as rsd_curses:
         #    rsm.add_display(rsd_curses)
-        #with TkDisplay(rsc) as rsd_tk:
-        #    rsm.add_display(rsd_tk)
-        with RPiSPIDisplay(rsc) as rsd_spi:
-            rsm.add_display(rsd_spi)
+        with TkDisplay(rsc) as rsd_tk:
+            rsm.add_display(rsd_tk)
+        # with RPiSPIDisplay(rsc) as rsd_spi:
+        #     rsm.add_display(rsd_spi)
             rsm.output_forever()
     except KeyboardInterrupt:
         pass

@@ -79,7 +79,7 @@ class RGBStripController(object):
             self.BYTES[offset + 3] + r,
             self.BYTES[offset + 2] + g,
             self.BYTES[offset + 1] + b,
-            self.BYTES[offset + 0] + a
+            (self.BYTES[offset + 0] & 31) + a
         )
 
     def add_led_xy(self, x, y, r=0, g=0, b=0, a=0):
@@ -88,11 +88,11 @@ class RGBStripController(object):
 
     def _set_led(self, offset, r, g, b, a):
         # Brightness max is 31; or with 224 to add the padding 1s
-        self.BYTES[offset + 0] = (int(a) & 31) | 224
+        self.BYTES[offset + 0] = max(min(int(a), 31), 0) | 224
         # R, G, B are max 255
-        self.BYTES[offset + 1] = int(b) & 255
-        self.BYTES[offset + 2] = int(g) & 255
-        self.BYTES[offset + 3] = int(r) & 255
+        self.BYTES[offset + 1] = max(min(int(b), 255), 0)
+        self.BYTES[offset + 2] = max(min(int(g), 255), 0)
+        self.BYTES[offset + 3] = max(min(int(r), 255), 0)
 
     def get_rgba(self, index):
         offset = self._get_offset(index)
