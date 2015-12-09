@@ -8,6 +8,7 @@ from RGBStrip.displays.tk import TkDisplay
 from RGBStrip.manager import RGBStripManager
 from RGBStrip.section import SectionController
 from RGBStrip.renderers.clock import ClockRenderer
+from RGBStrip.renderers.gravity_shot import GravityShotRenderer
 from RGBStrip.renderers.patch import PatchRenderer
 from RGBStrip.renderers.rainbow import RainbowRenderer
 
@@ -29,30 +30,33 @@ def main():
 
         print 'Initialising renderers...'
         # Rainbows
-        rsm.add_renderer(
-            RainbowRenderer(rss_tl)
-        )
-        rsm.add_renderer(
-            RainbowRenderer(rss_tr, train_length=30)
-        )
-        rsm.add_renderer(
-            RainbowRenderer(rss_b)
-        )
+        # rsm.add_renderer(
+        #     RainbowRenderer(rss_tl)
+        # )
+        # rsm.add_renderer(
+        #     RainbowRenderer(rss_tr, train_length=30)
+        # )
+        # rsm.add_renderer(
+        #     RainbowRenderer(rss_b)
+        # )
 
         # Patches
-        rsm.add_renderer(
-            PatchRenderer(rss_p1)
-        )
-        rsm.add_renderer(
-            PatchRenderer(rss_p2, utils.get_rgb_rainbow(250), a=1)
-        )
+        # rsm.add_renderer(
+        #     PatchRenderer(rss_p1)
+        # )
+        # rsm.add_renderer(
+        #     PatchRenderer(rss_p2, utils.get_rgb_rainbow(250), a=1)
+        # )
 
         # Clock
-        rsm.add_renderer(
-            ClockRenderer(rss_b)
-        )
+        # rsm.add_renderer(
+        #     ClockRenderer(rss_b)
+        # )
 
         # Gravity shots
+        rsm.add_renderer(
+            GravityShotRenderer(rss_b)
+        )
 
         # Gravity Drips
 
