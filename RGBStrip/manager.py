@@ -42,6 +42,15 @@ class RGBStripManager(object):
         self.display()
 
     def output_forever(self, sleep_time=0.01):
-        while (True):
-            self.output()
-            time.sleep(sleep_time)
+        try:
+            for display in self.DISPLAYS:
+                display.setup()
+            while (True):
+                self.output()
+                time.sleep(sleep_time)
+        finally:
+            for display in self.DISPLAYS:
+                try:
+                    display.safe_teardown()
+                except Exception, ex:
+                    print 'Exception '

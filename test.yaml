@@ -1,0 +1,80 @@
+controller:
+  width: 60
+  height: 2
+  reverse_x: True
+  reverse_y: False
+
+sections:
+  -
+    id: top_left
+    x: 0
+    y: 0
+    width: 30
+    height: 1
+  -
+    id: top_right
+    x: 30
+    y: 0
+    width: 30
+    height: 1
+  -
+    id: bottom
+    x: 0
+    y: 1
+    width: 60
+    height: 1
+  -
+    id: patch1
+    x: 5
+    y: 0
+    width: 5
+    height: 2
+  -
+    id: patch2
+    x: 15
+    y: 0
+    width: 5
+    height: 2
+
+renderers:
+  # Rainbows
+  -
+    type: rainbow
+    section: top_left
+  -
+    type: rainbow
+    section: top_right
+    params:
+      train_length: 30
+  -
+    type: rainbow
+    section: bottom
+
+  # Patches
+  -
+    type: patch
+    section: patch1
+    params:
+      colours:
+        - [255, 0, 0]
+  -
+    type: patch
+    section: patch2
+    params:
+      rainbow_steps: 250
+
+  # Clock
+  # -
+  #   type: clock
+  #   section: bottom
+
+  # Gravity shots
+  # -
+  #   type: gravity_shot
+  #   section: bottom
+
+  # Gravity Drips
+
+displays:
+  -
+    type: tk
