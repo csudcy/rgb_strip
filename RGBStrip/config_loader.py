@@ -8,6 +8,7 @@ from RGBStrip.displays.rpi_spi import RPiSPIDisplay
 from RGBStrip.displays.tk import TkDisplay
 from RGBStrip.manager import RGBStripManager
 from RGBStrip.renderers.clock import ClockRenderer
+from RGBStrip.renderers.gravity_drip import GravityDripRenderer
 from RGBStrip.renderers.gravity_shot import GravityShotRenderer
 from RGBStrip.renderers.patch import PatchRenderer
 from RGBStrip.renderers.rainbow import RainbowRenderer
@@ -21,6 +22,7 @@ DISPLAYS = {
 
 RENDERERS = {
     'clock': ClockRenderer,
+    'gravity_drip': GravityDripRenderer,
     'gravity_shot': GravityShotRenderer,
     'patch': PatchRenderer,
     'rainbow': RainbowRenderer,

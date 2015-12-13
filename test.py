@@ -3,7 +3,7 @@
 from RGBStrip import config_loader
 
 def main():
-    config_loader.load_config('./test_big.yaml')
+    config_loader.load_config('./test_nice.yaml')
 
 if __name__ == '__main__':
     main()

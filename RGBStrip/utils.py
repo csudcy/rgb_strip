@@ -70,3 +70,41 @@ def classify_colour(r, g, b, a):
         1 if b > 64 else 0,
     )
     return COLOURS[col]
+
+
+def fade_in_out(rgb_colours, fade_steps, fade_hold):
+    step_multipliers = []
+    for i in xrange(fade_steps):
+        frac = i / float(fade_steps)
+        step_multipliers.append(
+            (frac, frac, frac)
+        )
+
+    faded_colours = []
+    for colour in rgb_colours:
+        # Fade in
+        for i in xrange(fade_steps):
+            frac = i / float(fade_steps)
+            faded_colours.append(
+                (
+                    colour[0] * frac,
+                    colour[1] * frac,
+                    colour[2] * frac,
+                )
+            )
+
+        # Full colour
+        for i in xrange(fade_hold):
+            faded_colours.append(colour)
+
+        # Fade out
+        for i in xrange(fade_steps, 0, -1):
+            frac = i / float(fade_steps)
+            faded_colours.append(
+                (
+                    colour[0] * frac,
+                    colour[1] * frac,
+                    colour[2] * frac,
+                )
+            )
+    return faded_colours

@@ -5,19 +5,30 @@ from RGBStrip import utils
 
 
 class PatchRenderer(BaseRenderer):
-    def __init__(self, controllers, colours=((255, 0, 0), ), a=1, rainbow_steps=None, delay=1, start_index=0):
-        super(PatchRenderer, self).__init__(controllers)
+    def __init__(
+            self,
+            controllers,
+            active=True,
+            colours=((255, 0, 0), ),
+            a=1,
+            rainbow_steps=None,
+            fade_steps=0,
+            fade_hold=0,
+            delay=1,
+            start_index=0):
+        super(PatchRenderer, self).__init__(controllers, active=active)
 
         if rainbow_steps:
-            self.COLOURS = utils.get_rgb_rainbow(rainbow_steps)
-        else:
-            self.COLOURS = colours
+            colours = utils.get_rgb_rainbow(rainbow_steps)
+        if fade_steps:
+            colours = utils.fade_in_out(colours, fade_steps, fade_hold)
+        self.COLOURS = colours
         self.A = a
         self.INDEX = start_index % len(self.COLOURS)
         self.STEP_DELAYED = 0
         self.STEP_DELAY = delay
 
-    def render(self):
+    def do_render(self):
         rgb_colour = self.COLOURS[self.INDEX]
         for controller in self.CONTROLLERS:
             for x in xrange(self.WIDTH):

@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 class BaseRenderer(object):
-    def __init__(self, controllers):
+    def __init__(self, controllers, active=True):
         # Allow single controllers to be passed in
         if not hasattr(controllers, '__iter__'):
             controllers = [controllers]
@@ -19,6 +19,11 @@ class BaseRenderer(object):
                 raise Exception('All controllers assigned to a single renderer must have the same dimensions!')
 
         self.CONTROLLERS = controllers
+        self.ACTIVE = active
 
     def render(self):
-        raise Exception('render must be overridden by inheriting classes!')
+        if self.ACTIVE:
+            self.do_render()
+
+    def do_render(self):
+        raise Exception('do_render must be overridden by inheriting classes!')

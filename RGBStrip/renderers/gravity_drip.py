@@ -5,12 +5,12 @@ import random
 from RGBStrip.renderers.gravity import GravityRenderer
 
 
-class GravityShotRenderer(GravityRenderer):
+class GravityDripRenderer(GravityRenderer):
 
     def _add_new_shot(self):
         # Add a new shot
         self.SHOTS.append({
             'colour': random.choice(self.COLOURS),
-            'speed': random.uniform(self.MIN_SPEED, self.MAX_SPEED),
-            'position': 0.0
+            'speed': -random.uniform(0, self.MIN_SPEED),
+            'position': self.WIDTH-1
         })
