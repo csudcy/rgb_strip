@@ -17,3 +17,7 @@ TODO:
     Everything!
     Make RainbowTrain loop instead of jumping back to x=0 every line
     Timed sections
+    Rotating sections?
+    Gravity trails
+    Knightrider
+    Cylons
