@@ -21,3 +21,4 @@ TODO:
     Gravity trails
     Knightrider
     Cylons
+    Allow web server to choose between multiple configs?

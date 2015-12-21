@@ -40,7 +40,7 @@ def load_config(path):
     add_renderers(manager, sections, config['renderers'])
     add_displays(controller, manager, config['displays'])
 
-    manager.output_forever()
+    return manager
 
 
 def get_controller(config):

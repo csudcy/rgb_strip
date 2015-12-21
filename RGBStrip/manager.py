@@ -1,10 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
+from threading import Thread
 import time
 
 
-class RGBStripManager(object):
+class RGBStripManager(Thread):
     def __init__(self, controller):
+        Thread.__init__(self)
+
         self.CONTROLLER = controller
 
         # Setup a list of renderers & displays
@@ -54,3 +57,6 @@ class RGBStripManager(object):
                     display.safe_teardown()
                 except Exception, ex:
                     print 'Exception '
+
+    def run(self):
+        self.output_forever()
