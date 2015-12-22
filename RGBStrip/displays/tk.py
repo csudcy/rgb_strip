@@ -33,6 +33,7 @@ class TkDisplay(BaseDisplay):
         self.frame.update()
 
     def setup(self):
+        BaseDisplay.setup(self)
         # Setup the window
         self.root = ThreadedTk()
         self.frame = TkFrame(self.root, self.CONTROLLER)

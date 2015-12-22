@@ -32,6 +32,8 @@ class CursesDisplay(BaseDisplay):
         self.STDSCR.move(self.CONTROLLER.HEIGHT + 5, 0)
 
     def setup(self):
+        BaseDisplay.setup(self)
+
         # Setup the window
         self.STDSCR = curses.initscr()
         curses.cbreak()

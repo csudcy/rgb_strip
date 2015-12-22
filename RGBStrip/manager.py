@@ -67,15 +67,17 @@ class RGBStripManager(Thread):
         try:
             for display in self.DISPLAYS:
                 display.setup()
-            while (True):
+            self.IS_ALIVE = True
+            while (self.IS_ALIVE):
                 self.output()
                 time.sleep(sleep_time)
         finally:
+            print 'Executing my finally!'
             for display in self.DISPLAYS:
-                try:
-                    display.safe_teardown()
-                except Exception, ex:
-                    print 'Exception '
+                display.safe_teardown()
 
     def run(self):
         self.output_forever()
+
+    def stop(self):
+        self.IS_ALIVE = False

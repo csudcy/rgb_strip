@@ -5,21 +5,14 @@ class BaseDisplay(object):
     def display(self):
         raise Exception('Inheriting classes must override BaseDisplay.display!')
 
-    def safe_setup(self):
-        try:
-            self.setup()
-            self.SETUP_DONE = True
-        except Exception, ex:
-            logging.error('Exception during setup: %s', str(ex))
-
     def setup(self):
         """
         Put any context setup logic here
         """
-        pass
+        self.SETUP_DONE = True
 
     def safe_teardown(self):
-        if self.SETUP_DONE:
+        if getattr(self, 'SETUP_DONE', False):
             try:
                 self.teardown()
             except Exception, ex:
