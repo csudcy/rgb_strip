@@ -14,11 +14,12 @@ To use SPI mode:
 
 
 TODO:
-    Everything!
-    Make RainbowTrain loop instead of jumping back to x=0 every line
-    Timed sections
-    Rotating sections?
-    Gravity trails
-    Knightrider
-    Cylons
-    Allow web server to choose between multiple configs?
+  * Everything!
+  * Make RainbowTrain loop instead of jumping back to x=0 every line
+  * Timed sections
+  * Rotating sections?
+  * Gravity trails
+  * Knightrider
+  * Cylons
+  * Allow web server to choose between multiple configs?
+  * Proper CLI arg handling

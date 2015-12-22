@@ -2,15 +2,16 @@
 # -*- coding: utf8 -*-
 import sys
 
-from RGBStrip import config_loader
+from RGBStrip import manager
 
 
-# if len(sys.argv) != 2:
-#     print 'Usage: python -m RGBStrip config_file.yaml'
-#     sys.exit(1)
+if len(sys.argv) != 2:
+    print 'Usage: python -m RGBStrip config_file.yaml'
+    sys.exit(1)
 
-# manager = config_loader.load_config(sys.argv[1])
-# manager.output_forever()
+manager = manager.RGBStripManager()
+manager.load_config(sys.argv[1])
+manager.output_forever()
 
-from RGBStrip import server
-server.start_server(sys.argv[1])
+# from RGBStrip import server
+# server.start_server(sys.argv[1])

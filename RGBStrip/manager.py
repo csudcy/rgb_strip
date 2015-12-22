@@ -3,16 +3,35 @@
 from threading import Thread
 import time
 
+from RGBStrip import config_loader
 
 class RGBStripManager(Thread):
-    def __init__(self, controller):
+    def __init__(self):
         Thread.__init__(self)
 
-        self.CONTROLLER = controller
+        self.CONTROLLER = None
 
         # Setup a list of renderers & displays
         self.RENDERERS = []
         self.DISPLAYS = []
+
+    def load_config(self, path):
+        # Clear existing config
+        for renderer in self.RENDERERS:
+            renderer.stop()
+        for display in self.DISPLAYS:
+            display.stop()
+
+        # Make everything new
+        config = config_loader.load_config(path)
+
+        # Save evrything
+        self.set_controller(config['controller'])
+        self.RENDERERS = config['renderers']
+        self.DISPLAYS = config['displays']
+
+    def set_controller(self, controller):
+        self.CONTROLLER = controller
 
     def add_renderer(self, renderer):
         if renderer not in self.RENDERERS:

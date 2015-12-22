@@ -6,7 +6,6 @@ from RGBStrip.controller import RGBStripController
 from RGBStrip.displays.cursesd import CursesDisplay
 from RGBStrip.displays.rpi_spi import RPiSPIDisplay
 from RGBStrip.displays.tk import TkDisplay
-from RGBStrip.manager import RGBStripManager
 from RGBStrip.renderers.clock import ClockRenderer
 from RGBStrip.renderers.gravity_drip import GravityDripRenderer
 from RGBStrip.renderers.gravity_shot import GravityShotRenderer
@@ -35,20 +34,20 @@ def load_config(path):
 
     # Make Everything
     controller = get_controller(config['controller'])
-    manager = get_manager(controller)
     sections = get_sections(controller, config['sections'])
-    add_renderers(manager, sections, config['renderers'])
-    add_displays(controller, manager, config['displays'])
+    renderers = get_renderers(sections, config['renderers'])
+    displays = get_displays(controller, config['displays'])
 
-    return manager
+    return {
+        'controller': controller,
+        'sections': sections,
+        'renderers': renderers,
+        'displays': displays,
+    }
 
 
 def get_controller(config):
     return RGBStripController(**config)
-
-
-def get_manager(controller):
-    return RGBStripManager(controller)
 
 
 def get_sections(controller, config):
@@ -64,23 +63,41 @@ def get_sections(controller, config):
     )
 
 
-def add_renderers(manager, sections, config):
+def get_renderers(sections, config):
+    renderers = []
     for renderer in config:
+        if renderer['type'] not in RENDERERS:
+            raise Exception(
+                'Unknown renderer "{type}"; valid options are: {types}'.format(
+                    type=renderer['type'],
+                    types=RENDERERS.keys()
+                )
+            )
         renderer_class = RENDERERS[renderer['type']]
-        manager.add_renderer(
+        renderers.append(
             renderer_class(
                 sections[renderer['section']],
                 **renderer.get('params', {})
             )
         )
+    return renderers
 
 
-def add_displays(controller, manager, config):
+def get_displays(controller, config):
+    displays = []
     for display in config:
+        if display['type'] not in DISPLAYS:
+            raise Exception(
+                'Unknown display "{type}"; valid options are: {types}'.format(
+                    type=display['type'],
+                    types=DISPLAYS.keys()
+                )
+            )
         display_class = DISPLAYS[display['type']]
-        manager.add_display(
+        displays.append(
             display_class(
                 controller,
                 **display.get('params', {})
             )
         )
+    return displays

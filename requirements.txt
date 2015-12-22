@@ -1,2 +1,5 @@
 PyYAML==3.11
 bottle==0.12.9
+
+# To use the rpi_spi display, uncomment the next line
+# spidev
