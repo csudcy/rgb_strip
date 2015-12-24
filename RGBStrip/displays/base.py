@@ -1,3 +1,6 @@
+import logging
+
+
 class BaseDisplay(object):
     def __init__(self, controller):
         self.CONTROLLER = controller

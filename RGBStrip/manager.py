@@ -71,8 +71,9 @@ class RGBStripManager(Thread):
             while (self.IS_ALIVE):
                 self.output()
                 time.sleep(sleep_time)
+        except KeyboardInterrupt:
+            print 'Bye!'
         finally:
-            print 'Executing my finally!'
             for display in self.DISPLAYS:
                 display.safe_teardown()
 
