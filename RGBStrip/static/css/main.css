@@ -27,6 +27,10 @@
 
 #config_input {
     width: 98%;
-    height: 300px;
+    height: 500px;
     padding: 5px;
+}
+
+#config_status {
+    float: right;
 }

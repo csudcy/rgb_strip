@@ -2,32 +2,9 @@
 # -*- coding: utf8 -*-
 import yaml
 
+from RGBStrip.constants import DISPLAYS, RENDERERS
 from RGBStrip.controller import RGBStripController
-from RGBStrip.displays.cursesd import CursesDisplay
-from RGBStrip.displays.rpi_spi import RPiSPIDisplay
-from RGBStrip.displays.tk import TkDisplay
-from RGBStrip.displays.websocket import WebSocketDisplay
-from RGBStrip.renderers.clock import ClockRenderer
-from RGBStrip.renderers.gravity_drip import GravityDripRenderer
-from RGBStrip.renderers.gravity_shot import GravityShotRenderer
-from RGBStrip.renderers.patch import PatchRenderer
-from RGBStrip.renderers.rainbow import RainbowRenderer
 from RGBStrip.section import SectionController
-
-DISPLAYS = {
-    'curses': CursesDisplay,
-    'rpi_spi': RPiSPIDisplay,
-    'tk': TkDisplay,
-    'websocket': WebSocketDisplay,
-}
-
-RENDERERS = {
-    'clock': ClockRenderer,
-    'gravity_drip': GravityDripRenderer,
-    'gravity_shot': GravityShotRenderer,
-    'patch': PatchRenderer,
-    'rainbow': RainbowRenderer,
-}
 
 
 def load_config_path(path):
@@ -45,7 +22,8 @@ def load_config(yaml_config):
     displays = get_displays(controller, config['displays'])
 
     return {
-        'config': config,
+        'yaml_config': yaml_config,
+        'general': config.get('general', {}),
         'controller': controller,
         'sections': sections,
         'renderers': renderers,

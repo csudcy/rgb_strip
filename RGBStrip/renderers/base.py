@@ -27,3 +27,9 @@ class BaseRenderer(object):
 
     def do_render(self):
         raise Exception('do_render must be overridden by inheriting classes!')
+
+    def stop(self):
+        """
+        Do any necessary cleanup
+        """
+        pass

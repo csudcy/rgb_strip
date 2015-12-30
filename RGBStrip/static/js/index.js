@@ -61,8 +61,6 @@ function _apply_config(new_config) {
     }
 }
 
-
-
 function _get_offset(index) {
     return 4 + index * 4;
 }
@@ -97,8 +95,6 @@ function get_rgba_xy(x, y, bytes) {
     return get_rgba(index, bytes);
 }
 
-
-
 var led_config = {}, leds;
 function update_display(data) {
     if (_has_changed(led_config, data.config)) {
@@ -132,13 +128,30 @@ function open_ws() {
 
 function reload_config() {
     // Load the config from the server and show it
-    console.log('reload_config');
-
+    var config_status = $('#config_status');
+    config_status.text('Loading...');
+    $.ajax(
+        '/config'
+    ).done(function(data, textStatus, jqXHR) {
+        $('#config_input').val(data);
+        config_status.text('Loaded!');
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        config_status.text('Error loading config!');
+    });
 }
 
 function save_config() {
     // Save the config from UI to the server
-    console.log('save_config');
+    var config_status = $('#config_status');
+    config_status.text('Saving...');
+    $.post(
+        '/config',
+        $('#config_input').val()
+    ).done(function(data, textStatus, jqXHR) {
+        config_status.text('Saved!');
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        config_status.text('Error saving config!');
+    });
 }
 
 function bind_handlers() {

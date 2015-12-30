@@ -7,7 +7,6 @@ import bottle
 from gevent.pywsgi import WSGIServer
 from geventwebsocket import WebSocketError
 from geventwebsocket.handler import WebSocketHandler
-import yaml
 
 from RGBStrip.displays import websocket as ws_display
 
@@ -32,12 +31,12 @@ def render_template(path, context=None):
 
 
 @app.get('/')
-def index():
+def get_index():
     return render_template('index')
 
 
 @app.get('/static/<filepath:path>')
-def server_static(filepath):
+def get_static(filepath):
     return bottle.static_file(filepath, root=STATIC_DIRECTORY)
 
 
@@ -72,7 +71,28 @@ def get_constants():
     """
     Get any constants useful to the frontend e.g. list of display types
     """
-    pass
+    import inspect
+
+    from RGBStrip import constants, controller, section
+
+    def get_args(klass, ignore=[]):
+        argspec = inspect.getargspec(klass.__init__)
+        args = list(set(argspec.args) - set(ignore))
+        args.sort()
+        return args
+
+    return {
+        'controller_args': get_args(controller.RGBStripController, ['self']),
+        'section_args': get_args(section.SectionController, ['self', 'controller']),
+        'displays': {
+            key: get_args(klass, ['self', 'controller'])
+            for key, klass in constants.DISPLAYS.iteritems()
+        },
+        'renderers': {
+            key: get_args(klass, ['self', 'controllers'])
+            for key, klass in constants.RENDERERS.iteritems()
+        }
+    }
 
 
 @app.get('/config')
@@ -80,7 +100,7 @@ def get_config():
     """
     Get the current config
     """
-    return yaml.dump(MANAGER.CONFIG, default_flow_style=False)
+    return MANAGER.YAML_CONFIG
 
 
 @app.post('/config')
@@ -88,7 +108,8 @@ def set_config():
     """
     Save the given config and start using it
     """
-    pass
+    data = bottle.request.body.read()
+    MANAGER.apply_config(data)
 
 
 def start_server(manager, host='0.0.0.0', port=8080):
