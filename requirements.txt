@@ -1,5 +1,9 @@
 PyYAML==3.11
+
+# To use the web server
 bottle==0.12.9
+gevent==1.0.2
+gevent-websocket==0.9.5
 
 # To use the rpi_spi display, uncomment the next line
 # spidev

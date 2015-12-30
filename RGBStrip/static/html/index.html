@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            RGBStrip Server
+        </title>
+        <script type="text/javascript" src="/static/js/index.js"></script>
+        <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    </head>
+    <body>
+        <span id="led_container">
+            <!--Everything LED related should go in here-->
+        </span>
+
+        <span id="config">
+            Config:
+            <textarea id="config_input"></textarea>
+            <button id="reload_config">Reload Config</button>
+            <button id="save_config">Save Config</button>
+        </span>
+
+        <div id="ws_display" style="display: none;">
+            Messages Received: <span id="ws_count">0</span><br/>
+            Last Message:<br/>
+            <span id="ws_msg">?</span>
+        </div>
+    </body>
+</html>

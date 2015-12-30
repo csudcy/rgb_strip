@@ -1,0 +1,32 @@
+#led_container {
+    display: inline-block;
+    border: 1px solid black;
+    padding: 1px;
+    width: 100%;
+}
+
+.row_container {
+    display: inline-block;
+}
+
+.led {
+    display: inline-block;
+    border: 1px solid black;
+    margin: 1px;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+}
+
+#config {
+    display: inline-block;
+    border: 1px solid black;
+    padding: 1px;
+    width: 100%;
+}
+
+#config_input {
+    width: 98%;
+    height: 300px;
+    padding: 5px;
+}

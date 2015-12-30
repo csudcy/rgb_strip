@@ -6,6 +6,7 @@ from RGBStrip.controller import RGBStripController
 from RGBStrip.displays.cursesd import CursesDisplay
 from RGBStrip.displays.rpi_spi import RPiSPIDisplay
 from RGBStrip.displays.tk import TkDisplay
+from RGBStrip.displays.websocket import WebSocketDisplay
 from RGBStrip.renderers.clock import ClockRenderer
 from RGBStrip.renderers.gravity_drip import GravityDripRenderer
 from RGBStrip.renderers.gravity_shot import GravityShotRenderer
@@ -17,6 +18,7 @@ DISPLAYS = {
     'curses': CursesDisplay,
     'rpi_spi': RPiSPIDisplay,
     'tk': TkDisplay,
+    'websocket': WebSocketDisplay,
 }
 
 RENDERERS = {
@@ -28,9 +30,13 @@ RENDERERS = {
 }
 
 
-def load_config(path):
+def load_config_path(path):
     with open(path) as f:
-        config = yaml.load(f.read())
+        return load_config(f.read())
+
+
+def load_config(yaml_config):
+    config = yaml.load(yaml_config)
 
     # Make Everything
     controller = get_controller(config['controller'])
@@ -39,6 +45,7 @@ def load_config(path):
     displays = get_displays(controller, config['displays'])
 
     return {
+        'config': config,
         'controller': controller,
         'sections': sections,
         'renderers': renderers,

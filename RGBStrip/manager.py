@@ -5,30 +5,37 @@ import time
 
 from RGBStrip import config_loader
 
+
 class RGBStripManager(Thread):
     def __init__(self):
         Thread.__init__(self)
 
         self.CONTROLLER = None
+        self.SLEEP_TIME = 0.01
 
         # Setup a list of renderers & displays
         self.RENDERERS = []
         self.DISPLAYS = []
 
-    def load_config(self, path):
+    def load_config(self, path=None, yaml_config=None):
         # Clear existing config
         for renderer in self.RENDERERS:
             renderer.stop()
         for display in self.DISPLAYS:
             display.stop()
 
-        # Make everything new
-        config = config_loader.load_config(path)
+        # Load the config & make everything new
+        if yaml_config:
+            config = config_loader.load_config(yaml_config)
+        else:
+            config = config_loader.load_config_path(path)
 
         # Save evrything
         self.set_controller(config['controller'])
         self.RENDERERS = config['renderers']
         self.DISPLAYS = config['displays']
+        self.SLEEP_TIME = config['config'].get('general', {}).get('sleep_time', 0.01)
+        self.CONFIG = config['config']
 
     def set_controller(self, controller):
         self.CONTROLLER = controller
@@ -63,14 +70,14 @@ class RGBStripManager(Thread):
         self.render()
         self.display()
 
-    def output_forever(self, sleep_time=0.01):
+    def output_forever(self):
         try:
             for display in self.DISPLAYS:
                 display.setup()
             self.IS_ALIVE = True
             while (self.IS_ALIVE):
                 self.output()
-                time.sleep(sleep_time)
+                time.sleep(self.SLEEP_TIME)
         except KeyboardInterrupt:
             print 'Bye!'
         finally:
