@@ -82,8 +82,8 @@ def get_constants():
         return args
 
     return {
-        'controller_args': get_args(controller.RGBStripController, ['self']),
-        'section_args': get_args(section.SectionController, ['self', 'controller']),
+        'controller': get_args(controller.RGBStripController, ['self']),
+        'section': get_args(section.SectionController, ['self', 'controller']),
         'displays': {
             key: get_args(klass, ['self', 'controller'])
             for key, klass in constants.DISPLAYS.iteritems()
@@ -91,7 +91,10 @@ def get_constants():
         'renderers': {
             key: get_args(klass, ['self', 'controllers'])
             for key, klass in constants.RENDERERS.iteritems()
-        }
+        },
+        'general': [
+            'sleep_time'
+        ]
     }
 
 

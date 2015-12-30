@@ -13,18 +13,19 @@
             <!--Everything LED related should go in here-->
         </span>
 
-        <span id="config">
-            Config:
-            <textarea id="config_input"></textarea>
-            <button id="reload_config">Reload Config</button>
-            <button id="save_config">Save Config</button>
-            <span id="config_status">...</span>
-        </span>
+        <div id="bottom">
+            <span id="config">
+                Config:
+                <textarea id="config_input"></textarea>
+                <button id="reload_config">Reload Config</button>
+                <button id="save_config">Save Config</button>
+                <span id="config_status">...</span>
+            </span>
 
-        <div id="ws_display" style="display: none;">
-            Messages Received: <span id="ws_count">0</span><br/>
-            Last Message:<br/>
-            <span id="ws_msg">?</span>
+            <span id="constants">
+                Config Help:
+                <pre></pre>
+            </span>
         </div>
     </body>
 </html>

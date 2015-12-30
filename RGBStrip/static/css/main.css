@@ -18,11 +18,15 @@
     border-radius: 10px;
 }
 
-#config {
-    display: inline-block;
+#bottom {
     border: 1px solid black;
     padding: 1px;
-    width: 100%;
+}
+
+#config {
+    display: inline-block;
+    padding: 1px;
+    width: calc(100% - 350px);
 }
 
 #config_input {
@@ -33,4 +37,16 @@
 
 #config_status {
     float: right;
+}
+
+#constants {
+    width: 340px;
+    float: right;
+}
+
+#constants pre {
+    height: 500px;
+    overflow: auto;
+    border: 1px solid black;
+    margin: 0px;
 }

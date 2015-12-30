@@ -1,7 +1,4 @@
-console.log('Hello!');
-
 function get_ws_url() {
-    console.log('get_ws_url');
     var host = window.location.hostname,
         port = window.location.port,
         ws_url = '';
@@ -19,7 +16,7 @@ function get_ws_url() {
     return ws_url;
 }
 
-function _has_changed(old_config, new_config) {
+function config_has_changed(old_config, new_config) {
     return (
         old_config.width !== new_config.width
         ||
@@ -31,7 +28,7 @@ function _has_changed(old_config, new_config) {
     );
 }
 
-function _apply_config(new_config) {
+function apply_config(new_config) {
     console.log('Applying new config!', led_config, new_config);
     led_config = new_config;
 
@@ -97,8 +94,8 @@ function get_rgba_xy(x, y, bytes) {
 
 var led_config = {}, leds;
 function update_display(data) {
-    if (_has_changed(led_config, data.config)) {
-        _apply_config(data.config);
+    if (config_has_changed(led_config, data.config)) {
+        apply_config(data.config);
     }
 
     // Update the LEDs
@@ -111,17 +108,9 @@ function update_display(data) {
 }
 
 function open_ws() {
-    var message_count=0,
-        ws_url = get_ws_url(),
+    var ws_url = get_ws_url(),
         ws = new WebSocket(ws_url);
-    ws.onopen = function() {
-        console.log('onopen');
-    };
     ws.onmessage = function (evt) {
-        message_count += 1;
-        // console.log('onmessage');
-        // document.getElementById('ws_count').innerHTML = message_count;
-        // document.getElementById('ws_msg').innerHTML = evt.data;
         update_display(JSON.parse(evt.data));
     };
 }
@@ -159,11 +148,23 @@ function bind_handlers() {
     $('#save_config').click(save_config);
 }
 
+var constants;
+function load_constants() {
+    $.ajax(
+        '/constants'
+    ).done(function(data, textStatus, jqXHR) {
+        $('#constants pre').text(JSON.stringify(data, undefined, 2));
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        alert('Error loading constants!');
+    });
+}
+
 function main() {
-    console.log('main');
     open_ws();
     bind_handlers();
     reload_config();
+    load_constants();
+
 }
 
 $(document).ready(main);

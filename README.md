@@ -22,4 +22,6 @@ TODO:
   * Knightrider
   * Cylons
   * Allow web server to choose between multiple configs?
-  * Proper CLI arg handling
+  * Better web UI
+  * Config builder web UI
+  * Restart websocket on error
