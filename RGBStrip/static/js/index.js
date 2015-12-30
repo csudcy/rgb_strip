@@ -73,18 +73,13 @@ function _get_index(x, y) {
 }
 
 function get_rgba(index, bytes) {
-    var offset = _get_offset(index);
-    var rgba = (
-        'rgba(' + bytes[offset + 3]
-        + ',' + bytes[offset + 2]
-        + ',' + bytes[offset + 1]
-        + ',' + ((bytes[offset + 0] && 31) / 31)
-        + ')'
-    );
-    if (rgba == 'rgba(0,0,0,1)') {
-        return 'white';
-    }
-    return rgba;
+    var offset = _get_offset(index),
+        r = bytes[offset + 3],
+        g = bytes[offset + 2],
+        b = bytes[offset + 1],
+        a = ((bytes[offset + 0] && 31) / 31);
+
+    return 'rgba('+r+','+g+','+b+','+a+')';
 }
 
 function get_rgba_xy(x, y, bytes) {

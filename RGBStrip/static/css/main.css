@@ -3,6 +3,7 @@
     border: 1px solid black;
     padding: 1px;
     width: 100%;
+    background-color: gray;
 }
 
 .row_container {
@@ -11,7 +12,7 @@
 
 .led {
     display: inline-block;
-    border: 1px solid black;
+    border: 1px solid white;
     margin: 1px;
     width: 10px;
     height: 10px;

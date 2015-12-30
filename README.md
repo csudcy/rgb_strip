@@ -25,3 +25,5 @@ TODO:
   * Better web UI
   * Config builder web UI
   * Restart websocket on error
+  * More config validation?
+  * Don't let crashes stop the server
