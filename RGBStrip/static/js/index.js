@@ -35,27 +35,26 @@ function _apply_config(new_config) {
     console.log('Applying new config!', led_config, new_config);
     led_config = new_config;
 
-    var led_container = document.getElementById('led_container');
+    var led_container = $('#led_container');
 
     // Remove everything previously created
-    while (led_container.firstChild) {
-        led_container.removeChild(led_container.firstChild);
-    }
+    led_container.children().remove();
     leds = [];
 
     // Add new LEDs in the correct configuration
     for (var y=0; y<led_config.height; y++) {
         // Add a row container
-        var row_container = document.createElement('span');
-        row_container.classList.add('row_container');
-        led_container.appendChild(row_container);
+        var row_container = $('<span></span>')
+            .addClass('row_container')
+            .appendTo(led_container);
 
         var led_row = [];
         for (var x=0; x<led_config.width; x++) {
             // Add an LED
-            var led = document.createElement('span');
-            led.classList.add('led');
-            row_container.appendChild(led);
+            var led = $('<span></span>')
+                .addClass('led')
+                .appendTo(row_container);
+
             led_row.push(led);
         }
         leds.push(led_row);
@@ -110,7 +109,7 @@ function update_display(data) {
     for (var y=0; y<led_config.height; y++) {
         for (var x=0; x<led_config.width; x++) {
             var rgba = get_rgba_xy(x, y, data.bytes);
-            leds[y][x].style.backgroundColor = rgba;
+            leds[y][x].css('backgroundColor', rgba);
         }
     }
 }
@@ -131,15 +130,27 @@ function open_ws() {
     };
 }
 
+function reload_config() {
+    // Load the config from the server and show it
+    console.log('reload_config');
+
+}
+
+function save_config() {
+    // Save the config from UI to the server
+    console.log('save_config');
+}
+
 function bind_handlers() {
-    document.getElementById('reload_config');
-    document.getElementById('save_config');
+    $('#reload_config').click(reload_config);
+    $('#save_config').click(save_config);
 }
 
 function main() {
     console.log('main');
     open_ws();
     bind_handlers();
+    reload_config();
 }
 
-document.addEventListener('DOMContentLoaded', main);
+$(document).ready(main);
