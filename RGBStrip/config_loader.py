@@ -58,7 +58,19 @@ def get_palettes(config):
     }
 
 
-def get_renderers(sections, palettes, config):
+def _resolve_sections(sections_dict, sections):
+    # If sections is a list, lookup each one
+    if hasattr(sections, '__iter__'):
+        return [
+            sections_dict[section]
+            for section in sections
+        ]
+
+    # Otherwise, assume sections is just 1 to lookup
+    return sections_dict[sections]
+
+
+def get_renderers(sections_dict, palettes, config):
     renderers = []
     for renderer in config:
         if renderer['type'] not in RENDERERS:
@@ -68,12 +80,13 @@ def get_renderers(sections, palettes, config):
                     types=RENDERERS.keys()
                 )
             )
-        renderer_class = RENDERERS[renderer['type']]
+        renderer_class = RENDERERS[renderer.pop('type')]
+        sections = _resolve_sections(sections_dict, renderer.pop('sections'))
         renderers.append(
             renderer_class(
-                sections[renderer['sections']],
+                sections,
                 # palettes,
-                **renderer.get('params', {})
+                **renderer
             )
         )
     return renderers
