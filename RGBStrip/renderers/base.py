@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 class BaseRenderer(object):
-    def __init__(self, sections, active=True):
+    def __init__(self, sections, palettes=None, active=True):
         # Allow single sections to be passed in
         if not hasattr(sections, '__iter__'):
             sections = [sections]

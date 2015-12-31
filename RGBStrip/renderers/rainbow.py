@@ -8,15 +8,15 @@ class RainbowRenderer(BaseRenderer):
     def __init__(
             self,
             sections,
+            palettes,
+            palette,
             active=True,
-            train_length=10,
-            max_rgb=127,
             initial_x=0,
             initial_y=0
         ):
-        super(RainbowRenderer, self).__init__(sections, active=active)
+        super(RainbowRenderer, self).__init__(sections, palettes, active=active)
 
-        self.COLOURS = utils.get_rgb_rainbow(train_length, max_rgb=max_rgb)
+        self.PALETTE = palettes[palette]
         self.X = initial_x
         self.Y = initial_y
 
@@ -24,7 +24,7 @@ class RainbowRenderer(BaseRenderer):
         for section in self.SECTIONS:
             # Output the colours
             x, y = self.X, self.Y
-            for i, colour in enumerate(self.COLOURS):
+            for i, colour in enumerate(self.PALETTE):
                 x, y = utils.xy_inc(x, y, self.WIDTH, self.HEIGHT)
                 section.add_led_xy(x, y, *colour, a=1)
 

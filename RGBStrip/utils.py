@@ -72,12 +72,12 @@ def classify_colour(r, g, b, a):
     return COLOURS[col]
 
 
-def fade_in_out(rgb_colours, fade_in_steps, fade_out_steps, fade_on_hold, fade_off_hold):
+def fade_in_out(rgb_colours, fade_steps_in, fade_steps_out, fade_hold_on, fade_hold_off):
     faded_colours = []
     for colour in rgb_colours:
         # Fade in
-        for i in xrange(fade_in_steps):
-            frac = i / float(fade_in_steps)
+        for i in xrange(fade_steps_in):
+            frac = i / float(fade_steps_in)
             faded_colours.append(
                 (
                     colour[0] * frac,
@@ -87,12 +87,12 @@ def fade_in_out(rgb_colours, fade_in_steps, fade_out_steps, fade_on_hold, fade_o
             )
 
         # Fully on
-        for i in xrange(fade_on_hold):
+        for i in xrange(fade_hold_on):
             faded_colours.append(colour)
 
         # Fade out
-        for i in xrange(fade_out_steps, 0, -1):
-            frac = i / float(fade_out_steps)
+        for i in xrange(fade_steps_out, 0, -1):
+            frac = i / float(fade_steps_out)
             faded_colours.append(
                 (
                     colour[0] * frac,
@@ -102,7 +102,7 @@ def fade_in_out(rgb_colours, fade_in_steps, fade_out_steps, fade_on_hold, fade_o
             )
 
         # Fully off
-        for i in xrange(fade_off_hold):
+        for i in xrange(fade_hold_off):
             faded_colours.append([0, 0, 0])
 
     return faded_colours
@@ -115,12 +115,12 @@ def make_palette(
         rainbow_steps=None,
 
         fade_steps=None,
-        fade_in_steps=None,
-        fade_out_steps=None,
+        fade_steps_in=None,
+        fade_steps_out=None,
 
         fade_hold=None,
-        fade_on_hold=None,
-        fade_off_hold=None
+        fade_hold_on=None,
+        fade_hold_off=None
     ):
     """
     Construct a palette from the given parameters
@@ -136,14 +136,14 @@ def make_palette(
         raise Exception('You must provide at least one of colour, colours or rainbow_steps!')
 
     # Resolve fade settings
-    fade_in_steps = fade_in_steps or fade_steps
-    fade_out_steps = fade_out_steps or fade_steps
-    fade_on_hold = fade_on_hold or fade_hold
-    fade_off_hold = fade_off_hold or fade_hold
+    fade_steps_in = fade_steps_in or fade_steps
+    fade_steps_out = fade_steps_out or fade_steps
+    fade_hold_on = fade_hold_on or fade_hold
+    fade_hold_off = fade_hold_off or fade_hold
 
     # Apply fade if required
-    if fade_in_steps:
-        palette = fade_in_out(palette, fade_in_steps, fade_out_steps, fade_on_hold, fade_off_hold)
+    if fade_steps_in:
+        palette = fade_in_out(palette, fade_steps_in, fade_steps_out, fade_hold_on, fade_hold_off)
 
     return palette
 

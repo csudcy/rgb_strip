@@ -10,7 +10,7 @@ class GravityShotRenderer(GravityRenderer):
     def _add_new_shot(self):
         # Add a new shot
         self.SHOTS.append({
-            'colour': random.choice(self.COLOURS),
+            'colour': random.choice(self.PALETTE),
             'speed': random.uniform(self.MIN_SPEED, self.MAX_SPEED),
             'position': 0.0
         })

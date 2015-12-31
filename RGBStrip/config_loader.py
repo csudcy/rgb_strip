@@ -82,7 +82,7 @@ def get_renderers(sections_dict, palettes, config):
         renderers.append(
             renderer_class(
                 sections,
-                # palettes,
+                palettes,
                 **renderer
             )
         )

@@ -10,6 +10,8 @@ class GravityRenderer(BaseRenderer):
     def __init__(
             self,
             sections,
+            palettes,
+            palette=None,
             active=True,
             max_shots=5,
             shot_add_chance=0.07,
@@ -17,7 +19,7 @@ class GravityRenderer(BaseRenderer):
             max_speed=1.0,
             g_speed=None
         ):
-        super(GravityRenderer, self).__init__(sections, active=active)
+        super(GravityRenderer, self).__init__(sections, palettes, active=active)
 
         self.MAX_SHOTS = max_shots
         self.SHOT_ADD_CHANCE = shot_add_chance
@@ -27,7 +29,10 @@ class GravityRenderer(BaseRenderer):
             g_speed = self.MAX_SPEED / (self.WIDTH * 2)
         self.G_SPEED = g_speed
 
-        self.COLOURS = utils.get_rgb_rainbow(10)
+        if palette is None:
+            self.PALETTE = utils.get_rgb_rainbow(10)
+        else:
+            self.PALETTE = palettes[palette]
         self.SHOTS = []
 
     def _simulate_shots(self):
