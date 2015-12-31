@@ -39,16 +39,13 @@ def get_controller(config):
 
 
 def get_sections(controller, config):
-    return dict(
-        (
-            section.pop('id'),
-            SectionController(
-                controller,
-                **section
-            )
+    return {
+        name: SectionController(
+            controller,
+            **params
         )
-        for section in config
-    )
+        for name, params in config.iteritems()
+    }
 
 
 def get_palettes(config):

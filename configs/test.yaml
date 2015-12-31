@@ -5,32 +5,27 @@ controller:
   reverse_y: False
 
 sections:
-  -
-    id: top_left
+  top_left:
     x: 0
     y: 0
     width: 30
     height: 1
-  -
-    id: top_right
+  top_right:
     x: 30
     y: 0
     width: 30
     height: 1
-  -
-    id: bottom
+  bottom:
     x: 0
     y: 1
     width: 60
     height: 1
-  -
-    id: patch1
+  patch1:
     x: 5
     y: 0
     width: 5
     height: 2
-  -
-    id: patch2
+  patch2:
     x: 15
     y: 0
     width: 5
@@ -44,8 +39,7 @@ renderers:
   -
     type: rainbow
     sections: top_right
-    params:
-      train_length: 30
+    train_length: 30
   -
     type: rainbow
     sections: bottom
@@ -54,14 +48,12 @@ renderers:
   -
     type: patch
     sections: patch1
-    params:
-      colours:
-        - [255, 0, 0]
+    colours:
+      - [255, 0, 0]
   -
     type: patch
     sections: patch2
-    params:
-      rainbow_steps: 250
+    rainbow_steps: 250
 
   # Clock
   # -
@@ -77,4 +69,4 @@ renderers:
 
 displays:
   -
-    type: tk
+    type: websocket
