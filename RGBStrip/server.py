@@ -73,10 +73,12 @@ def get_constants():
     """
     import inspect
 
-    from RGBStrip import constants, controller, section
+    from RGBStrip import constants, controller, section, utils
 
-    def get_args(klass, ignore=[]):
-        argspec = inspect.getargspec(klass.__init__)
+    def get_args(klass_or_function, ignore=[]):
+        if inspect.isclass(klass_or_function):
+            klass_or_function = klass_or_function.__init__
+        argspec = inspect.getargspec(klass_or_function)
         args = list(set(argspec.args) - set(ignore))
         args.sort()
         return args
@@ -85,13 +87,14 @@ def get_constants():
         'config': {
             'controller': get_args(controller.RGBStripController, ['self']),
             'section': get_args(section.SectionController, ['self', 'controller']),
+            'palettes': get_args(utils.make_palette),
+            'renderers': {
+                key: get_args(klass, ['self', 'sections', 'palettes'])
+                for key, klass in constants.RENDERERS.iteritems()
+            },
             'displays': {
                 key: get_args(klass, ['self', 'controller'])
                 for key, klass in constants.DISPLAYS.iteritems()
-            },
-            'renderers': {
-                key: get_args(klass, ['self', 'controllers'])
-                for key, klass in constants.RENDERERS.iteritems()
             },
             'general': [
                 'sleep_time'
