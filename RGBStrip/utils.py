@@ -153,7 +153,7 @@ def resolve_colour(colour):
     from RGBStrip import constants
 
     # If this is a COLOUR constant, return that
-    if colour in constants.COLOURS:
+    if isinstance(colour, basestring):
         return constants.COLOURS[colour]
 
     # Otherwise, assume this is an RGB tuple
@@ -165,3 +165,16 @@ def resolve_colours(palette):
         resolve_colour(colour)
         for colour in palette
     ]
+
+
+def resolve_palette(palettes, palette):
+    # This might be a named palette
+    if palette in palettes:
+        return palettes[palette]
+
+    # Or it might be a list of named colours
+    if hasattr(palette, '__iter__'):
+        return resolve_colours(palette)
+
+    # Or it might be a single named colour
+    return [resolve_colour(palette)]

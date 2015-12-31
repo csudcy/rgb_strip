@@ -32,7 +32,7 @@ class GravityRenderer(BaseRenderer):
         if palette is None:
             self.PALETTE = utils.get_rgb_rainbow(10)
         else:
-            self.PALETTE = palettes[palette]
+            self.PALETTE = utils.resolve_palette(palettes, palette)
         self.SHOTS = []
 
     def _simulate_shots(self):

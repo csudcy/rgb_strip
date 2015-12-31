@@ -17,7 +17,7 @@ class PatchRenderer(BaseRenderer):
             start_index=0):
         super(PatchRenderer, self).__init__(sections, palettes, active=active)
 
-        self.PALETTE = palettes[palette]
+        self.PALETTE = utils.resolve_palette(palettes, palette)
         self.A = a
         self.INDEX = start_index % len(self.PALETTE)
         self.STEP_DELAYED = 0
