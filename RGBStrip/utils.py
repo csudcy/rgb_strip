@@ -72,7 +72,7 @@ def classify_colour(r, g, b, a):
     return COLOURS[col]
 
 
-def fade_in_out(rgb_colours, fade_steps, fade_hold):
+def fade_in_out(rgb_colours, fade_steps, fade_on_hold, fade_off_hold):
     step_multipliers = []
     for i in xrange(fade_steps):
         frac = i / float(fade_steps)
@@ -93,8 +93,8 @@ def fade_in_out(rgb_colours, fade_steps, fade_hold):
                 )
             )
 
-        # Full colour
-        for i in xrange(fade_hold):
+        # Fully on
+        for i in xrange(fade_on_hold):
             faded_colours.append(colour)
 
         # Fade out
@@ -107,4 +107,9 @@ def fade_in_out(rgb_colours, fade_steps, fade_hold):
                     colour[2] * frac,
                 )
             )
+
+        # Fully off
+        for i in xrange(fade_off_hold):
+            faded_colours.append([0, 0, 0])
+
     return faded_colours

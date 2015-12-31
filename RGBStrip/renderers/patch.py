@@ -14,6 +14,8 @@ class PatchRenderer(BaseRenderer):
             rainbow_steps=None,
             fade_steps=0,
             fade_hold=0,
+            fade_on_hold=None,
+            fade_off_hold=None,
             delay=1,
             start_index=0):
         super(PatchRenderer, self).__init__(controllers, active=active)
@@ -21,7 +23,9 @@ class PatchRenderer(BaseRenderer):
         if rainbow_steps:
             colours = utils.get_rgb_rainbow(rainbow_steps)
         if fade_steps:
-            colours = utils.fade_in_out(colours, fade_steps, fade_hold)
+            fade_on_hold = fade_on_hold or fade_hold
+            fade_off_hold = fade_off_hold or fade_hold
+            colours = utils.fade_in_out(colours, fade_steps, fade_on_hold, fade_off_hold)
         self.COLOURS = colours
         self.A = a
         self.INDEX = start_index % len(self.COLOURS)

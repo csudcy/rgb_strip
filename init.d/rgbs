@@ -21,8 +21,13 @@ case "$1" in
         echo "Stopping rgbs"
         /home/pi/rgb_strip/init.d/rgbs_stop.sh
         ;;
+    restart)
+        echo "Restarting rgbs"
+        /home/pi/rgb_strip/init.d/rgbs_stop.sh
+        /home/pi/rgb_strip/init.d/rgbs_start.sh
+        ;;
     *)
-        echo "Usage: /etc/init.d/rgbs start|stop"
+        echo "Usage: /etc/init.d/rgbs start|stop|restart"
         exit 1
         ;;
 esac
