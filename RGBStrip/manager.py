@@ -21,8 +21,10 @@ class RGBStripManager(Thread):
     def load_config(self, path=None, yaml_config=None):
         # Load the config & check it's valid
         if yaml_config:
+            print 'Loading config from yaml...'
             config = config_loader.load_config(yaml_config)
         else:
+            print 'Loading config from path ({path})...'.format(path=path)
             self.CONFIG_PATH = path
             config = config_loader.load_config_path(path)
 
