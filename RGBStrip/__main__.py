@@ -3,7 +3,6 @@
 import argparse
 
 from RGBStrip import manager
-from RGBStrip import server
 
 # Parse our args
 parser = argparse.ArgumentParser()
@@ -19,6 +18,9 @@ manager.load_config(args.config)
 
 # If we need a server, start it now
 if args.server:
+    # Import this here so we don't require gevent when not using the server
+    from RGBStrip import server
+
     # Start the server (non-blocking)
     kwargs = {}
     if args.host:

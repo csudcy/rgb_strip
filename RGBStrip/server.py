@@ -129,6 +129,7 @@ def start_server(manager, host='0.0.0.0', port=8080):
         app,
         handler_class=WebSocketHandler
     )
+    print 'NOTE: You must have a websocket display setup for display in browser to work!'
     print 'Starting server on {host}:{port}...'.format(
         host=host,
         port=port
