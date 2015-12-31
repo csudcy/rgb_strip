@@ -13,6 +13,11 @@ To use SPI mode:
 *Note:* It seems like SPI mode cannot be used if any of the pins have been used by GPIO (reboot to fix).
 
 
+To run on startup:
+  * `sudo ln -s /home/pi/rgb_strip/init.d/rgbs /etc/init.d`
+  * `sudo update-rc.d rgbs defaults`
+
+
 TODO:
   * Everything!
   * Make RainbowTrain loop instead of jumping back to x=0 every line
