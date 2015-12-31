@@ -5,6 +5,7 @@ import yaml
 from RGBStrip.constants import DISPLAYS, RENDERERS
 from RGBStrip.controller import RGBStripController
 from RGBStrip.section import SectionController
+from RGBStrip import utils
 
 
 def load_config_path(path):
@@ -18,7 +19,8 @@ def load_config(yaml_config):
     # Make Everything
     controller = get_controller(config['controller'])
     sections = get_sections(controller, config['sections'])
-    renderers = get_renderers(sections, config['renderers'])
+    palettes = get_palettes(config.get('palettes', {}))
+    renderers = get_renderers(sections, palettes, config['renderers'])
     displays = get_displays(controller, config['displays'])
 
     return {
@@ -26,6 +28,7 @@ def load_config(yaml_config):
         'general': config.get('general', {}),
         'controller': controller,
         'sections': sections,
+        'palettes': palettes,
         'renderers': renderers,
         'displays': displays,
     }
@@ -48,7 +51,14 @@ def get_sections(controller, config):
     )
 
 
-def get_renderers(sections, config):
+def get_palettes(config):
+    return {
+        name: utils.make_palette(**params)
+        for name, params in config.iteritems()
+    }
+
+
+def get_renderers(sections, palettes, config):
     renderers = []
     for renderer in config:
         if renderer['type'] not in RENDERERS:

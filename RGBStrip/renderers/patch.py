@@ -25,7 +25,7 @@ class PatchRenderer(BaseRenderer):
         if fade_steps:
             fade_on_hold = fade_on_hold or fade_hold
             fade_off_hold = fade_off_hold or fade_hold
-            colours = utils.fade_in_out(colours, fade_steps, fade_on_hold, fade_off_hold)
+            colours = utils.fade_in_out(colours, fade_steps, fade_steps, fade_on_hold, fade_off_hold)
         self.COLOURS = colours
         self.A = a
         self.INDEX = start_index % len(self.COLOURS)

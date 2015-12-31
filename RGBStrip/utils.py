@@ -72,19 +72,12 @@ def classify_colour(r, g, b, a):
     return COLOURS[col]
 
 
-def fade_in_out(rgb_colours, fade_steps, fade_on_hold, fade_off_hold):
-    step_multipliers = []
-    for i in xrange(fade_steps):
-        frac = i / float(fade_steps)
-        step_multipliers.append(
-            (frac, frac, frac)
-        )
-
+def fade_in_out(rgb_colours, fade_in_steps, fade_out_steps, fade_on_hold, fade_off_hold):
     faded_colours = []
     for colour in rgb_colours:
         # Fade in
-        for i in xrange(fade_steps):
-            frac = i / float(fade_steps)
+        for i in xrange(fade_in_steps):
+            frac = i / float(fade_in_steps)
             faded_colours.append(
                 (
                     colour[0] * frac,
@@ -98,8 +91,8 @@ def fade_in_out(rgb_colours, fade_steps, fade_on_hold, fade_off_hold):
             faded_colours.append(colour)
 
         # Fade out
-        for i in xrange(fade_steps, 0, -1):
-            frac = i / float(fade_steps)
+        for i in xrange(fade_out_steps, 0, -1):
+            frac = i / float(fade_out_steps)
             faded_colours.append(
                 (
                     colour[0] * frac,
@@ -113,3 +106,62 @@ def fade_in_out(rgb_colours, fade_steps, fade_on_hold, fade_off_hold):
             faded_colours.append([0, 0, 0])
 
     return faded_colours
+
+
+def make_palette(
+        # Choose a colour
+        colour=None,
+        colours=None,
+        rainbow_steps=None,
+
+        fade_steps=None,
+        fade_in_steps=None,
+        fade_out_steps=None,
+
+        fade_hold=None,
+        fade_on_hold=None,
+        fade_off_hold=None
+    ):
+    """
+    Construct a palette from the given parameters
+    """
+    # Work out the base colour(s)
+    if colour is not None:
+        palette = [resolve_colour(colour)]
+    elif colours is not None:
+        palette = resolve_colours(colours)
+    elif rainbow_steps is not None:
+        palette = get_rgb_rainbow(rainbow_steps)
+    else:
+        raise Exception('You must provide at least one of colour, colours or rainbow_steps!')
+
+    # Resolve fade settings
+    fade_in_steps = fade_in_steps or fade_steps
+    fade_out_steps = fade_out_steps or fade_steps
+    fade_on_hold = fade_on_hold or fade_hold
+    fade_off_hold = fade_off_hold or fade_hold
+
+    # Apply fade if required
+    if fade_in_steps:
+        palette = fade_in_out(palette, fade_in_steps, fade_out_steps, fade_on_hold, fade_off_hold)
+
+    return palette
+
+
+def resolve_colour(colour):
+    # Avoid circular imports
+    from RGBStrip import constants
+
+    # If this is a COLOUR constant, return that
+    if colour in constants.COLOURS:
+        return constants.COLOURS[colour]
+
+    # Otherwise, assume this is an RGB tuple
+    return colour
+
+
+def resolve_colours(palette):
+    return [
+        resolve_colour(colour)
+        for colour in palette
+    ]
