@@ -2,23 +2,23 @@
 # -*- coding: utf8 -*-
 
 class BaseRenderer(object):
-    def __init__(self, controllers, active=True):
-        # Allow single controllers to be passed in
-        if not hasattr(controllers, '__iter__'):
-            controllers = [controllers]
+    def __init__(self, sections, active=True):
+        # Allow single sections to be passed in
+        if not hasattr(sections, '__iter__'):
+            sections = [sections]
 
-        # Check we have some controllers
-        if not controllers:
-            raise Exception('To initialise a renderer, you must pass in at least 1 controller!')
+        # Check we have some sections
+        if not sections:
+            raise Exception('To initialise a renderer, you must pass in at least 1 section!')
 
-        # Check all controllers have the same dimensions
-        self.WIDTH = controllers[0].WIDTH
-        self.HEIGHT = controllers[0].HEIGHT
-        for controller in controllers[1:]:
-            if self.WIDTH != controller.WIDTH or self.HEIGHT != controller.HEIGHT:
-                raise Exception('All controllers assigned to a single renderer must have the same dimensions!')
+        # Check all sections have the same dimensions
+        self.WIDTH = sections[0].WIDTH
+        self.HEIGHT = sections[0].HEIGHT
+        for section in sections[1:]:
+            if self.WIDTH != section.WIDTH or self.HEIGHT != section.HEIGHT:
+                raise Exception('All sections assigned to a single renderer must have the same dimensions!')
 
-        self.CONTROLLERS = controllers
+        self.SECTIONS = sections
         self.ACTIVE = active
 
     def render(self):

@@ -71,7 +71,8 @@ def get_renderers(sections, palettes, config):
         renderer_class = RENDERERS[renderer['type']]
         renderers.append(
             renderer_class(
-                sections[renderer['section']],
+                sections[renderer['sections']],
+                # palettes,
                 **renderer.get('params', {})
             )
         )

@@ -40,38 +40,38 @@ renderers:
   # Rainbows
   -
     type: rainbow
-    section: top_left
+    sections: top_left
   -
     type: rainbow
-    section: top_right
+    sections: top_right
     params:
       train_length: 30
   -
     type: rainbow
-    section: bottom
+    sections: bottom
 
   # Patches
   -
     type: patch
-    section: patch1
+    sections: patch1
     params:
       colours:
         - [255, 0, 0]
   -
     type: patch
-    section: patch2
+    sections: patch2
     params:
       rainbow_steps: 250
 
   # Clock
   # -
   #   type: clock
-  #   section: bottom
+  #   sections: bottom
 
   # Gravity shots
   # -
   #   type: gravity_shot
-  #   section: bottom
+  #   sections: bottom
 
   # Gravity Drips
 

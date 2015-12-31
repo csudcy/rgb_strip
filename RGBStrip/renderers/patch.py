@@ -7,7 +7,7 @@ from RGBStrip import utils
 class PatchRenderer(BaseRenderer):
     def __init__(
             self,
-            controllers,
+            sections,
             active=True,
             colours=((255, 0, 0), ),
             a=1,
@@ -18,7 +18,7 @@ class PatchRenderer(BaseRenderer):
             fade_off_hold=None,
             delay=1,
             start_index=0):
-        super(PatchRenderer, self).__init__(controllers, active=active)
+        super(PatchRenderer, self).__init__(sections, active=active)
 
         if rainbow_steps:
             colours = utils.get_rgb_rainbow(rainbow_steps)
@@ -34,10 +34,10 @@ class PatchRenderer(BaseRenderer):
 
     def do_render(self):
         rgb_colour = self.COLOURS[self.INDEX]
-        for controller in self.CONTROLLERS:
+        for section in self.SECTIONS:
             for x in xrange(self.WIDTH):
                 for y in xrange(self.HEIGHT):
-                    controller.add_led_xy(x, y, *rgb_colour, a=self.A)
+                    section.add_led_xy(x, y, *rgb_colour, a=self.A)
         self.STEP_DELAYED += 1
         if self.STEP_DELAYED >= self.STEP_DELAY:
             # We have stayed on this step for STEP_DELAY frames; move to the next step

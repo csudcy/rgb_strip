@@ -9,7 +9,7 @@ from RGBStrip.renderers.base import BaseRenderer
 class GravityRenderer(BaseRenderer):
     def __init__(
             self,
-            controllers,
+            sections,
             active=True,
             max_shots=5,
             shot_add_chance=0.07,
@@ -17,7 +17,7 @@ class GravityRenderer(BaseRenderer):
             max_speed=1.0,
             g_speed=None
         ):
-        super(GravityRenderer, self).__init__(controllers, active=active)
+        super(GravityRenderer, self).__init__(sections, active=active)
 
         self.MAX_SHOTS = max_shots
         self.SHOT_ADD_CHANCE = shot_add_chance
@@ -52,9 +52,9 @@ class GravityRenderer(BaseRenderer):
 
     def _render_shots(self):
         # Show all the shots
-        for controller in self.CONTROLLERS:
+        for section in self.SECTIONS:
             for shot in self.SHOTS:
-                controller.add_led_xy(
+                section.add_led_xy(
                     int(shot['position']),
                     1,
                     *shot['colour'],
