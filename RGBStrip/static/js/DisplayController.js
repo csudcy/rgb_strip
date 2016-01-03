@@ -1,4 +1,3 @@
-/*global angular*/
 angular.module('rgbs', ['ngWebsocket'])
     .controller('DisplayController', function($scope, $websocket) {
         // Have to store everything on $scope as display.$apply() trigger some ws stuff

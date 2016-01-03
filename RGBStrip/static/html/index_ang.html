@@ -7,11 +7,10 @@
         <script type="text/javascript" src="/static/js/angular.min.js"></script>
         <script type="text/javascript" src="/static/js/ng-websocket.js"></script>
         <link rel="stylesheet" href="/static/css/main_ang.css">
-        <script type="text/javascript" src="/static/js/index_ang.js"></script>
+        <script type="text/javascript" src="/static/js/DisplayController.js"></script>
     </head>
     <body>
         <div ng-controller="DisplayController as display" id="led_container">
-            Config: {{width}} x {{height}}<br/>
             <span ng-repeat="row in leds" class="row_container">
                 <span ng-repeat="led in row" class="led" style="background-color: {{led.colour}}">
                 </span>
