@@ -1,5 +1,5 @@
-angular.module('rgbs', ['ngWebsocket'])
-    .controller('DisplayController', function($scope, $websocket) {
+angular.module('rgbs')
+    .controller('DisplayController', ['$scope', '$websocket', function($scope, $websocket) {
         // Have to store everything on $scope as display.$apply() trigger some ws stuff
         $scope.width = 0;
         $scope.height = 0;
@@ -124,5 +124,4 @@ angular.module('rgbs', ['ngWebsocket'])
         ws.$on('$close', function () {
             console.log('WebSocket close');
         });
-
-    });
+    }]);

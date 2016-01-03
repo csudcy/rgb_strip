@@ -16,3 +16,33 @@
     height: 10px;
     border-radius: 10px;
 }
+
+#config input[type=number] {
+    width: 50px;
+}
+.config_section {
+    border-top: 1px solid black;
+    margin-top: 5px;
+    padding-top: 5px;;
+}
+.config_heading {
+    font-weight: bold;
+    font-size: 16px;
+}
+.config_item, .config_subsection {
+    border: 1px solid grey;
+    margin: 2px;
+    padding: 2px;
+    display: inline-block;
+}
+.config_subsection button {
+    float: right;
+}
+.config_subheading {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.highlight {
+    font-weight: bold;
+}

@@ -4,10 +4,19 @@
         <title>
             RGBStrip Angular Server
         </title>
-        <script type="text/javascript" src="/static/js/angular.min.js"></script>
-        <script type="text/javascript" src="/static/js/ng-websocket.js"></script>
-        <link rel="stylesheet" href="/static/css/main_ang.css">
+
+        <script type="text/javascript" src="/static/js/lib/js-yaml.js"></script>
+        <script type="text/javascript" src="/static/js/lib/angular.min.js"></script>
+        <script type="text/javascript" src="/static/js/lib/angular-sanitize.js"></script>
+        <script type="text/javascript" src="/static/js/lib/ng-websocket.js"></script>
+        <script type="text/javascript" src="/static/js/lib/select.js"></script>
+        <link rel="stylesheet" href="/static/css/lib/select.css">
+        <link rel="stylesheet" href="/static/css/lib/select2.css">
+
+        <script type="text/javascript" src="/static/js/app.js"></script>
+        <script type="text/javascript" src="/static/js/ConfigController.js"></script>
         <script type="text/javascript" src="/static/js/DisplayController.js"></script>
+        <link rel="stylesheet" href="/static/css/main_ang.css">
     </head>
     <body>
         <div ng-controller="DisplayController as display" id="led_container">
@@ -15,6 +24,115 @@
                 <span ng-repeat="led in row" class="led" style="background-color: {{led.colour}}">
                 </span>
             </span>
+        </div>
+
+        <div ng-controller="ConfigController as config" id="config">
+            <div class="config_section">
+                <span class="config_heading">Controller</span>
+                <label>
+                    Width:
+                    <input ng-model="config.controller.width" type="number"/>
+                </label>
+                <label>
+                    Height:
+                    <input ng-model="config.controller.height" type="number"/>
+                </label>
+                <label>
+                    Reverse X:
+                    <input ng-model="config.controller.reverse_x" type="checkbox"/>
+                </label>
+                <label>
+                    Reverse Y:
+                    <input ng-model="config.controller.reverse_y" type="checkbox"/>
+                </label>
+            </div>
+
+            <div class="config_section">
+                <span class="config_heading">Palettes</span>
+
+                <button ng-click="config_add('palettes')">
+                    Add
+                </button>
+
+                <div class="config_items">
+                    <div class="config_item" ng-repeat="params in config.palettes">
+                        <span class="config_subsection">
+                            <button ng-click="config_remove('palettes', $index)">
+                                Remove
+                            </button>
+
+                            <label>
+                                ID:
+                                <input ng-model="params.id" type="text"/>
+                            </label><br/>
+                            <br/>
+
+                            <span class="config_subheading">Colour</span><br/>
+                            <label>
+                                Colour:
+                                <ui-select ng-model="params.colour" theme="select2" style="min-width: 300px;">
+                                    <ui-select-match placeholder="Select a colour" allow-clear="true">{{$select.selected}}</ui-select-match>
+                                    <ui-select-choices repeat="colour in colours | filter: $select.search">
+                                        <div ng-bind-html="colour | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </label><br/>
+                            <!--
+                            TODO: Make list of colours work
+                            <label>
+                                Colours:
+                                <input ng-model="params.colours" type="text"/>
+                            </label><br/>
+                            -->
+                            <label>
+                                Rainbow Steps:
+                                <input ng-model="params.rainbow_steps" type="number"/>
+                            </label><br/>
+                        </span>
+
+                        <span class="config_subsection">
+                            <span class="config_subheading">Fade</span><br/>
+                            <label>
+                                Fade Steps In:
+                                <input ng-model="params.fade_steps_in" type="number"/>
+                            </label><br/>
+                            <label>
+                                Fade Steps Out:
+                                <input ng-model="params.fade_steps_out" type="number"/>
+                            </label><br/>
+                            <label>
+                                Fade Hold On:
+                                <input ng-model="params.fade_hold_on" type="number"/>
+                            </label><br/>
+                            <label>
+                                Fade Hold Off:
+                                <input ng-model="params.fade_hold_off" type="number"/>
+                            </label><br/>
+                        </span>
+                    </div>
+                </div>
+
+                <!--
+                fade_hold
+                fade_steps
+                -->
+            </div>
+
+            <div class="config_section">
+                <span class="config_heading">Sections</span>
+            </div>
+
+            <div class="config_section">
+                <span class="config_heading">Renderers</span>
+            </div>
+
+            <div class="config_section">
+                <span class="config_heading">Displays</span>
+            </div>
+
+            <div class="config_section">
+                <span class="config_heading">General</span>
+            </div>
         </div>
   </body>
 </html>
