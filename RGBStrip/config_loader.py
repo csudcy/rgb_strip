@@ -39,20 +39,22 @@ def get_controller(config):
 
 
 def get_sections(controller, config):
-    return {
-        name: SectionController(
+    sections = {}
+    for params in config:
+        id = params.pop('id')
+        sections[id] = SectionController(
             controller,
             **params
         )
-        for name, params in config.iteritems()
-    }
+    return sections
 
 
 def get_palettes(config):
-    return {
-        name: utils.make_palette(**params)
-        for name, params in config.iteritems()
-    }
+    palettes = {}
+    for params in config:
+        id = params.pop('id')
+        palettes[id] = utils.make_palette(**params)
+    return palettes
 
 
 def _resolve_sections(sections_dict, sections):

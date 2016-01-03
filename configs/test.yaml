@@ -5,54 +5,66 @@ controller:
   reverse_y: False
 
 sections:
-  top_left:
+  -
+    id: top_left
     x: 0
     y: 0
     width: 30
     height: 1
-  top_right:
+  -
+    id: top_right
     x: 30
     y: 0
     width: 30
     height: 1
-  bottom:
+  -
+    id: bottom
     x: 0
     y: 1
     width: 60
     height: 1
-  patch1:
+  -
+    id: patch1
     x: 5
     y: 0
     width: 5
     height: 2
-  patch2:
+  -
+    id: patch2
     x: 15
     y: 0
     width: 5
     height: 2
 
 palettes:
-  red_fade:
+  -
+    id: red_fade
     colour: red
     fade_steps: 10
     fade_hold: 10
-  rgb:
+  -
+    id: rgb
     colours: [red, green, blue]
-  rgb_fade:
+  -
+    id: rgb_fade
     colours: [red, green, blue]
     fade_steps: 10
     fade_hold: 10
-  rainbow_fade:
+  -
+    id: rainbow_fade
     rainbow_steps: 10
     fade_steps: 10
     fade_hold_on: 20
     fade_hold_off: 10
 
-  rainbow_10:
+  -
+    id: rainbow_10
     rainbow_steps: 10
-  rainbow_30:
+  -
+    id: rainbow_30
     rainbow_steps: 30
-  rainbow_250:
+  -
+    id: rainbow_250
     rainbow_steps: 250
 
 renderers:
