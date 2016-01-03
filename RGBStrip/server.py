@@ -35,6 +35,11 @@ def get_index():
     return render_template('index')
 
 
+@app.get('/ang')
+def get_index_ang():
+    return bottle.static_file('index_ang.html', root=HTML_DIRECTORY)
+
+
 @app.get('/static/<filepath:path>')
 def get_static(filepath):
     return bottle.static_file(filepath, root=STATIC_DIRECTORY)
