@@ -40,20 +40,25 @@ palettes:
   -
     id: red_fade
     colour: red
-    fade_steps: 10
-    fade_hold: 10
+    fade_steps_in: 10
+    fade_steps_out: 10
+    fade_hold_on: 10
+    fade_hold_off: 10
   -
     id: rgb
     colours: [red, green, blue]
   -
     id: rgb_fade
     colours: [red, green, blue]
-    fade_steps: 10
-    fade_hold: 10
+    fade_steps_in: 10
+    fade_steps_out: 10
+    fade_hold_on: 10
+    fade_hold_off: 10
   -
     id: rainbow_fade
     rainbow_steps: 10
-    fade_steps: 10
+    fade_steps_in: 10
+    fade_steps_out: 10
     fade_hold_on: 20
     fade_hold_off: 10
 

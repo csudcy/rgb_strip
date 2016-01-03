@@ -114,11 +114,9 @@ def make_palette(
         colours=None,
         rainbow_steps=None,
 
-        fade_steps=None,
         fade_steps_in=None,
         fade_steps_out=None,
 
-        fade_hold=None,
         fade_hold_on=None,
         fade_hold_off=None
     ):
@@ -134,12 +132,6 @@ def make_palette(
         palette = get_rgb_rainbow(rainbow_steps)
     else:
         raise Exception('You must provide at least one of colour, colours or rainbow_steps!')
-
-    # Resolve fade settings
-    fade_steps_in = fade_steps_in or fade_steps
-    fade_steps_out = fade_steps_out or fade_steps
-    fade_hold_on = fade_hold_on or fade_hold
-    fade_hold_off = fade_hold_off or fade_hold
 
     # Apply fade if required
     if fade_steps_in:
