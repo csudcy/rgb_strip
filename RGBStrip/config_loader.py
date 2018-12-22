@@ -81,10 +81,13 @@ def get_renderers(sections_dict, palettes, config):
             )
         renderer_class = RENDERERS[renderer.pop('type')]
         sections = _resolve_sections(sections_dict, renderer.pop('sections'))
+        palette = renderer.pop('palette', None)
+        if palette:
+            palette = utils.resolve_palette(palettes, palette)
         renderers.append(
             renderer_class(
                 sections,
-                palettes,
+                palette,
                 **renderer
             )
         )

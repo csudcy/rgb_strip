@@ -2,13 +2,17 @@
 # -*- coding: utf8 -*-
 from datetime import datetime
 
-from .base import BaseRenderer
+from RGBStrip import utils
+from RGBStrip.renderers.base import BaseRenderer
 
 
 class ClockRenderer(BaseRenderer):
+
+    DEFAULT_PALETTE = utils.get_rgb_rainbow(3)
+
     def do_render(self):
         now = datetime.now()
         for section in self.SECTIONS:
-            section.add_led_xy(now.hour, 0, r=255, a=1)
-            section.add_led_xy(now.minute, 0, g=255, a=1)
-            section.add_led_xy(now.second, 0, b=255, a=1)
+            section.add_led_xy(now.hour, 0, *self.PALETTE[0])
+            section.add_led_xy(now.minute, 0, *self.PALETTE[1])
+            section.add_led_xy(now.second, 0, *self.PALETTE[2])

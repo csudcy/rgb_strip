@@ -8,15 +8,13 @@ class RainbowRenderer(BaseRenderer):
     def __init__(
             self,
             sections,
-            palettes,
             palette,
             active=True,
             initial_x=0,
             initial_y=0
         ):
-        super(RainbowRenderer, self).__init__(sections, palettes, active=active)
+        super(RainbowRenderer, self).__init__(sections, palette, active=active)
 
-        self.PALETTE = utils.resolve_palette(palettes, palette)
         self.X = initial_x
         self.Y = initial_y
 

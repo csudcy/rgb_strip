@@ -2,7 +2,10 @@
 # -*- coding: utf8 -*-
 
 class BaseRenderer(object):
-    def __init__(self, sections, palettes=None, active=True):
+
+    DEFAULT_PALETTE = None
+
+    def __init__(self, sections, palette, active=True):
         # Allow single sections to be passed in
         if not hasattr(sections, '__iter__'):
             sections = [sections]
@@ -19,6 +22,12 @@ class BaseRenderer(object):
                 raise Exception('All sections assigned to a single renderer must have the same dimensions!')
 
         self.SECTIONS = sections
+
+        palette = palette or self.DEFAULT_PALETTE
+        if not palette:
+            raise Exception('You must provide a palette for %s!' % self.__class__.__name__)
+        self.PALETTE = palette
+
         self.ACTIVE = active
 
     def render(self):

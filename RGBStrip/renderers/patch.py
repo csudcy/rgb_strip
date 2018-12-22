@@ -8,16 +8,14 @@ class PatchRenderer(BaseRenderer):
     def __init__(
             self,
             sections,
-            palettes,
             palette,
             active=True,
             a=1,
             # TODO: remove delay?
             delay=1,
             start_index=0):
-        super(PatchRenderer, self).__init__(sections, palettes, active=active)
+        super(PatchRenderer, self).__init__(sections, palette, active=active)
 
-        self.PALETTE = utils.resolve_palette(palettes, palette)
         self.A = a
         self.INDEX = start_index % len(self.PALETTE)
         self.STEP_DELAYED = 0

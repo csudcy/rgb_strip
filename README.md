@@ -13,6 +13,11 @@ To use SPI mode:
 *Note:* It seems like SPI mode cannot be used if any of the pins have been used by GPIO (reboot to fix).
 
 
+To run:
+* Make a config
+* Run `python -m RGBStrip --server ./configs/test.yaml`
+
+
 To run on startup:
   * `sudo ln -s /home/pi/rgb_strip/init.d/rgbs /etc/init.d`
   * `sudo update-rc.d rgbs defaults`
