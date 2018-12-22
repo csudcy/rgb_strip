@@ -12,7 +12,7 @@ class GravityRenderer(BaseRenderer):
 
     def __init__(
             self,
-            sections,
+            section,
             palette,
             active=True,
             max_shots=5,
@@ -21,14 +21,14 @@ class GravityRenderer(BaseRenderer):
             max_speed=1.0,
             g_speed=None
         ):
-        super(GravityRenderer, self).__init__(sections, palette, active=active)
+        super(GravityRenderer, self).__init__(section, palette, active=active)
 
         self.MAX_SHOTS = max_shots
         self.SHOT_ADD_CHANCE = shot_add_chance
         self.MIN_SPEED = min_speed
         self.MAX_SPEED = max_speed
         if g_speed is None:
-            g_speed = self.MAX_SPEED / (self.WIDTH * 2)
+            g_speed = self.MAX_SPEED / (self.SECTION.WIDTH * 2)
         self.G_SPEED = g_speed
 
         self.SHOTS = []
@@ -55,14 +55,13 @@ class GravityRenderer(BaseRenderer):
 
     def _render_shots(self):
         # Show all the shots
-        for section in self.SECTIONS:
-            for shot in self.SHOTS:
-                section.add_led(
-                    int(shot['position']),
-                    1,
-                    *shot['colour'],
-                    a=1
-                )
+        for shot in self.SHOTS:
+            self.SECTION.add_led(
+                int(shot['position']),
+                1,
+                *shot['colour'],
+                a=1
+            )
 
     def do_render(self):
         self._simulate_shots()

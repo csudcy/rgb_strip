@@ -82,41 +82,41 @@ renderers:
   # Rainbows
   -
     type: rainbow
-    sections: top_left
+    section: top_left
     palette: rainbow_10
   -
     type: rainbow
-    sections: top_right
+    section: top_right
     palette: rainbow_30
   -
     type: rainbow
-    sections: bottom
+    section: bottom
     palette: rainbow_10
 
   # Patches
   -
     type: patch
-    sections: patch1
+    section: patch1
     palette: red
   -
     type: patch
-    sections: patch2
+    section: patch2
     palette: rainbow_250
 
   # Clock
   -
     type: clock
-    sections: bottom
+    section: bottom
 
   # Gravity shots
   -
     type: gravity_shot
-    sections: bottom
+    section: bottom
 
   # Gravity Drips
   -
     type: gravity_drip
-    sections: bottom
+    section: bottom
 
 displays:
   -

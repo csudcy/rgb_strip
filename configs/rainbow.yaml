@@ -20,7 +20,6 @@ sections:
     y: 1
     width: 60
     height: 1
-    reverse_x: True
 
 palettes:
   -
@@ -30,11 +29,11 @@ palettes:
 renderers:
   -
     type: rainbow
-    sections: top
+    section: top
     palette: rainbow_60
   -
     type: rainbow
-    sections: bottom
+    section: bottom
     palette: rainbow_60
 
 displays:

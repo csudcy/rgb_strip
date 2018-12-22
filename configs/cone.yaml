@@ -26,22 +26,22 @@ renderers:
   # Cone
   -
     type: cone_spin
-    sections: cone
+    section: cone
     palette: rainbow_40
-    degrees_per_step: 2
+    degrees_per_step: -2
   # -
   #   type: cone_spin_full
-  #   sections: cone
+  #   section: cone
   #   palette: rainbow_40
   #   degrees_per_step: 2
   # -
   #   type: cone_level
-  #   sections: cone
+  #   section: cone
   #   palette: rainbow_6
   #   seconds_per_level: 0.3
   # -
   #   type: cone_spiral
-  #   sections: cone
+  #   section: cone
   #   palette: rainbow_6
   #   seconds_per_level: 0.3
 

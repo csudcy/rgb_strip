@@ -12,5 +12,5 @@ class GravityDripRenderer(GravityRenderer):
         self.SHOTS.append({
             'colour': random.choice(self.PALETTE),
             'speed': -random.uniform(0, self.MIN_SPEED),
-            'position': self.WIDTH-1
+            'position': self.SECTION.WIDTH-1
         })

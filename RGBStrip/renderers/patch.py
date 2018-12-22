@@ -7,14 +7,14 @@ from RGBStrip import utils
 class PatchRenderer(BaseRenderer):
     def __init__(
             self,
-            sections,
+            section,
             palette,
             active=True,
             a=1,
             # TODO: remove delay?
             delay=1,
             start_index=0):
-        super(PatchRenderer, self).__init__(sections, palette, active=active)
+        super(PatchRenderer, self).__init__(section, palette, active=active)
 
         self.A = a
         self.INDEX = start_index % len(self.PALETTE)
@@ -23,10 +23,9 @@ class PatchRenderer(BaseRenderer):
 
     def do_render(self):
         rgb_colour = self.PALETTE[self.INDEX]
-        for section in self.SECTIONS:
-            for x in xrange(self.WIDTH):
-                for y in xrange(self.HEIGHT):
-                    section.add_led(x, y, *rgb_colour, a=self.A)
+        for x in xrange(self.SECTION.WIDTH):
+            for y in xrange(self.SECTION.HEIGHT):
+                self.SECTION.add_led(x, y, *rgb_colour, a=self.A)
         self.STEP_DELAYED += 1
         if self.STEP_DELAYED >= self.STEP_DELAY:
             # We have stayed on this step for STEP_DELAY frames; move to the next step
