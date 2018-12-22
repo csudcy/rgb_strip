@@ -7,6 +7,7 @@ from RGBStrip.displays.tk import TkDisplay
 from RGBStrip.displays.websocket import WebSocketDisplay
 
 from RGBStrip.renderers.clock import ClockRenderer
+from RGBStrip.renderers.cone_spin import ConeSpinRenderer
 from RGBStrip.renderers.gravity_drip import GravityDripRenderer
 from RGBStrip.renderers.gravity_shot import GravityShotRenderer
 from RGBStrip.renderers.patch import PatchRenderer
@@ -41,6 +42,7 @@ DISPLAYS = {
 
 RENDERERS = {
     'clock': ClockRenderer,
+    'cone_spin': ConeSpinRenderer,
     'gravity_drip': GravityDripRenderer,
     'gravity_shot': GravityShotRenderer,
     'patch': PatchRenderer,

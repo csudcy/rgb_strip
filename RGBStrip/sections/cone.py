@@ -15,6 +15,9 @@ class ConeSection(object):
         self.ACTIVE = active
         self.REVERSE_ANGLE = reverse_angle
 
+        # Copy here for easy access
+        self.LEVELS = controller.LEVELS
+
     def add_led(self, angle, level, *args, **kwargs):
         if self.ACTIVE:
             aa, al = self._get_absolute_al(angle, level)
