@@ -2,8 +2,7 @@
 
 let LED_CONFIG = {};
 let LEDS;
-const LED_WIDTH = 12;
-const LED_HEIGHT = 12;
+const LED_WH = 12;
 
 function get_ws_url() {
     let host = window.location.hostname,
@@ -41,6 +40,8 @@ function apply_config(new_config) {
     let layout;
     if (LED_CONFIG.type == 'rectangle') {
         layout = _get_leds_rectangle(LED_CONFIG);
+    } else if (LED_CONFIG.type == 'cone') {
+        layout = _get_leds_cone(LED_CONFIG);
     } else {
         alert('Unknown controller type: '+LED_CONFIG.type)
     }
@@ -57,25 +58,54 @@ function apply_config(new_config) {
 }
 
 function _get_leds_rectangle(LED_CONFIG) {
-    // Add new LEDs in the correct configuration
     let leds = [];
     for (let y=0; y<LED_CONFIG.height; y++) {
         for (let x=0; x<LED_CONFIG.width; x++) {
-            // Add an LED
-            leds.push(
-                $('<span></span>')
-                    .addClass('led')
-                    .css({
-                        top: y * LED_HEIGHT,
-                        left: x * LED_WIDTH,
-                    }));
+            leds.push(_make_led(y * LED_WH, x * LED_WH));
         }
     }
     return {
         leds: leds,
-        width: LED_CONFIG.width * LED_WIDTH,
-        height: LED_CONFIG.height * LED_HEIGHT,
+        width: LED_CONFIG.width * LED_WH,
+        height: LED_CONFIG.height * LED_WH,
     };
+}
+
+function _get_leds_cone(LED_CONFIG) {
+    console.log(LED_CONFIG);
+
+    if (LED_CONFIG.levels[0] !== 1) {
+        alert('First level must have 1 LED!');
+        return;
+    }
+
+    const level_offset = 2*LED_WH;
+    const centre_xy = level_offset * LED_CONFIG.levels.length;
+
+    let leds = [];
+    LED_CONFIG.levels.forEach(function(level_count, level_index) {
+        const level_radius = level_index * level_offset;
+        for (let led_index=0; led_index<level_count; led_index++) {
+            const angle = 2 * Math.PI * led_index / level_count;
+            const offset_x = Math.sin(angle) * level_radius;
+            const offset_y = Math.cos(angle) * level_radius;
+            leds.push(_make_led(centre_xy + offset_y, centre_xy + offset_x));
+        }
+    });
+    return {
+        leds: leds,
+        width: centre_xy*2,
+        height: centre_xy*2,
+    };
+}
+
+function _make_led(top, left) {
+    return $('<span></span>')
+        .addClass('led')
+        .css({
+            top: top,
+            left: left,
+        });
 }
 
 function _get_offset(index) {
