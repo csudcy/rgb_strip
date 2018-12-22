@@ -19,7 +19,13 @@ class RectangularController(BaseController):
         self.HEIGHT = height
         self.REVERSE_X = reverse_x
         self.REVERSE_Y = reverse_y
-        BaseController.__init__(self, width*height)
+        config = {
+            'width': width,
+            'height': height,
+            'reverse_x': reverse_x,
+            'reverse_y': reverse_y
+        }
+        BaseController.__init__(self, config, width*height)
 
     def _get_index(self, x, y):
         if self.REVERSE_X:

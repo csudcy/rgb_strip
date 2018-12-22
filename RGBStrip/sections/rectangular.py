@@ -3,7 +3,7 @@
 
 class RectangularSection(object):
     """
-    Allow a section of and RGBStrip to be controlled
+    Allow a rectangular section of an RGBStrip to be controlled.
     """
     def __init__(
             self,

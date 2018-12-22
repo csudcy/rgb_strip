@@ -8,7 +8,8 @@ class BaseController(object):
     An interface to control a strip of RGB LEDs.
     """
 
-    def __init__(self, led_count):
+    def __init__(self, config, led_count):
+        self.CONFIG = config
         self.LED_COUNT = led_count
 
         # Work out some byte counts

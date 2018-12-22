@@ -1,3 +1,4 @@
+from RGBStrip.controllers.cone import ConeController
 from RGBStrip.controllers.rectangular import RectangularController
 
 from RGBStrip.displays.cursesd import CursesDisplay
@@ -11,6 +12,7 @@ from RGBStrip.renderers.gravity_shot import GravityShotRenderer
 from RGBStrip.renderers.patch import PatchRenderer
 from RGBStrip.renderers.rainbow import RainbowRenderer
 
+from RGBStrip.sections.cone import ConeSection
 from RGBStrip.sections.rectangular import RectangularSection
 
 
@@ -26,6 +28,7 @@ COLOURS = {
 }
 
 CONTROLLERS = {
+    'cone': ConeController,
     'rectangular': RectangularController,
 }
 
@@ -45,5 +48,6 @@ RENDERERS = {
 }
 
 SECTIONS = {
+    'cone': ConeSection,
     'rectangular': RectangularSection,
 }

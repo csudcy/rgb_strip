@@ -39,7 +39,7 @@ def get_controller(config):
 
 def get_sections(controller, config):
     sections = {}
-    for params in config:
+    for params in config or []:
         id = params.pop('id')
         type = params.pop('type')
         sections[id] = SECTIONS[type](
@@ -51,7 +51,7 @@ def get_sections(controller, config):
 
 def get_palettes(config):
     palettes = {}
-    for params in config:
+    for params in config or []:
         id = params.pop('id')
         palettes[id] = utils.make_palette(**params)
     return palettes
@@ -71,7 +71,7 @@ def _resolve_sections(sections_dict, sections):
 
 def get_renderers(sections_dict, palettes, config):
     renderers = []
-    for renderer in config:
+    for renderer in config or []:
         if renderer['type'] not in RENDERERS:
             raise Exception(
                 'Unknown renderer "{type}"; valid options are: {types}'.format(

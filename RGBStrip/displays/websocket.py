@@ -14,12 +14,7 @@ class WebSocketDisplay(BaseDisplay):
     # TODO: Error if multiple WebSocketDisplay's are instantiated?
     def display(self):
         data = json.dumps({
-            'config': {
-                'width': self.CONTROLLER.WIDTH,
-                'height': self.CONTROLLER.HEIGHT,
-                'reverse_x': self.CONTROLLER.REVERSE_X,
-                'reverse_y': self.CONTROLLER.REVERSE_Y
-            },
+            'config': self.CONTROLLER.CONFIG,
             'bytes': self.CONTROLLER.BYTES
         })
         for ws in WEBSOCKETS:
