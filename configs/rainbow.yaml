@@ -1,0 +1,42 @@
+controller:
+  type: rectangular
+  width: 60
+  height: 2
+  reverse_x: True
+  reverse_y: False
+
+sections:
+  -
+    id: top
+    type: rectangular
+    x: 0
+    y: 0
+    width: 60
+    height: 1
+  -
+    id: bottom
+    type: rectangular
+    x: 0
+    y: 1
+    width: 60
+    height: 1
+    reverse_x: True
+
+palettes:
+  -
+    id: rainbow_60
+    rainbow_steps: 60
+
+renderers:
+  -
+    type: rainbow
+    sections: top
+    palette: rainbow_60
+  -
+    type: rainbow
+    sections: bottom
+    palette: rainbow_60
+
+displays:
+  -
+    type: websocket
