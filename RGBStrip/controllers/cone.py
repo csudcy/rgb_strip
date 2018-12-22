@@ -24,7 +24,8 @@ class ConeController(BaseController):
         ]
         config = {
             'levels': levels,
-            'reverse': reverse
+            'reverse': reverse,
+            'type': 'cone',
         }
         BaseController.__init__(self, config, sum(levels))
 

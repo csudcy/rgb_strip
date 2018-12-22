@@ -1,5 +1,12 @@
+"use strict";
+
+let LED_CONFIG = {};
+let LEDS;
+const LED_WIDTH = 12;
+const LED_HEIGHT = 12;
+
 function get_ws_url() {
-    var host = window.location.hostname,
+    let host = window.location.hostname,
         port = window.location.port,
         ws_url = '';
     if (window.location.protocol == 'https:') {
@@ -18,62 +25,65 @@ function get_ws_url() {
 
 function config_has_changed(old_config, new_config) {
     return (
+        old_config.type !== new_config.type
+        ||
         old_config.width !== new_config.width
         ||
         old_config.height !== new_config.height
-        ||
-        old_config.reverse_x !== new_config.reverse_x
-        ||
-        old_config.reverse_y !== new_config.reverse_y
     );
 }
 
 function apply_config(new_config) {
-    console.log('Applying new config!', led_config, new_config);
-    led_config = new_config;
+    console.log('Applying new config!', LED_CONFIG, new_config);
+    LED_CONFIG = new_config;
 
-    var led_container = $('#led_container');
-
-    // Remove everything previously created
-    led_container.children().remove();
-    leds = [];
-
-    // Add new LEDs in the correct configuration
-    for (var y=0; y<led_config.height; y++) {
-        // Add a row container
-        var row_container = $('<span></span>')
-            .addClass('row_container')
-            .appendTo(led_container);
-
-        var led_row = [];
-        for (var x=0; x<led_config.width; x++) {
-            // Add an LED
-            var led = $('<span></span>')
-                .addClass('led')
-                .appendTo(row_container);
-
-            led_row.push(led);
-        }
-        leds.push(led_row);
+    // Create new LEDs in the correct configuration
+    let layout;
+    if (LED_CONFIG.type == 'rectangle') {
+        layout = _get_leds_rectangle(LED_CONFIG);
+    } else {
+        alert('Unknown controller type: '+LED_CONFIG.type)
     }
+
+    // Update the DOM
+    let led_container = $('#led_container');
+    led_container.children().remove();
+    led_container.append(layout.leds);
+    led_container.css({
+        width: layout.width,
+        height: layout.height,
+    });
+    LEDS = layout.leds;
+}
+
+function _get_leds_rectangle(LED_CONFIG) {
+    // Add new LEDs in the correct configuration
+    let leds = [];
+    for (let y=0; y<LED_CONFIG.height; y++) {
+        for (let x=0; x<LED_CONFIG.width; x++) {
+            // Add an LED
+            leds.push(
+                $('<span></span>')
+                    .addClass('led')
+                    .css({
+                        top: y * LED_HEIGHT,
+                        left: x * LED_WIDTH,
+                    }));
+        }
+    }
+    return {
+        leds: leds,
+        width: LED_CONFIG.width * LED_WIDTH,
+        height: LED_CONFIG.height * LED_HEIGHT,
+    };
 }
 
 function _get_offset(index) {
     return 4 + index * 4;
 }
 
-function _get_index(x, y) {
-    if (led_config.reverse_x) {
-        x = led_config.width - x - 1;
-    }
-    if (led_config.reverse_y) {
-        y = led_config.height - y - 1;
-    }
-    return (y * led_config.width) + (y % 2 === 0 ? x : led_config.width - x - 1);
-}
-
 function get_rgba(index, bytes) {
-    var offset = _get_offset(index),
+    let offset = _get_offset(index),
         r = bytes[offset + 3],
         g = bytes[offset + 2],
         b = bytes[offset + 1],
@@ -82,28 +92,20 @@ function get_rgba(index, bytes) {
     return 'rgba('+r+','+g+','+b+','+a+')';
 }
 
-function get_rgba_xy(x, y, bytes) {
-    var index = _get_index(x, y);
-    return get_rgba(index, bytes);
-}
-
-var led_config = {}, leds;
 function update_display(data) {
-    if (config_has_changed(led_config, data.config)) {
+    if (config_has_changed(LED_CONFIG, data.config)) {
         apply_config(data.config);
     }
 
     // Update the LEDs
-    for (var y=0; y<led_config.height; y++) {
-        for (var x=0; x<led_config.width; x++) {
-            var rgba = get_rgba_xy(x, y, data.bytes);
-            leds[y][x].css('backgroundColor', rgba);
-        }
-    }
+    LEDS.forEach(function(led, index) {
+        let rgba = get_rgba(index, data.bytes);
+        led.css('backgroundColor', rgba);
+    });
 }
 
 function open_ws() {
-    var ws_url = get_ws_url(),
+    let ws_url = get_ws_url(),
         ws = new WebSocket(ws_url);
     ws.onmessage = function (evt) {
         update_display(JSON.parse(evt.data));
@@ -112,7 +114,7 @@ function open_ws() {
 
 function reload_config() {
     // Load the config from the server and show it
-    var config_status = $('#config_status');
+    let config_status = $('#config_status');
     config_status.text('Loading...');
     $.ajax(
         '/config'
@@ -126,7 +128,7 @@ function reload_config() {
 
 function save_config() {
     // Save the config from UI to the server
-    var config_status = $('#config_status');
+    let config_status = $('#config_status');
     config_status.text('Saving...');
     $.post(
         '/config',
@@ -143,7 +145,6 @@ function bind_handlers() {
     $('#save_config').click(save_config);
 }
 
-var constants;
 function load_constants() {
     $.ajax(
         '/constants'

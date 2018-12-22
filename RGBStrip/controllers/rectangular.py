@@ -23,7 +23,8 @@ class RectangularController(BaseController):
             'width': width,
             'height': height,
             'reverse_x': reverse_x,
-            'reverse_y': reverse_y
+            'reverse_y': reverse_y,
+            'type': 'rectangle',
         }
         BaseController.__init__(self, config, width*height)
 
