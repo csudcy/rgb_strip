@@ -17,7 +17,7 @@ class CursesDisplay(BaseDisplay):
         for y in xrange(self.CONTROLLER.HEIGHT):
             for x in xrange(self.CONTROLLER.WIDTH):
                 char = utils.classify_colour(
-                    *self.CONTROLLER.get_rgba_xy(x, y)
+                    *self.CONTROLLER.get_rgba(x, y)
                 )
                 self.STDSCR.addch(y+1, x+1, ord(char))
 

@@ -5,7 +5,7 @@ from RGBStrip.controllers.base import BaseController
 
 class RectangularController(BaseController):
     """
-    An interface to control a rectangular strip of RGB LEDs.
+    An interface to control a strip of RGB LEDs arranged in a rectangle.
     """
 
     def __init__(
@@ -28,14 +28,14 @@ class RectangularController(BaseController):
             y = self.HEIGHT - y - 1
         return (y * self.WIDTH) + (x if y % 2 == 0 else self.WIDTH - x - 1)
 
-    def add_led_xy(self, x, y, r=0, g=0, b=0, a=0):
+    def add_led(self, x, y, *args, **kwargs):
         index = self._get_index(x, y)
-        self.add_led(index, r, g, b, a)
+        BaseController.add_led(self, index, *args, **kwargs)
 
-    def set_led_xy(self, x, y, r=0, g=0, b=0, a=0):
+    def set_led(self, x, y, *args, **kwargs):
         index = self._get_index(x, y)
-        self.set_led(index, r, g, b, a)
+        BaseController.set_led(self, index, *args, **kwargs)
 
-    def get_rgba_xy(self, x, y):
+    def get_rgba(self, x, y):
         index = self._get_index(x, y)
-        return self.get_rgba(index)
+        return BaseController.get_rgba(self, index)

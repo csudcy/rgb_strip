@@ -102,7 +102,7 @@ class TkFrame(Frame):
         # Update all the LEDs
         for y in xrange(self.CONTROLLER.HEIGHT):
             for x in xrange(self.CONTROLLER.WIDTH):
-                colour = self.CONTROLLER.get_rgba_xy(x, y)
+                colour = self.CONTROLLER.get_rgba(x, y)
                 self.canvas.itemconfig(
                     self.LEDS[x][y],
                     fill=rgba_to_hex(*colour),

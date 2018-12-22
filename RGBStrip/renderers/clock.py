@@ -13,6 +13,6 @@ class ClockRenderer(BaseRenderer):
     def do_render(self):
         now = datetime.now()
         for section in self.SECTIONS:
-            section.add_led_xy(now.hour, 0, *self.PALETTE[0])
-            section.add_led_xy(now.minute, 0, *self.PALETTE[1])
-            section.add_led_xy(now.second, 0, *self.PALETTE[2])
+            section.add_led(now.hour, 0, *self.PALETTE[0])
+            section.add_led(now.minute, 0, *self.PALETTE[1])
+            section.add_led(now.second, 0, *self.PALETTE[2])

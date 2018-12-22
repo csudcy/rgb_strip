@@ -57,7 +57,7 @@ class GravityRenderer(BaseRenderer):
         # Show all the shots
         for section in self.SECTIONS:
             for shot in self.SHOTS:
-                section.add_led_xy(
+                section.add_led(
                     int(shot['position']),
                     1,
                     *shot['colour'],
