@@ -2,9 +2,7 @@
 # -*- coding: utf8 -*-
 import yaml
 
-from RGBStrip.constants import DISPLAYS, RENDERERS
-from RGBStrip.controller import RGBStripController
-from RGBStrip.section import SectionController
+from RGBStrip.constants import CONTROLLERS, DISPLAYS, RENDERERS, SECTIONS
 from RGBStrip import utils
 
 
@@ -35,14 +33,16 @@ def load_config(yaml_config):
 
 
 def get_controller(config):
-    return RGBStripController(**config)
+    type = config.pop('type')
+    return CONTROLLERS[type](**config)
 
 
 def get_sections(controller, config):
     sections = {}
     for params in config:
         id = params.pop('id')
-        sections[id] = SectionController(
+        type = params.pop('type')
+        sections[id] = SECTIONS[type](
             controller,
             **params
         )

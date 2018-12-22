@@ -1,3 +1,5 @@
+from RGBStrip.controllers.rectangular import RectangularController
+
 from RGBStrip.displays.cursesd import CursesDisplay
 from RGBStrip.displays.rpi_spi import RPiSPIDisplay
 from RGBStrip.displays.tk import TkDisplay
@@ -9,6 +11,23 @@ from RGBStrip.renderers.gravity_shot import GravityShotRenderer
 from RGBStrip.renderers.patch import PatchRenderer
 from RGBStrip.renderers.rainbow import RainbowRenderer
 
+from RGBStrip.sections.rectangular import RectangularSection
+
+
+COLOURS = {
+    'black': (0, 0, 0),
+    'red': (255, 0, 0),
+    'yellow': (255, 255, 0),
+    'green': (0, 255, 0),
+    'cyan': (0, 255, 255),
+    'blue': (0, 0, 255),
+    'pink': (255, 0, 255),
+    'white': (255, 255, 255),
+}
+
+CONTROLLERS = {
+    'rectangular': RectangularController,
+}
 
 DISPLAYS = {
     'curses': CursesDisplay,
@@ -25,13 +44,6 @@ RENDERERS = {
     'rainbow': RainbowRenderer,
 }
 
-COLOURS = {
-    'black': (0, 0, 0),
-    'red': (255, 0, 0),
-    'yellow': (255, 255, 0),
-    'green': (0, 255, 0),
-    'cyan': (0, 255, 255),
-    'blue': (0, 0, 255),
-    'pink': (255, 0, 255),
-    'white': (255, 255, 255),
+SECTIONS = {
+    'rectangular': RectangularSection,
 }

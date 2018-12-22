@@ -1,4 +1,5 @@
 controller:
+  type: rectangular
   width: 60
   height: 2
   reverse_x: True
@@ -7,30 +8,35 @@ controller:
 sections:
   -
     id: top_left
+    type: rectangular
     x: 0
     y: 0
     width: 30
     height: 1
   -
     id: top_right
+    type: rectangular
     x: 30
     y: 0
     width: 30
     height: 1
   -
     id: bottom
+    type: rectangular
     x: 0
     y: 1
     width: 60
     height: 1
   -
     id: patch1
+    type: rectangular
     x: 5
     y: 0
     width: 5
     height: 2
   -
     id: patch2
+    type: rectangular
     x: 15
     y: 0
     width: 5

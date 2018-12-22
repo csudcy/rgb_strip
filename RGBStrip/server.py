@@ -78,32 +78,40 @@ def get_constants():
     """
     import inspect
 
-    from RGBStrip import constants, controller, section, utils
+    from RGBStrip import constants, utils
 
     def get_args(klass_or_function, ignore=[]):
         if inspect.isclass(klass_or_function):
             klass_or_function = klass_or_function.__init__
         argspec = inspect.getargspec(klass_or_function)
+        ignore.append('self')
         args = list(set(argspec.args) - set(ignore))
         args.sort()
         return args
 
     return {
         'config': {
-            'controller': get_args(controller.RGBStripController, ['self']),
-            'section': get_args(section.SectionController, ['self', 'controller']),
             'palettes': get_args(utils.make_palette),
-            'renderers': {
-                key: get_args(klass, ['self', 'sections', 'palettes'])
-                for key, klass in constants.RENDERERS.iteritems()
-            },
-            'displays': {
-                key: get_args(klass, ['self', 'controller'])
-                for key, klass in constants.DISPLAYS.iteritems()
-            },
             'general': [
                 'sleep_time'
             ],
+
+            'controllers': {
+                key: get_args(klass)
+                for key, klass in constants.CONTROLLERS.iteritems()
+            },
+            'displays': {
+                key: get_args(klass, ['controller'])
+                for key, klass in constants.DISPLAYS.iteritems()
+            },
+            'renderers': {
+                key: get_args(klass, ['sections', 'palettes'])
+                for key, klass in constants.RENDERERS.iteritems()
+            },
+            'sections': {
+                key: get_args(klass, ['controller'])
+                for key, klass in constants.SECTIONS.iteritems()
+            },
         },
         'colours': constants.COLOURS.keys(),
     }
