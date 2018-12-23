@@ -40,7 +40,6 @@ class BaseController(object):
         )
 
     def set_led(self, index, r=0, g=0, b=0, a=0):
-        offset = self._get_offset(index)
         self._set_led(
             self._get_offset(index),
             r,
