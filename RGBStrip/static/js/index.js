@@ -23,13 +23,29 @@ function get_ws_url() {
 }
 
 function config_has_changed(old_config, new_config) {
-    return (
-        old_config.type !== new_config.type
-        ||
-        old_config.width !== new_config.width
-        ||
-        old_config.height !== new_config.height
-    );
+    // If type has changed, definitely need to reload
+    if (old_config.type !== new_config.type) return true;
+
+    if (old_config.type == 'rectangle') {
+        return (
+            old_config.width !== new_config.width
+            ||
+            old_config.height !== new_config.height
+            ||
+            old_config.reverse_x !== new_config.reverse_x
+            ||
+            old_config.reverse_y !== new_config.reverse_y
+        );
+    } else if (old_config.type == 'cone') {
+        return (
+            // Cone controllers
+            old_config.levels.toString() !== new_config.levels.toString()
+            ||
+            old_config.reverse !== new_config.reverse
+        );
+    } else {
+        throw new Error(`Unknown controller type: ${old_config.type}`);
+    }
 }
 
 function apply_config(new_config) {
@@ -43,11 +59,11 @@ function apply_config(new_config) {
     } else if (LED_CONFIG.type == 'cone') {
         layout = _get_leds_cone(LED_CONFIG);
     } else {
-        alert('Unknown controller type: '+LED_CONFIG.type)
+        throw new Error(`Unknown controller type: ${LED_CONFIG.type}`);
     }
 
     // Update the DOM
-    let led_container = $('#led_container');
+    const led_container = $('#led_container');
     led_container.children().remove();
     led_container.append(layout.leds);
     led_container.css({
@@ -72,19 +88,19 @@ function _get_leds_rectangle(LED_CONFIG) {
 }
 
 function _get_leds_cone(LED_CONFIG) {
-    console.log(LED_CONFIG);
+    const level_offset = 2*LED_WH;
+    let centre_xy = level_offset * LED_CONFIG.levels.length;
+    let centre_offset = 0;
 
     if (LED_CONFIG.levels[0] !== 1) {
-        alert('First level must have 1 LED!');
-        return;
+        // Add a fake center with a single LED
+        centre_xy += level_offset;
+        centre_offset = level_offset;
     }
-
-    const level_offset = 2*LED_WH;
-    const centre_xy = level_offset * LED_CONFIG.levels.length;
 
     let leds = [];
     LED_CONFIG.levels.forEach(function(level_count, level_index) {
-        const level_radius = level_index * level_offset;
+        const level_radius = (level_index * level_offset) + centre_offset;
         for (let led_index=0; led_index<level_count; led_index++) {
             const angle = 2 * Math.PI * led_index / level_count;
             const offset_x = Math.sin(angle) * level_radius;
@@ -100,26 +116,17 @@ function _get_leds_cone(LED_CONFIG) {
 }
 
 function _make_led(top, left) {
-    return $('<span></span>')
-        .addClass('led')
-        .css({
-            top: top,
-            left: left,
-        });
-}
-
-function _get_offset(index) {
-    return 4 + index * 4;
+    return $(`<span class="led" style="top: ${top}px; left: ${left}px;"></span>`);
 }
 
 function get_rgba(index, bytes) {
-    let offset = _get_offset(index),
+    const offset = 4 + index * 4,
         r = bytes[offset + 3],
         g = bytes[offset + 2],
         b = bytes[offset + 1],
         a = ((bytes[offset + 0] && 31) / 31);
 
-    return 'rgba('+r+','+g+','+b+','+a+')';
+    return `rgba(${r},${g},${b},${a})`;
 }
 
 function update_display(data) {
@@ -129,13 +136,13 @@ function update_display(data) {
 
     // Update the LEDs
     LEDS.forEach(function(led, index) {
-        let rgba = get_rgba(index, data.bytes);
+        const rgba = get_rgba(index, data.bytes);
         led.css('backgroundColor', rgba);
     });
 }
 
 function open_ws() {
-    let ws_url = get_ws_url(),
+    const ws_url = get_ws_url(),
         ws = new WebSocket(ws_url);
     ws.onmessage = function (evt) {
         update_display(JSON.parse(evt.data));
@@ -144,7 +151,7 @@ function open_ws() {
 
 function reload_config() {
     // Load the config from the server and show it
-    let config_status = $('#config_status');
+    const config_status = $('#config_status');
     config_status.text('Loading...');
     $.ajax(
         '/config'
@@ -158,7 +165,7 @@ function reload_config() {
 
 function save_config() {
     // Save the config from UI to the server
-    let config_status = $('#config_status');
+    const config_status = $('#config_status');
     config_status.text('Saving...');
     $.post(
         '/config',
