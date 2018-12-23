@@ -23,7 +23,7 @@ class RainbowRenderer(BaseRenderer):
         x, y = self.X, self.Y
         for i, colour in enumerate(self.PALETTE):
             x, y = self.SECTION.increment_xy(x, y)
-            self.SECTION.add_led(x, y, *colour, a=1)
+            self.SECTION.add_led(x, y, *colour)
 
         # Move the train along
         self.X, self.Y = self.SECTION.increment_xy(self.X, self.Y)

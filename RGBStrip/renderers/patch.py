@@ -10,13 +10,11 @@ class PatchRenderer(BaseRenderer):
             section,
             palette,
             active=True,
-            a=1,
             # TODO: remove delay?
             delay=1,
             start_index=0):
         super(PatchRenderer, self).__init__(section, palette, active=active)
 
-        self.A = a
         self.INDEX = start_index % len(self.PALETTE)
         self.STEP_DELAYED = 0
         self.STEP_DELAY = delay
@@ -25,7 +23,7 @@ class PatchRenderer(BaseRenderer):
         rgb_colour = self.PALETTE[self.INDEX]
         for x in xrange(self.SECTION.WIDTH):
             for y in xrange(self.SECTION.HEIGHT):
-                self.SECTION.add_led(x, y, *rgb_colour, a=self.A)
+                self.SECTION.add_led(x, y, *rgb_colour)
         self.STEP_DELAYED += 1
         if self.STEP_DELAYED >= self.STEP_DELAY:
             # We have stayed on this step for STEP_DELAY frames; move to the next step

@@ -13,20 +13,22 @@ class RectangularController(BaseController):
             width,
             height=1,
             reverse_x=False,
-            reverse_y=False
+            reverse_y=False,
+            a=0.2
         ):
         self.WIDTH = width
         self.HEIGHT = height
         self.REVERSE_X = reverse_x
         self.REVERSE_Y = reverse_y
         config = {
-            'width': width,
+            'a': a,
             'height': height,
             'reverse_x': reverse_x,
             'reverse_y': reverse_y,
             'type': 'rectangle',
+            'width': width,
         }
-        BaseController.__init__(self, config, width*height)
+        BaseController.__init__(self, config, width*height, a)
 
     def _get_index(self, x, y):
         if self.REVERSE_X:

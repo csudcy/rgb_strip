@@ -8,9 +8,10 @@ class BaseController(object):
     An interface to control a strip of RGB LEDs.
     """
 
-    def __init__(self, config, led_count):
+    def __init__(self, config, led_count, a):
         self.CONFIG = config
         self.LED_COUNT = led_count
+        self.A = a
 
         # Work out some byte counts
         self.BYTES_START = 4
@@ -29,41 +30,38 @@ class BaseController(object):
         # Setup the LED frames so the padding bits are set correctly
         self.set_leds()
 
-    def add_led(self, index, r=0, g=0, b=0, a=0):
+    def add_led(self, index, r=0, g=0, b=0):
         offset = self._get_offset(index)
         self._set_led(
             self._get_offset(index),
             self.BYTES[offset + 3] + r,
             self.BYTES[offset + 2] + g,
-            self.BYTES[offset + 1] + b,
-            (self.BYTES[offset + 0] & 31) + a
+            self.BYTES[offset + 1] + b
         )
 
-    def set_led(self, index, r=0, g=0, b=0, a=0):
+    def set_led(self, index, r=0, g=0, b=0):
         self._set_led(
             self._get_offset(index),
             r,
             g,
-            b,
-            a
+            b
         )
 
-    def set_leds(self, r=0, g=0, b=0, a=0):
+    def set_leds(self, r=0, g=0, b=0):
         for offset in xrange(self.BYTES_START, self.BYTES_START + self.BYTES_LED, 4):
             self._set_led(
                 offset,
                 r,
                 g,
-                b,
-                a
+                b
             )
 
     def _get_offset(self, index):
         return self.BYTES_START + index * 4
 
-    def _set_led(self, offset, r, g, b, a):
+    def _set_led(self, offset, r, g, b):
         # Brightness max is 31; or with 224 to add the padding 1s
-        self.BYTES[offset + 0] = max(min(int(a), 31), 0) | 224
+        self.BYTES[offset + 0] = max(min(int(self.A), 31), 0) | 224
         # R, G, B are max 255
         self.BYTES[offset + 1] = max(min(int(b), 255), 0)
         self.BYTES[offset + 2] = max(min(int(g), 255), 0)

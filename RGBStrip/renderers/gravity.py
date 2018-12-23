@@ -59,8 +59,7 @@ class GravityRenderer(BaseRenderer):
             self.SECTION.add_led(
                 int(shot['position']),
                 1,
-                *shot['colour'],
-                a=1
+                *shot['colour']
             )
 
     def do_render(self):

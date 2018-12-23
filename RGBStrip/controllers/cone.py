@@ -11,7 +11,8 @@ class ConeController(BaseController):
     def __init__(
             self,
             levels,
-            reverse=False
+            reverse=False,
+            a=0.2
         ):
         if not levels:
             raise Exception('ConeController must be given levels!')
@@ -23,11 +24,12 @@ class ConeController(BaseController):
             for level_index in xrange(len(levels))
         ]
         config = {
+            'a': a,
             'levels': levels,
             'reverse': reverse,
             'type': 'cone',
         }
-        BaseController.__init__(self, config, sum(levels))
+        BaseController.__init__(self, config, sum(levels), a)
 
     def _get_index(self, angle, level):
         index = self.LEVEL_OFFSETS[level] + angle/360.0 * self.LEVELS[level]
