@@ -14,7 +14,7 @@ class RectangularController(BaseController):
             height=1,
             reverse_x=False,
             reverse_y=False,
-            a=0.2
+            a=10
         ):
         self.WIDTH = width
         self.HEIGHT = height

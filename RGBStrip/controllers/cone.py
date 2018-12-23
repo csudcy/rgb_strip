@@ -12,7 +12,7 @@ class ConeController(BaseController):
             self,
             levels,
             reverse=False,
-            a=0.2
+            a=10
         ):
         if not levels:
             raise Exception('ConeController must be given levels!')
