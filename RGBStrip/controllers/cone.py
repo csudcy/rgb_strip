@@ -11,6 +11,7 @@ class ConeController(BaseController):
     def __init__(
             self,
             levels,
+            extra_leds=0,
             reverse=False,
             a=10
         ):
@@ -25,11 +26,12 @@ class ConeController(BaseController):
         ]
         config = {
             'a': a,
+            'extra_leds': extra_leds,
             'levels': levels,
             'reverse': reverse,
             'type': 'cone',
         }
-        BaseController.__init__(self, config, sum(levels), a)
+        BaseController.__init__(self, config, sum(levels)+extra_leds, a)
 
     def _get_index(self, angle, level):
         index = self.LEVEL_OFFSETS[level] + angle/360.0 * self.LEVELS[level]
