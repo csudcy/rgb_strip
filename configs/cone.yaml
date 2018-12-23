@@ -24,16 +24,15 @@ palettes:
 
 renderers:
   # Cone
-  -
-    type: cone_spin
-    section: cone
-    palette: rainbow_40
-    degrees_per_step: -2
   # -
-  #   type: cone_spin_full
+  #   type: cone_spin
   #   section: cone
   #   palette: rainbow_40
-  #   degrees_per_step: 2
+  #   degrees_per_step: -2
+  -
+    type: cone_spin_full
+    section: cone
+    palette: rainbow_256
   # -
   #   type: cone_level
   #   section: cone
