@@ -13,8 +13,7 @@ parser.add_argument('config', help='The config file to load')
 args = parser.parse_args()
 
 # Start manager & load the config
-manager = manager.RGBStripManager()
-manager.load_config(args.config)
+manager = manager.RGBStripManager(args.config)
 
 # If we need a server, start it now
 if args.server:

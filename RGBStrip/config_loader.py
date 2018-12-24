@@ -6,11 +6,6 @@ from RGBStrip.constants import CONTROLLERS, DISPLAYS, RENDERERS, SECTIONS
 from RGBStrip import utils
 
 
-def load_config_path(path):
-    with open(path) as f:
-        return load_config(f.read())
-
-
 def load_config(yaml_config):
     config = yaml.load(yaml_config)
 

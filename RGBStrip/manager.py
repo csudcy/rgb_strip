@@ -7,26 +7,24 @@ from RGBStrip import config_loader
 
 
 class RGBStripManager(Thread):
-    def __init__(self):
+    def __init__(self, config_path):
         Thread.__init__(self)
 
+        # Setup everything which will be loaded from the config
         self.CONTROLLER = None
-        self.SLEEP_TIME = 0.01
-        self.CONFIG_PATH = None
-
-        # Setup a list of renderers & displays
-        self.RENDERERS = []
         self.DISPLAYS = []
+        self.RENDERERS = []
+        self.SLEEP_TIME = 0.01
 
-    def load_config(self, path=None, yaml_config=None):
+        # Load the config
+        self.CONFIG_PATH = config_path
+        with open(config_path) as f:
+            return self.load_config(f.read())
+
+    def load_config(self, yaml_config):
         # Load the config & check it's valid
-        if yaml_config:
-            print 'Loading config from yaml...'
-            config = config_loader.load_config(yaml_config)
-        else:
-            print 'Loading config from path ({path})...'.format(path=path)
-            self.CONFIG_PATH = path
-            config = config_loader.load_config_path(path)
+        print 'Loading config from yaml...'
+        config = config_loader.load_config(yaml_config)
 
         # Clear existing config
         for renderer in self.RENDERERS:
@@ -45,11 +43,8 @@ class RGBStripManager(Thread):
         """
         Load the given config & (if successful) overwrite the config on disk
         """
-        if self.CONFIG_PATH is None:
-            raise Exception('To apply_config, you must first load_config using a path!')
-
         # Validate & apply the new config
-        self.load_config(yaml_config=yaml_config)
+        self.load_config(yaml_config)
 
         # Save the new config
         with open(self.CONFIG_PATH, 'w') as f:
