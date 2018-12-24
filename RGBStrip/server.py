@@ -122,7 +122,7 @@ def get_config():
     """
     Get the current config
     """
-    return MANAGER.YAML_CONFIG
+    return MANAGER.get_yaml_config()
 
 
 @app.post('/config')

@@ -3,20 +3,15 @@
 from threading import Thread
 import time
 
-from RGBStrip import config_loader
+from RGBStrip import config
 
 
 class RGBStripManager(Thread):
     def __init__(self, config_path):
         Thread.__init__(self)
 
-        # Setup everything which will be loaded from the config
-        self.CONTROLLER = None
-        self.DISPLAYS = []
-        self.RENDERERS = []
-        self.SLEEP_TIME = 0.01
-
         # Load the config
+        self.CONFIG = None
         self.CONFIG_PATH = config_path
         with open(config_path) as f:
             return self.load_config(f.read())
@@ -24,20 +19,20 @@ class RGBStripManager(Thread):
     def load_config(self, yaml_config):
         # Load the config & check it's valid
         print 'Loading config from yaml...'
-        config = config_loader.load_config(yaml_config)
+        new_config = config.Config(yaml_config)
 
-        # Clear existing config
-        for renderer in self.RENDERERS:
-            renderer.stop()
-        for display in self.DISPLAYS:
-            display.teardown()
+        if self.CONFIG:
+            # Clear existing config
+            for renderer in self.CONFIG.RENDERERS:
+                renderer.stop()
+            for display in self.CONFIG.DISPLAYS:
+                display.teardown()
 
-        # Save evrything
-        self.CONTROLLER = config['controller']
-        self.RENDERERS = config['renderers']
-        self.DISPLAYS = config['displays']
-        self.SLEEP_TIME = config['general'].get('sleep_time', 0.01)
-        self.YAML_CONFIG = config['yaml_config']
+        # Save the new config
+        self.CONFIG = new_config
+
+    def get_yaml_config(self):
+        return self.CONFIG.YAML_CONFIG
 
     def apply_config(self, yaml_config):
         """
@@ -54,36 +49,36 @@ class RGBStripManager(Thread):
         """
         Render all registered renderers
         """
-        for renderer in self.RENDERERS:
+        for renderer in self.CONFIG.RENDERERS:
             renderer.render()
 
     def display(self):
         """
         Display all registered displays
         """
-        for display in self. DISPLAYS:
+        for display in self.CONFIG.DISPLAYS:
             display.display()
 
     def output(self):
         """
         Clear all LEDs, render and then display the results
         """
-        self.CONTROLLER.set_leds()
+        self.CONFIG.CONTROLLER.set_leds()
         self.render()
         self.display()
 
     def output_forever(self):
         try:
-            for display in self.DISPLAYS:
+            for display in self.CONFIG.DISPLAYS:
                 display.setup()
             self.IS_ALIVE = True
             while (self.IS_ALIVE):
                 self.output()
-                time.sleep(self.SLEEP_TIME)
+                time.sleep(self.CONFIG.SLEEP_TIME)
         except KeyboardInterrupt:
             print 'Bye!'
         finally:
-            for display in self.DISPLAYS:
+            for display in self.CONFIG.DISPLAYS:
                 display.safe_teardown()
 
     def run(self):

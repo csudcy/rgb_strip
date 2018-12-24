@@ -115,7 +115,10 @@ def make_palette(
     if colour is not None:
         palette = [resolve_colour(colour)]
     elif colours is not None:
-        palette = resolve_colours(colours)
+        palette = [
+            resolve_colour(colour)
+            for colour in colours
+        ]
     elif rainbow_steps is not None:
         palette = get_rgb_rainbow(rainbow_steps)
     else:
@@ -138,23 +141,3 @@ def resolve_colour(colour):
 
     # Otherwise, assume this is an RGB tuple
     return colour
-
-
-def resolve_colours(palette):
-    return [
-        resolve_colour(colour)
-        for colour in palette
-    ]
-
-
-def resolve_palette(palettes, palette):
-    # This might be a named palette
-    if palette in palettes:
-        return palettes[palette]
-
-    # Or it might be a list of named colours
-    if hasattr(palette, '__iter__'):
-        return resolve_colours(palette)
-
-    # Or it might be a single named colour
-    return [resolve_colour(palette)]
