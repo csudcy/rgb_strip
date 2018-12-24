@@ -35,7 +35,7 @@ class RGBStripManager(Thread):
             display.teardown()
 
         # Save evrything
-        self.set_controller(config['controller'])
+        self.CONTROLLER = config['controller']
         self.RENDERERS = config['renderers']
         self.DISPLAYS = config['displays']
         self.SLEEP_TIME = config['general'].get('sleep_time', 0.01)
@@ -54,17 +54,6 @@ class RGBStripManager(Thread):
         # Save the new config
         with open(self.CONFIG_PATH, 'w') as f:
             f.write(yaml_config)
-
-    def set_controller(self, controller):
-        self.CONTROLLER = controller
-
-    def add_renderer(self, renderer):
-        if renderer not in self.RENDERERS:
-            self.RENDERERS.append(renderer)
-
-    def add_display(self, display):
-        if display not in self.DISPLAYS:
-            self.DISPLAYS.append(display)
 
     def render(self):
         """

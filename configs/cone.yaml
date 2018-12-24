@@ -4,22 +4,17 @@ controller:
   reverse: False
 
 sections:
-  -
-    id: cone
+  cone:
     type: cone
 
 palettes:
-  -
-    id: rainbow_6
+  rainbow_6:
     rainbow_steps: 6
-  -
-    id: rainbow_13
+  rainbow_13:
     rainbow_steps: 13
-  -
-    id: rainbow_40
+  rainbow_40:
     rainbow_steps: 40
-  -
-    id: rainbow_256
+  rainbow_256:
     rainbow_steps: 256
 
 renderers:

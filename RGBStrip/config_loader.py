@@ -39,8 +39,7 @@ def get_controller(config):
 
 def get_sections(controller, config):
     sections = {}
-    for params in config or []:
-        id = params.pop('id')
+    for id, params in (config or []).iteritems():
         type = params.pop('type')
         sections[id] = SECTIONS[type](
             controller,
@@ -51,8 +50,7 @@ def get_sections(controller, config):
 
 def get_palettes(config):
     palettes = {}
-    for params in config or []:
-        id = params.pop('id')
+    for id, params in (config or []).iteritems():
         palettes[id] = utils.make_palette(**params)
     return palettes
 

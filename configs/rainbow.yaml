@@ -6,15 +6,13 @@ controller:
   reverse_y: False
 
 sections:
-  -
-    id: top
+  top:
     type: rectangular
     x: 0
     y: 0
     width: 60
     height: 1
-  -
-    id: bottom
+  bottom:
     type: rectangular
     x: 0
     y: 1
@@ -22,8 +20,7 @@ sections:
     height: 1
 
 palettes:
-  -
-    id: rainbow_60
+  rainbow_60:
     rainbow_steps: 60
 
 renderers:

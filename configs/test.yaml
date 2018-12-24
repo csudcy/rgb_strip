@@ -6,36 +6,31 @@ controller:
   reverse_y: False
 
 sections:
-  -
-    id: top_left
+  top_left:
     type: rectangular
     x: 0
     y: 0
     width: 30
     height: 1
-  -
-    id: top_right
+  top_right:
     type: rectangular
     x: 30
     y: 0
     width: 30
     height: 1
-  -
-    id: bottom
+  bottom:
     type: rectangular
     x: 0
     y: 1
     width: 60
     height: 1
-  -
-    id: patch1
+  patch1:
     type: rectangular
     x: 5
     y: 0
     width: 5
     height: 2
-  -
-    id: patch2
+  patch2:
     type: rectangular
     x: 15
     y: 0
@@ -43,39 +38,32 @@ sections:
     height: 2
 
 palettes:
-  -
-    id: red_fade
+  red_fade:
     colour: red
     fade_steps_in: 10
     fade_steps_out: 10
     fade_hold_on: 10
     fade_hold_off: 10
-  -
-    id: rgb
+  rgb:
     colours: [red, green, blue]
-  -
-    id: rgb_fade
+  rgb_fade:
     colours: [red, green, blue]
     fade_steps_in: 10
     fade_steps_out: 10
     fade_hold_on: 10
     fade_hold_off: 10
-  -
-    id: rainbow_fade
+  rainbow_fade:
     rainbow_steps: 10
     fade_steps_in: 10
     fade_steps_out: 10
     fade_hold_on: 20
     fade_hold_off: 10
 
-  -
-    id: rainbow_10
+  rainbow_10:
     rainbow_steps: 10
-  -
-    id: rainbow_30
+  rainbow_30:
     rainbow_steps: 30
-  -
-    id: rainbow_250
+  rainbow_250:
     rainbow_steps: 250
 
 renderers:
