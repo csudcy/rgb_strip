@@ -26,10 +26,25 @@ renderer:
       section: cone
       palette: rainbow_256
     -
-      type: cone_spin
-      section: cone
-      palette: rainbow_40
-      degrees_per_step: -2
+      type: multi_all
+      renderers:
+        -
+          type: cone_spin_line
+          section: cone
+          palette: rainbow_40
+          degrees_per_step: -2
+        -
+          type: cone_spin_line
+          section: cone
+          palette: rainbow_40
+          degrees_per_step: -2
+          start_degrees: 120
+        -
+          type: cone_spin_line
+          section: cone
+          palette: rainbow_40
+          degrees_per_step: -2
+          start_degrees: 240
     # -
     #   type: cone_level
     #   section: cone

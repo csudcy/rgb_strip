@@ -4,7 +4,7 @@ from RGBStrip import utils
 from RGBStrip.renderers.base import BaseSingleRenderer
 
 
-class ConeSpinRenderer(BaseSingleRenderer):
+class ConeSpinLineRenderer(BaseSingleRenderer):
 
     def __init__(
             self,
@@ -12,11 +12,12 @@ class ConeSpinRenderer(BaseSingleRenderer):
             section=None,
             palette=None,
             active=True,
-            degrees_per_step=2
+            degrees_per_step=2,
+            start_degrees=0
         ):
-        super(ConeSpinRenderer, self).__init__(loader, section=section, palette=palette, active=active)
+        super(ConeSpinLineRenderer, self).__init__(loader, section=section, palette=palette, active=active)
         self.DEGREES_PER_STEP = degrees_per_step
-        self.CURRENT_ANGLE = 0
+        self.CURRENT_ANGLE = start_degrees
         self.COLOUR_INDEX = 0
 
     def do_render(self):
