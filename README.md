@@ -3,19 +3,39 @@
 A controller for addressable RGB LED strips with multiple outputs (mainly, Raspberry Pi).
 
 
+## General Setup
+
+* On the Pi, make sure everything is up-to-date:
+  * `sudo apt-get update`
+  * `sudo apt-get upgrade`
+* You might need to:
+  * `sudo apt-get install python-pip`
+  * `sudo apt-get install python-tk`
+* To use SPI (`Serial Peripheral Interface`) on the Pi:
+  * `sudo raspi-config`
+    * `Interfacing Options`
+    * `SPI`
+    * `Enable`
+  * `sudo pip install spidev`
+* Install all the required libraries:
+  * `pip install -r requirements.txt`
+  * **NOTE:** This can take **very** long time on the Pi (like **30 minutes** long!)
+
+*Note:* It seems like SPI mode cannot be used if any of the pins have been used by GPIO (reboot to fix).
+
+
 ## Run For Development
 
-* Make a config
 * Run `python -m RGBStrip --server ./configs/test.yaml`
 * Go to http://localhost:8080/
 
 
 ## Run On Startup
 
-  * Create a `prod.yaml` config.
-  * `sudo ln -s /home/pi/rgb_strip/init.d/rgbs /etc/init.d`
-  * `sudo update-rc.d rgbs defaults`
-  * `service rgbs start`
+* Create a `prod.yaml` config.
+* `sudo ln -s /home/pi/rgb_strip/init.d/rgbs /etc/init.d`
+* `sudo update-rc.d rgbs defaults`
+* `service rgbs start`
 
 
 ## Connecting LEDs to Raspberry Pi
@@ -27,20 +47,6 @@ There are 2 main types of LEDs which can be used:
 * [DotStar](https://learn.adafruit.com/adafruit-dotstar-leds/overview)
   * E.g. `APA102`
   * Controlled by 2 pins
-
-### Setup SPI
-
-The best way to control your LEDs is via SPI (`Serial Peripheral Interface`); to set it up:
-
-  * `sudo apt-get update`
-  * `sudo apt-get upgrade`
-  * `sudo raspi-config`
-    * Advanced options
-    * SPI
-    * Enable
-  * `sudo pip install spidev`
-
-*Note:* It seems like SPI mode cannot be used if any of the pins have been used by GPIO (reboot to fix).
 
 ### Connecting NeoPixel's
 

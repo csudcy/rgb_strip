@@ -23,7 +23,7 @@ class RGBStripManager(Thread):
 
         if self.CONFIG:
             # Clear existing config
-            CONFIG.RENDERER.stop()
+            self.CONFIG.RENDERER.stop()
             for display in self.CONFIG.DISPLAYS:
                 display.teardown()
 
