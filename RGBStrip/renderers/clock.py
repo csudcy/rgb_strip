@@ -3,10 +3,10 @@
 from datetime import datetime
 
 from RGBStrip import utils
-from RGBStrip.renderers.base import BaseRenderer
+from RGBStrip.renderers.base import BaseSingleRenderer
 
 
-class ClockRenderer(BaseRenderer):
+class ClockRenderer(BaseSingleRenderer):
 
     DEFAULT_PALETTE = utils.get_rgb_rainbow(3)
 

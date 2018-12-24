@@ -24,58 +24,59 @@ class Config(object):
         self.DISPLAYS = self._load_displays(config['displays'])
 
         # Requires SECTIONS & PALETTERS
-        self.RENDERERS = self._load_renderers(config['renderers'])
+        self.RENDERER = self.load_renderer(config['renderer'])
 
-    def _load_controller(self, config):
-        return CONTROLLERS[config.pop('type')](**config)
+    def _load_controller(self, controller_config):
+        return CONTROLLERS[controller_config.pop('type')](**controller_config)
 
-    def _load_sections(self, config):
+    def _load_sections(self, section_configs):
         return {
             id: SECTIONS[params.pop('type')](
                 self.CONTROLLER,
                 **params
             )
-            for id, params in (config or {}).iteritems()
+            for id, params in (section_configs or {}).iteritems()
         }
 
-    def _load_palettes(self, config):
+    def _load_palettes(self, palette_configs):
         return {
             id: utils.make_palette(**params)
-            for id, params in (config or {}).iteritems()
+            for id, params in (palette_configs or {}).iteritems()
         }
 
-    def _load_renderers(self, config):
-        return [
-            RENDERERS[renderer.pop('type')](
-                self.SECTIONS[renderer.pop('section')],
-                self._resolve_palette(renderer.pop('palette', None)),
-                **renderer
-            )
-            for renderer in config or []
-        ]
+    def load_renderer(self, renderer_config):
+        return RENDERERS[renderer_config.pop('type')](
+            self,
+            **renderer_config
+        )
 
-    def _resolve_palette(self, palette):
-        # This is either nothing
-        if not palette:
-            return None
-
-        # Or a named palette
-        if palette in self.PALETTES:
-            return self.PALETTES[palette]
-
-        # Or is a (list of) named colours
-        if not hasattr(palette, '__iter__'):
-            palette = [palette]
-        return [
-            utils.resolve_colour(colour)
-            for colour in palette
-        ]
-
-    def _load_displays(self, config):
+    def _load_displays(self, display_configs):
         return [
             DISPLAYS[display.pop('type')](
                 self.CONTROLLER,
                 **display
             )
-            for display in config
+            for display in display_configs
         ]
+
+    def resolve_section(self, section_id):
+        return self.SECTIONS[section_id]
+
+    def resolve_palette(self, palette):
+        # This is either nothing
+        if not palette:
+            return None
+
+        # Or a list of named colours
+        if hasattr(palette, '__iter__'):
+            return [
+                utils.resolve_colour(colour)
+                for colour in palette
+            ]
+
+        # Or a named palette
+        if palette in self.PALETTES:
+            return self.PALETTES[palette]
+
+        # Or is a single named colours
+        return [utils.resolve_colour(palette)]

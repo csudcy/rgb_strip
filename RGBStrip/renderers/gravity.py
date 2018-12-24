@@ -3,17 +3,18 @@
 import random
 
 from RGBStrip import utils
-from RGBStrip.renderers.base import BaseRenderer
+from RGBStrip.renderers.base import BaseSingleRenderer
 
 
-class GravityRenderer(BaseRenderer):
+class GravityRenderer(BaseSingleRenderer):
 
     DEFAULT_PALETTE = utils.get_rgb_rainbow(10)
 
     def __init__(
             self,
-            section,
-            palette,
+            loader,
+            section=None,
+            palette=None,
             active=True,
             max_shots=5,
             shot_add_chance=0.07,
@@ -21,7 +22,7 @@ class GravityRenderer(BaseRenderer):
             max_speed=1.0,
             g_speed=None
         ):
-        super(GravityRenderer, self).__init__(section, palette, active=active)
+        super(GravityRenderer, self).__init__(loader,section=section, palette=palette, active=active)
 
         self.MAX_SHOTS = max_shots
         self.SHOT_ADD_CHANCE = shot_add_chance

@@ -1,20 +1,20 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-
 from RGBStrip import utils
-from RGBStrip.renderers.base import BaseRenderer
+from RGBStrip.renderers.base import BaseSingleRenderer
 
 
-class ConeSpinRenderer(BaseRenderer):
+class ConeSpinRenderer(BaseSingleRenderer):
 
     def __init__(
             self,
-            section,
-            palette,
+            loader,
+            section=None,
+            palette=None,
             active=True,
             degrees_per_step=2
         ):
-        super(ConeSpinRenderer, self).__init__(section, palette, active=active)
+        super(ConeSpinRenderer, self).__init__(loader, section=section, palette=palette, active=active)
         self.DEGREES_PER_STEP = degrees_per_step
         self.CURRENT_ANGLE = 0
         self.COLOUR_INDEX = 0

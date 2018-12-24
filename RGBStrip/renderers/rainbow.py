@@ -1,19 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 from RGBStrip import utils
-from RGBStrip.renderers.base import BaseRenderer
+from RGBStrip.renderers.base import BaseSingleRenderer
 
 
-class RainbowRenderer(BaseRenderer):
+class RainbowRenderer(BaseSingleRenderer):
+
     def __init__(
             self,
-            section,
-            palette,
+            loader,
+            section=None,
+            palette=None,
             active=True,
             initial_x=0,
             initial_y=0
         ):
-        super(RainbowRenderer, self).__init__(section, palette, active=active)
+        super(RainbowRenderer, self).__init__(loader, section=section, palette=palette, active=active)
 
         self.X = initial_x
         self.Y = initial_y

@@ -66,45 +66,47 @@ palettes:
   rainbow_250:
     rainbow_steps: 250
 
-renderers:
-  # Rainbows
-  -
-    type: rainbow
-    section: top_left
-    palette: rainbow_10
-  -
-    type: rainbow
-    section: top_right
-    palette: rainbow_30
-  -
-    type: rainbow
-    section: bottom
-    palette: rainbow_10
+renderer:
+  type: multi_all
+  renderers:
+    # Rainbows
+    -
+      type: rainbow
+      section: top_left
+      palette: rainbow_10
+    -
+      type: rainbow
+      section: top_right
+      palette: rainbow_30
+    -
+      type: rainbow
+      section: bottom
+      palette: rainbow_10
 
-  # Patches
-  -
-    type: patch
-    section: patch1
-    palette: red
-  -
-    type: patch
-    section: patch2
-    palette: rainbow_250
+    # Patches
+    -
+      type: patch
+      section: patch1
+      palette: red
+    -
+      type: patch
+      section: patch2
+      palette: rainbow_250
 
-  # Clock
-  -
-    type: clock
-    section: bottom
+    # Clock
+    -
+      type: clock
+      section: bottom
 
-  # Gravity shots
-  -
-    type: gravity_shot
-    section: bottom
+    # Gravity shots
+    -
+      type: gravity_shot
+      section: bottom
 
-  # Gravity Drips
-  -
-    type: gravity_drip
-    section: bottom
+    # Gravity Drips
+    -
+      type: gravity_drip
+      section: bottom
 
 displays:
   -

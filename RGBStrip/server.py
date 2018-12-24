@@ -105,7 +105,7 @@ def get_constants():
                 for key, klass in constants.DISPLAYS.iteritems()
             },
             'renderers': {
-                key: get_args(klass, ['sections', 'palettes'])
+                key: get_args(klass, ['loader'])
                 for key, klass in constants.RENDERERS.iteritems()
             },
             'sections': {

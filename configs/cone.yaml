@@ -17,27 +17,28 @@ palettes:
   rainbow_256:
     rainbow_steps: 256
 
-renderers:
-  # Cone
-  # -
-  #   type: cone_spin
-  #   section: cone
-  #   palette: rainbow_40
-  #   degrees_per_step: -2
-  -
-    type: cone_spin_full
-    section: cone
-    palette: rainbow_256
-  # -
-  #   type: cone_level
-  #   section: cone
-  #   palette: rainbow_6
-  #   seconds_per_level: 0.3
-  # -
-  #   type: cone_spiral
-  #   section: cone
-  #   palette: rainbow_6
-  #   seconds_per_level: 0.3
+renderer:
+  type: multi_all
+  renderers:
+    # -
+    #   type: cone_spin
+    #   section: cone
+    #   palette: rainbow_40
+    #   degrees_per_step: -2
+    -
+      type: cone_spin_full
+      section: cone
+      palette: rainbow_256
+    # -
+    #   type: cone_level
+    #   section: cone
+    #   palette: rainbow_6
+    #   seconds_per_level: 0.3
+    # -
+    #   type: cone_spiral
+    #   section: cone
+    #   palette: rainbow_6
+    #   seconds_per_level: 0.3
 
 displays:
   -

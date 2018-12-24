@@ -23,8 +23,7 @@ class RGBStripManager(Thread):
 
         if self.CONFIG:
             # Clear existing config
-            for renderer in self.CONFIG.RENDERERS:
-                renderer.stop()
+            CONFIG.RENDERER.stop()
             for display in self.CONFIG.DISPLAYS:
                 display.teardown()
 
@@ -45,35 +44,16 @@ class RGBStripManager(Thread):
         with open(self.CONFIG_PATH, 'w') as f:
             f.write(yaml_config)
 
-    def render(self):
-        """
-        Render all registered renderers
-        """
-        for renderer in self.CONFIG.RENDERERS:
-            renderer.render()
-
-    def display(self):
-        """
-        Display all registered displays
-        """
-        for display in self.CONFIG.DISPLAYS:
-            display.display()
-
-    def output(self):
-        """
-        Clear all LEDs, render and then display the results
-        """
-        self.CONFIG.CONTROLLER.set_leds()
-        self.render()
-        self.display()
-
     def output_forever(self):
         try:
             for display in self.CONFIG.DISPLAYS:
                 display.setup()
             self.IS_ALIVE = True
             while (self.IS_ALIVE):
-                self.output()
+                self.CONFIG.CONTROLLER.set_leds()
+                self.CONFIG.RENDERER.render()
+                for display in self.CONFIG.DISPLAYS:
+                    display.display()
                 time.sleep(self.CONFIG.SLEEP_TIME)
         except KeyboardInterrupt:
             print 'Bye!'

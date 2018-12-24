@@ -1,19 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-from .base import BaseRenderer
 from RGBStrip import utils
+from RGBStrip.renderers.base import BaseSingleRenderer
 
 
-class PatchRenderer(BaseRenderer):
+class PatchRenderer(BaseSingleRenderer):
+
     def __init__(
             self,
-            section,
-            palette,
+            loader,
+            section=None,
+            palette=None,
             active=True,
             # TODO: remove delay?
             delay=1,
             start_index=0):
-        super(PatchRenderer, self).__init__(section, palette, active=active)
+        super(PatchRenderer, self).__init__(loader, section=section, palette=palette, active=active)
 
         self.INDEX = start_index % len(self.PALETTE)
         self.STEP_DELAYED = 0

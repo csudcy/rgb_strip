@@ -23,15 +23,17 @@ palettes:
   rainbow_60:
     rainbow_steps: 60
 
-renderers:
-  -
-    type: rainbow
-    section: top
-    palette: rainbow_60
-  -
-    type: rainbow
-    section: bottom
-    palette: rainbow_60
+renderer:
+  type: multi_all
+  renderers:
+    -
+      type: rainbow
+      section: top
+      palette: rainbow_60
+    -
+      type: rainbow
+      section: bottom
+      palette: rainbow_60
 
 displays:
   -

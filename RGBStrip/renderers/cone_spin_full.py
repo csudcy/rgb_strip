@@ -1,19 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-
 from RGBStrip import utils
-from RGBStrip.renderers.base import BaseRenderer
+from RGBStrip.renderers.base import BaseSingleRenderer
 
 
-class ConeSpinFullRenderer(BaseRenderer):
+class ConeSpinFullRenderer(BaseSingleRenderer):
 
     def __init__(
             self,
-            section,
-            palette,
+            loader,
+            section=None,
+            palette=None,
             active=True
         ):
-        super(ConeSpinFullRenderer, self).__init__(section, palette, active=active)
+        super(ConeSpinFullRenderer, self).__init__(loader, section=section, palette=palette, active=active)
         self.COLOUR_INDEX = 0
         self.PALETTE_LENGTH = len(self.PALETTE)
 
