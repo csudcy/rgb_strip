@@ -33,9 +33,10 @@ A controller for addressable RGB LED strips with multiple outputs (mainly, Raspb
 ## Run On Startup
 
 * Create a `prod.yaml` config.
-* `sudo ln -s /home/pi/rgb_strip/init.d/rgbs /etc/init.d`
-* `sudo update-rc.d rgbs defaults`
-* `service rgbs start`
+* `sudo ln -s /home/pi/rgb_strip/init.d/rgbs.service /etc/systemd/system/`
+* `sudo systemctl daemon-reload`
+* `sudo systemctl enable rgbs`
+* `sudo systemctl start rgbs`
 
 
 ## Connecting LEDs to Raspberry Pi
