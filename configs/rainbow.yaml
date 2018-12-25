@@ -18,6 +18,7 @@ sections:
     y: 1
     width: 60
     height: 1
+    reverse_x: True
 
 palettes:
   rainbow_60:

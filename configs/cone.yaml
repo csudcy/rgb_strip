@@ -1,7 +1,8 @@
 controller:
   type: cone
-  levels: [3,5,7,11,13]
-  reverse: False
+  levels: [8, 10, 12, 16, 15, 21, 25, 30]
+
+  reverse: True
 
 sections:
   cone:

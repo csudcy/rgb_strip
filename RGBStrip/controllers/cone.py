@@ -36,7 +36,7 @@ class ConeController(BaseController):
     def _get_index(self, angle, level):
         index = self.LEVEL_OFFSETS[level] + angle/360.0 * self.LEVELS[level]
         if self.REVERSE:
-            index = self.LED_COUNT - index
+            index = self.LED_COUNT - index - 1
         return int(index)
 
     def add_led(self, angle, level, *args, **kwargs):

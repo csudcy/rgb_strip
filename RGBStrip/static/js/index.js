@@ -77,7 +77,22 @@ function _get_leds_rectangle(LED_CONFIG) {
     let leds = [];
     for (let y=0; y<LED_CONFIG.height; y++) {
         for (let x=0; x<LED_CONFIG.width; x++) {
-            leds.push(_make_led(y * LED_WH, x * LED_WH));
+            let ax=x, ay=y;
+
+            // Account for reverse configs
+            if (LED_CONFIG.reverse_x) {
+                ax = LED_CONFIG.width - ax - 1;
+            }
+            if (LED_CONFIG.reverse_y) {
+                ay = LED_CONFIG.height - ay - 1;
+            }
+
+            // Account for "snaking" of LED string
+            if (ay % 2 == 1) {
+                ax = LED_CONFIG.width - ax - 1;
+            }
+
+            leds.push(_make_led(ay * LED_WH, ax * LED_WH));
         }
     }
     return {
@@ -108,6 +123,11 @@ function _get_leds_cone(LED_CONFIG) {
             leds.push(_make_led(centre_xy + offset_y, centre_xy + offset_x));
         }
     });
+
+    if (LED_CONFIG.reverse) {
+        leds.reverse();
+    }
+
     return {
         leds: leds,
         width: centre_xy*2,
