@@ -50,7 +50,7 @@ class RGBStripManager(Thread):
                 display.setup()
             self.IS_ALIVE = True
             while (self.IS_ALIVE):
-                self.CONFIG.CONTROLLER.set_leds()
+                self.CONFIG.CONTROLLER.set_leds((0, 0, 0))
                 self.CONFIG.RENDERER.render()
                 for display in self.CONFIG.DISPLAYS:
                     display.display()

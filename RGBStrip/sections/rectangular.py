@@ -25,15 +25,15 @@ class RectangularSection(object):
         self.REVERSE_X = reverse_x
         self.REVERSE_Y = reverse_y
 
-    def add_led(self, x, y, *args, **kwargs):
+    def add_led(self, x, y, colour):
         if self.ACTIVE:
             ax, ay = self._get_absolute_xy(x, y)
-            self.CONTROLLER.add_led(ax, ay, *args, **kwargs)
+            self.CONTROLLER.add_led(ax, ay, colour)
 
-    def set_led(self, x, y, *args, **kwargs):
+    def set_led(self, x, y, colour):
         if self.ACTIVE:
             ax, ay = self._get_absolute_xy(x, y)
-            self.CONTROLLER.set_led(ax, ay, *args, **kwargs)
+            self.CONTROLLER.set_led(ax, ay, colour)
 
     def increment_xy(self, x, y):
         # Move to the next column

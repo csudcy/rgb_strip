@@ -25,7 +25,7 @@ class PatchRenderer(BaseSingleRenderer):
         rgb_colour = self.PALETTE[self.INDEX]
         for x in xrange(self.SECTION.WIDTH):
             for y in xrange(self.SECTION.HEIGHT):
-                self.SECTION.add_led(x, y, *rgb_colour)
+                self.SECTION.add_led(x, y, rgb_colour)
         self.STEP_DELAYED += 1
         if self.STEP_DELAYED >= self.STEP_DELAY:
             # We have stayed on this step for STEP_DELAY frames; move to the next step

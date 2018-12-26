@@ -23,7 +23,7 @@ class ConeSpinLineRenderer(BaseSingleRenderer):
     def do_render(self):
         colour = self.PALETTE[self.COLOUR_INDEX]
         for level_index in xrange(len(self.SECTION.LEVELS)):
-            self.SECTION.set_led(self.CURRENT_ANGLE, level_index, *colour)
+            self.SECTION.set_led(self.CURRENT_ANGLE, level_index, colour)
 
         # Move to the next angle/colour
         self.CURRENT_ANGLE = (360 + self.CURRENT_ANGLE + self.DEGREES_PER_STEP) % 360

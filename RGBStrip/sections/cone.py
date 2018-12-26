@@ -18,15 +18,15 @@ class ConeSection(object):
         # Copy here for easy access
         self.LEVELS = controller.LEVELS
 
-    def add_led(self, angle, level, *args, **kwargs):
+    def add_led(self, angle, level, colour):
         if self.ACTIVE:
             aa, al = self._get_absolute_al(angle, level)
-            self.CONTROLLER.add_led(aa, al, *args, **kwargs)
+            self.CONTROLLER.add_led(aa, al, colour)
 
-    def set_led(self, angle, level, *args, **kwargs):
+    def set_led(self, angle, level, colour):
         if self.ACTIVE:
             aa, al = self._get_absolute_al(angle, level)
-            self.CONTROLLER.set_led(aa, al, *args, **kwargs)
+            self.CONTROLLER.set_led(aa, al, colour)
 
     def _get_absolute_al(self, angle, level):
         if self.REVERSE_ANGLE:

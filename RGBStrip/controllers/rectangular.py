@@ -37,13 +37,13 @@ class RectangularController(BaseController):
             y = self.HEIGHT - y - 1
         return (y * self.WIDTH) + (x if y % 2 == 0 else self.WIDTH - x - 1)
 
-    def add_led(self, x, y, *args, **kwargs):
+    def add_led(self, x, y, colour):
         index = self._get_index(x, y)
-        BaseController.add_led(self, index, *args, **kwargs)
+        BaseController.add_led(self, index, colour)
 
-    def set_led(self, x, y, *args, **kwargs):
+    def set_led(self, x, y, colour):
         index = self._get_index(x, y)
-        BaseController.set_led(self, index, *args, **kwargs)
+        BaseController.set_led(self, index, colour)
 
     def get_rgba(self, x, y):
         index = self._get_index(x, y)

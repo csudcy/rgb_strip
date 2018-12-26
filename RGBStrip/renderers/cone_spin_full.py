@@ -24,7 +24,7 @@ class ConeSpinFullRenderer(BaseSingleRenderer):
             for level_led in xrange(level_count):
                 colour_index = int(self.COLOUR_INDEX + level_led * colour_step)
                 colour = self.PALETTE[colour_index % self.PALETTE_LENGTH]
-                self.SECTION.set_led(level_led * level_angle, level_index, *colour)
+                self.SECTION.set_led(level_led * level_angle, level_index, colour)
 
         # Move to the next angle/colour
         self.COLOUR_INDEX = (self.COLOUR_INDEX + 1) % self.PALETTE_LENGTH

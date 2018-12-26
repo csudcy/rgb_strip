@@ -22,10 +22,10 @@ renderer:
   type: multi_timed
   time_seconds: 2
   renderers:
-    -
-      type: cone_spin_full
-      section: cone
-      palette: rainbow_256
+    # -
+    #   type: cone_spin_full
+    #   section: cone
+    #   palette: rainbow_256
     -
       type: multi_all
       renderers:

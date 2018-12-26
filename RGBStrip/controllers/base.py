@@ -28,38 +28,30 @@ class BaseController(object):
         self.BYTES[-self.BYTES_END:] = [0xFF] * self.BYTES_END
 
         # Setup the LED frames so the padding bits are set correctly
-        self.set_leds()
+        self.set_leds((0, 0, 0))
 
-    def add_led(self, index, r=0, g=0, b=0):
+    def add_led(self, index, colour):
         offset = self._get_offset(index)
-        self._set_led(
-            self._get_offset(index),
+        r, g, b = colour
+        new_colour = (
             self.BYTES[offset + 3] + r,
             self.BYTES[offset + 2] + g,
             self.BYTES[offset + 1] + b
         )
+        self._set_led(offset, new_colour)
 
-    def set_led(self, index, r=0, g=0, b=0):
-        self._set_led(
-            self._get_offset(index),
-            r,
-            g,
-            b
-        )
+    def set_led(self, index, colour):
+        self._set_led(self._get_offset(index), colour)
 
-    def set_leds(self, r=0, g=0, b=0):
+    def set_leds(self, colour):
         for offset in xrange(self.BYTES_START, self.BYTES_START + self.BYTES_LED, 4):
-            self._set_led(
-                offset,
-                r,
-                g,
-                b
-            )
+            self._set_led(offset, colour)
 
     def _get_offset(self, index):
         return self.BYTES_START + index * 4
 
-    def _set_led(self, offset, r, g, b):
+    def _set_led(self, offset, colour):
+        r, g, b = colour
         # Brightness max is 31; or with 224 to add the padding 1s
         self.BYTES[offset + 0] = max(min(int(self.A), 31), 0) | 224
         # R, G, B are max 255
