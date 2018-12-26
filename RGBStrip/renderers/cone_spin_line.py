@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-from RGBStrip import utils
 from RGBStrip.renderers.base import BaseSingleRenderer
 
 

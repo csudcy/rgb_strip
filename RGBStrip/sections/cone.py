@@ -9,26 +9,26 @@ class ConeSection(object):
             self,
             controller,
             active=True,
-            reverse_angle=False
         ):
         self.CONTROLLER = controller
         self.ACTIVE = active
-        self.REVERSE_ANGLE = reverse_angle
 
         # Copy here for easy access
         self.LEVELS = controller.LEVELS
 
     def add_led(self, angle, level, colour):
         if self.ACTIVE:
-            aa, al = self._get_absolute_al(angle, level)
-            self.CONTROLLER.add_led(aa, al, colour)
+            level_index = self._get_index_by_angle(angle, level)
+            self.CONTROLLER.add_led(level_index, level, colour)
 
     def set_led(self, angle, level, colour):
         if self.ACTIVE:
-            aa, al = self._get_absolute_al(angle, level)
-            self.CONTROLLER.set_led(aa, al, colour)
+            level_index = self._get_index_by_angle(angle, level)
+            self.CONTROLLER.set_led(level_index, level, colour)
 
-    def _get_absolute_al(self, angle, level):
-        if self.REVERSE_ANGLE:
-            angle = 360.0 - angle
-        return angle, level
+    def set_led_by_level_index(self, level_index, level, colour):
+        if self.ACTIVE:
+            self.CONTROLLER.set_led(level_index, level, colour)
+
+    def _get_index_by_angle(self, angle, level):
+        return int(angle/360.0 * self.CONTROLLER.LEVELS[level])

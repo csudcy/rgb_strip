@@ -9,6 +9,7 @@ from RGBStrip.displays.websocket import WebSocketDisplay
 from RGBStrip.renderers.clock import ClockRenderer
 from RGBStrip.renderers.cone_spin_full import ConeSpinFullRenderer
 from RGBStrip.renderers.cone_spin_line import ConeSpinLineRenderer
+from RGBStrip.renderers.cone_spiral_fill import ConeSpiralFillRenderer
 from RGBStrip.renderers.gravity_drip import GravityDripRenderer
 from RGBStrip.renderers.gravity_shot import GravityShotRenderer
 from RGBStrip.renderers.multi_all import MultiAllRenderer
@@ -47,6 +48,7 @@ RENDERERS = {
     'clock': ClockRenderer,
     'cone_spin_full': ConeSpinFullRenderer,
     'cone_spin_line': ConeSpinLineRenderer,
+    'cone_spiral_fill': ConeSpiralFillRenderer,
     'gravity_drip': GravityDripRenderer,
     'gravity_shot': GravityShotRenderer,
     'multi_all': MultiAllRenderer,

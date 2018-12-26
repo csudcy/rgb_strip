@@ -33,18 +33,18 @@ class ConeController(BaseController):
         }
         BaseController.__init__(self, config, sum(levels)+extra_leds, a)
 
-    def _get_index(self, angle, level):
-        index = int(self.LEVEL_OFFSETS[level] + angle/360.0 * self.LEVELS[level])
+    def _get_index(self, level_index, level):
+        index = self.LEVEL_OFFSETS[level] + level_index
         if self.REVERSE:
             index = self.LED_COUNT - index - 1
         return index
 
-    def add_led(self, angle, level, colour):
-        index = self._get_index(angle, level)
+    def add_led(self, level_index, level, colour):
+        index = self._get_index(level_index, level)
         BaseController.add_led(self, index, colour)
 
-    def set_led(self, angle, level, colour):
-        index = self._get_index(angle, level)
+    def set_led(self, level_index, level, colour):
+        index = self._get_index(level_index, level)
         BaseController.set_led(self, index, colour)
 
     def get_rgba(self, angle, level):
