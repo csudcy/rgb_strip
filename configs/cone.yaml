@@ -1,7 +1,7 @@
 controller:
   type: cone
-  levels: [8, 10, 12, 16, 15, 21, 25, 30]
-
+  levels: [8, 10, 12, 16, 15, 21, 25]
+  extra_leds: 13
   reverse: True
 
 sections:

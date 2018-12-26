@@ -124,6 +124,11 @@ function _get_leds_cone(LED_CONFIG) {
         }
     });
 
+    // Hidden "extra" LEDs
+    for (let index=0; index<LED_CONFIG.extra_leds; index++) {
+        leds.push(_make_led(0, index*LED_WH));
+    }
+
     if (LED_CONFIG.reverse) {
         leds.reverse();
     }
