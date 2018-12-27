@@ -1,29 +1,33 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-from RGBStrip.renderers.base import BaseSingleRenderer
+from RGBStrip.renderers.base import BaseSingleTimedRenderer
 
 
-class ConeSpinLineRenderer(BaseSingleRenderer):
+class ConeSpinLineRenderer(BaseSingleTimedRenderer):
 
     def __init__(
             self,
             loader,
+            interval_seconds=0.2,
             section=None,
             palette=None,
             active=True,
-            degrees_per_step=2,
+            # Custom
             start_degrees=0
         ):
-        super(ConeSpinLineRenderer, self).__init__(loader, section=section, palette=palette, active=active)
-        self.DEGREES_PER_STEP = degrees_per_step
-        self.CURRENT_ANGLE = start_degrees
+        super(ConeSpinLineRenderer, self).__init__(
+            loader, interval_seconds=interval_seconds, section=section, palette=palette, active=active)
         self.COLOUR_INDEX = 0
+        self.CURRENT_ANGLE = start_degrees
+        self.DEGREES_PER_STEP = 360.0 / max(self.SECTION.LEVELS)
 
-    def do_render(self):
+    def do_render_display(self):
         colour = self.PALETTE[self.COLOUR_INDEX]
         for level_index in xrange(len(self.SECTION.LEVELS)):
             self.SECTION.set_led(self.CURRENT_ANGLE, level_index, colour)
 
+        self.COLOUR_INDEX = (self.COLOUR_INDEX + 1) % len(self.PALETTE)
+
+    def do_render_step(self):
         # Move to the next angle/colour
         self.CURRENT_ANGLE = (360 + self.CURRENT_ANGLE + self.DEGREES_PER_STEP) % 360
-        self.COLOUR_INDEX = (self.COLOUR_INDEX + 1) % len(self.PALETTE)

@@ -12,6 +12,7 @@ class ConeSpiralDripRenderer(BaseSingleTimedRenderer):
             section=None,
             palette=None,
             active=True,
+            # Custom
             led_interval=3,
             reverse_colour=False
         ):
