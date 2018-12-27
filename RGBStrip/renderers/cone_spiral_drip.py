@@ -1,42 +1,39 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-from RGBStrip.renderers.base import BaseSingleRenderer
+from RGBStrip.renderers.base import BaseSingleTimedRenderer
 
 
-class ConeSpiralFillRenderer(BaseSingleRenderer):
+class ConeSpiralDripRenderer(BaseSingleTimedRenderer):
 
     def __init__(
             self,
             loader,
+            interval_seconds=1,
             section=None,
             palette=None,
             active=True,
-            advance_per_step=0.2,
-            reverse=False,
+            led_interval=3,
             reverse_colour=False
         ):
-        super(ConeSpiralFillRenderer, self).__init__(loader, section=section, palette=palette, active=active)
-        self.ADVANCE_PER_STEP = advance_per_step
-        self.REVERSE = reverse
+        super(ConeSpiralDripRenderer, self).__init__(
+            loader, interval_seconds=interval_seconds, section=section, palette=palette, active=active)
         self.REVERSE_COLOUR = reverse_colour
+        self.LED_INTERVAL = led_interval
         self.INDEX = 0
 
         self.LEVEL_SUM = sum(self.SECTION.LEVELS)
 
-    def do_render(self):
-        for index in xrange(int(self.INDEX) + 1):
+    def do_render_display(self):
+        for index in xrange(self.INDEX, self.LEVEL_SUM, self.LED_INTERVAL):
             # Work out the colour
             colour_index = index
             if self.REVERSE_COLOUR:
                 colour_index = self.LEVEL_SUM - colour_index - 1
             colour = self.PALETTE[colour_index % len(self.PALETTE)]
 
-            # Work out the LED index
-            if self.REVERSE:
-                index = self.LEVEL_SUM - index - 1
-
             # Always using level 0 allows us to directly index pixels
             self.SECTION.set_led_by_level_index(index, 0, colour)
 
+    def do_render_step(self):
         # Move to the next index
-        self.INDEX = (self.INDEX + self.ADVANCE_PER_STEP) % self.LEVEL_SUM
+        self.INDEX = (self.INDEX + 1) % self.LED_INTERVAL

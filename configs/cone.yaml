@@ -48,16 +48,21 @@ renderer:
           palette: rainbow_40
           degrees_per_step: -2
           start_degrees: 240
-    # -
-    #   type: cone_level
-    #   section: cone
-    #   palette: rainbow_6
-    #   seconds_per_level: 0.3
     -
       type: cone_spiral_fill
       section: cone
       palette: rainbow_107
       reverse: True
+    -
+      type: cone_spiral_drip
+      section: cone
+      palette: rainbow_107
+      reverse_colour: True
+    # -
+    #   type: cone_level
+    #   section: cone
+    #   palette: rainbow_6
+    #   seconds_per_level: 0.3
 
 displays:
   -

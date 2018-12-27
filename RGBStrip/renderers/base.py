@@ -1,7 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
+import abc
+import time
+
 
 class BaseRenderer(object):
+    __metaclass__ = abc.ABCMeta
 
     def __init__(self, loader, active=True):
         self.ACTIVE = active
@@ -10,8 +14,9 @@ class BaseRenderer(object):
         if self.ACTIVE:
             self.do_render()
 
+    @abc.abstractmethod
     def do_render(self):
-        raise Exception('do_render must be overridden by inheriting classes!')
+        pass
 
     def stop(self):
         """
@@ -33,6 +38,31 @@ class BaseSingleRenderer(BaseRenderer):
         if not palette:
             raise Exception('You must provide a palette for %s!' % self.__class__.__name__)
         self.PALETTE = palette
+
+
+class BaseSingleTimedRenderer(BaseSingleRenderer):
+
+    def __init__(self, loader, interval_seconds=1, section=None, palette=None, active=True):
+        super(BaseSingleTimedRenderer, self).__init__(
+            loader, section=section, palette=palette, active=active)
+
+        self.INTERVAL_SECONDS = interval_seconds
+        self.NEXT_STEP = time.time() + interval_seconds
+
+    def do_render(self):
+        self.do_render_display()
+
+        if time.time() > self.NEXT_STEP:
+            self.NEXT_STEP = time.time() + self.INTERVAL_SECONDS
+            self.do_render_step()
+
+    @abc.abstractmethod
+    def do_render_display(self):
+        pass
+
+    @abc.abstractmethod
+    def do_render_step(self):
+        pass
 
 
 class BaseMultiRenderer(BaseRenderer):
