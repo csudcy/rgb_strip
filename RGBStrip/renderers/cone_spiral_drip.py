@@ -8,21 +8,20 @@ class ConeSpiralDripRenderer(BaseSingleTimedRenderer):
     def __init__(
             self,
             loader,
-            interval_seconds=1,
+            interval_seconds=0.1,
             section=None,
             palette=None,
             active=True,
             # Custom
-            segment_step=3,
-            segment_length=2,
+            segment_length=3,
+            segment_gap=5,
             reverse_colour=False
         ):
         super(ConeSpiralDripRenderer, self).__init__(
             loader, interval_seconds=interval_seconds, section=section, palette=palette, active=active)
         self.REVERSE_COLOUR = reverse_colour
-        self.SEGMENT_STEP = segment_step
         self.SEGMENT_LENGTH = segment_length
-        self.SEGMENT_TOTAL = segment_step + segment_length
+        self.SEGMENT_TOTAL = segment_gap + segment_length
         self.INDEX = 0
 
         self.LEVEL_SUM = sum(self.SECTION.LEVELS)

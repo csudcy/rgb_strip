@@ -8,7 +8,7 @@ class ConeLevelRenderer(BaseSingleTimedRenderer):
     def __init__(
             self,
             loader,
-            interval_seconds=0.2,
+            interval_seconds=0.1,
             section=None,
             palette=None,
             active=True
