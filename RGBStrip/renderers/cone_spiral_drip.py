@@ -13,28 +13,36 @@ class ConeSpiralDripRenderer(BaseSingleTimedRenderer):
             palette=None,
             active=True,
             # Custom
-            led_interval=3,
+            segment_step=3,
+            segment_length=2,
             reverse_colour=False
         ):
         super(ConeSpiralDripRenderer, self).__init__(
             loader, interval_seconds=interval_seconds, section=section, palette=palette, active=active)
         self.REVERSE_COLOUR = reverse_colour
-        self.LED_INTERVAL = led_interval
+        self.SEGMENT_STEP = segment_step
+        self.SEGMENT_LENGTH = segment_length
+        self.SEGMENT_TOTAL = segment_step + segment_length
         self.INDEX = 0
 
         self.LEVEL_SUM = sum(self.SECTION.LEVELS)
 
     def do_render_display(self):
-        for index in xrange(self.INDEX, self.LEVEL_SUM, self.LED_INTERVAL):
+        start_index = self.INDEX - self.SEGMENT_TOTAL
+        for segment_index in xrange(start_index, self.LEVEL_SUM, self.SEGMENT_TOTAL):
             # Work out the colour
-            colour_index = index
+            colour_index = segment_index
             if self.REVERSE_COLOUR:
                 colour_index = self.LEVEL_SUM - colour_index - 1
             colour = self.PALETTE[colour_index % len(self.PALETTE)]
 
-            # Always using level 0 allows us to directly index pixels
-            self.SECTION.set_led_by_level_index(index, 0, colour)
+            for length_index in xrange(self.SEGMENT_LENGTH):
+                actual_index = segment_index + length_index
+
+                if 0 <= actual_index and actual_index < self.LEVEL_SUM:
+                    # Always using level 0 allows us to directly index pixels
+                    self.SECTION.set_led_by_level_index(actual_index, 0, colour)
 
     def do_render_step(self):
         # Move to the next index
-        self.INDEX = (self.INDEX + 1) % self.LED_INTERVAL
+        self.INDEX = (self.INDEX + 1) % self.SEGMENT_TOTAL
