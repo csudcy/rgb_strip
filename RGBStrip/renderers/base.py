@@ -67,13 +67,14 @@ class BaseSingleTimedRenderer(BaseSingleRenderer):
 
 class BaseMultiRenderer(BaseRenderer):
 
-    def __init__(self, loader, renderers=None, active=True):
+    def __init__(self, loader, renderers=None, common_parameters=None, active=True):
         super(BaseMultiRenderer, self).__init__(loader, active=active)
 
-        self.RENDERERS = [
-            loader.load_renderer(renderer)
-            for renderer in renderers
-        ]
+        self.RENDERERS = []
+        for renderers_config in renderers:
+            if common_parameters:
+                renderers_config.update(common_parameters)
+            self.RENDERERS.append(loader.load_renderer(renderers_config))
 
     def stop(self):
         for renderer in self.RENDERERS:

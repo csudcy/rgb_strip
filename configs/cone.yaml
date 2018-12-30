@@ -19,20 +19,19 @@ renderer:
       palette: rainbow_40
     -
       type: multi_all
+      common_parameters:
+        type: cone_spin_line
+        section: cone
+        palette: rainbow_256
+        interval_seconds: 0.05
       renderers:
         -
-          type: cone_spin_line
-          section: cone
-          palette: rainbow_256
+          degrees_per_step: 2
         -
-          type: cone_spin_line
-          section: cone
-          palette: rainbow_256
+          degrees_per_step: 2
           start_degrees: 120
         -
-          type: cone_spin_line
-          section: cone
-          palette: rainbow_256
+          degrees_per_step: 2
           start_degrees: 240
     -
       type: cone_spiral_fill
@@ -40,10 +39,48 @@ renderer:
       palette: rainbow_107
       reverse: True
     -
+      type: multi_all
+      common_parameters:
+        type: cone_spin_line
+        section: cone
+        palette: rainbow_256
+        interval_seconds: 0.05
+      renderers:
+        -
+          degrees_per_step: 2
+        -
+          degrees_per_step: -2
+          start_degrees: 90
+        -
+          degrees_per_step: 2
+          start_degrees: 180
+        -
+          degrees_per_step: -2
+          start_degrees: 270
+    -
       type: cone_spiral_drip
       section: cone
       palette: rainbow_107
       reverse_colour: True
+    -
+      type: multi_all
+      common_parameters:
+        type: cone_spin_line
+        section: cone
+        palette: rainbow_256
+        interval_seconds: 0.05
+      renderers:
+        -
+          degrees_per_step: 2
+        -
+          degrees_per_step: -3
+          start_degrees: 90
+        -
+          degrees_per_step: 5
+          start_degrees: 180
+        -
+          degrees_per_step: -7
+          start_degrees: 270
     -
       type: cone_level
       section: cone
