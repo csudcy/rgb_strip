@@ -204,7 +204,12 @@ function save_config() {
     });
 }
 
+function show_config_help() {
+    $('#config_help').toggle();
+}
+
 function bind_handlers() {
+    $('#show_config_help').click(show_config_help);
     $('#reload_config').click(reload_config);
     $('#save_config').click(save_config);
 }
@@ -213,7 +218,7 @@ function load_constants() {
     $.ajax(
         '/constants'
     ).done(function(data, textStatus, jqXHR) {
-        $('#constants pre').text(JSON.stringify(data, undefined, 2));
+        $('#config_help pre').text(JSON.stringify(data, undefined, 2));
     }).fail(function(jqXHR, textStatus, errorThrown) {
         alert('Error loading constants!');
     });

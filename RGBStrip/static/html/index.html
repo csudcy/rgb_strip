@@ -9,23 +9,27 @@
         <link rel="stylesheet" type="text/css" href="/static/css/main.css">
     </head>
     <body>
-        <span id="led_container">
-            <!--Everything LED related should go in here-->
-        </span>
-
-        <div id="bottom">
+        <span id="left">
             <span id="config">
                 Config:
-                <textarea id="config_input"></textarea>
-                <button id="reload_config">Reload Config</button>
-                <button id="save_config">Save Config</button>
-                <span id="config_status">...</span>
-            </span>
+                <input id="show_config_help" type="checkbox"/>
+                <label for="show_config_help">Show Help</label>
 
-            <span id="constants">
+                <button id="reload_config">Reload</button>
+                <button id="save_config">Save</button>
+                <span id="config_status">...</span>
+                <textarea id="config_input"></textarea>
+            </span>
+        </span>
+
+        <span id="right">
+            <span id="led_container">
+                <!--Everything LED related should go in here-->
+            </span>
+            <span id="config_help">
                 Config Help:
                 <pre></pre>
             </span>
-        </div>
+        </span>
     </body>
 </html>
