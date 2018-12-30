@@ -7,6 +7,7 @@ from RGBStrip.displays.tk import TkDisplay
 from RGBStrip.displays.websocket import WebSocketDisplay
 
 from RGBStrip.renderers.clock import ClockRenderer
+from RGBStrip.renderers.cone_level import ConeLevelRenderer
 from RGBStrip.renderers.cone_spin_full import ConeSpinFullRenderer
 from RGBStrip.renderers.cone_spin_line import ConeSpinLineRenderer
 from RGBStrip.renderers.cone_spiral_drip import ConeSpiralDripRenderer
@@ -47,6 +48,7 @@ DISPLAYS = {
 
 RENDERERS = {
     'clock': ClockRenderer,
+    'cone_level': ConeLevelRenderer,
     'cone_spin_full': ConeSpinFullRenderer,
     'cone_spin_line': ConeSpinLineRenderer,
     'cone_spiral_drip': ConeSpiralDripRenderer,

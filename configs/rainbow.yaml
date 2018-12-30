@@ -37,5 +37,4 @@ renderer:
       palette: rainbow_60
 
 displays:
-  -
-    type: websocket
+  - type: websocket

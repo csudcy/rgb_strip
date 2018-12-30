@@ -39,9 +39,11 @@ function config_has_changed(old_config, new_config) {
     } else if (old_config.type == 'cone') {
         return (
             // Cone controllers
-            old_config.levels.toString() !== new_config.levels.toString()
+            old_config.extra_leds !== new_config.extra_leds
             ||
             old_config.reverse !== new_config.reverse
+            ||
+            old_config.levels.toString() !== new_config.levels.toString()
         );
     } else {
         throw new Error(`Unknown controller type: ${old_config.type}`);

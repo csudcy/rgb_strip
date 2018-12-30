@@ -109,5 +109,4 @@ renderer:
       section: bottom
 
 displays:
-  -
-    type: websocket
+  - type: websocket
