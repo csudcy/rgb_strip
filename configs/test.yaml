@@ -59,13 +59,6 @@ palettes:
     fade_hold_on: 20
     fade_hold_off: 10
 
-  rainbow_10:
-    rainbow_steps: 10
-  rainbow_30:
-    rainbow_steps: 30
-  rainbow_250:
-    rainbow_steps: 250
-
 renderer:
   type: multi_all
   renderers:

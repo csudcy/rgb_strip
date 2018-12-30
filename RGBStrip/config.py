@@ -23,7 +23,7 @@ class Config(object):
         self.SECTIONS = self._load_sections(config['sections'])
         self.DISPLAYS = self._load_displays(config['displays'])
 
-        # Requires SECTIONS & PALETTERS
+        # Requires SECTIONS & PALETTES
         self.RENDERER = self.load_renderer(config['renderer'])
 
     def _load_controller(self, controller_config):
@@ -76,6 +76,12 @@ class Config(object):
 
         # Or a named palette
         if palette in self.PALETTES:
+            return self.PALETTES[palette]
+
+        # Or a 'rainbow_{count}' palette
+        if palette.startswith('rainbow_'):
+            rainbow_steps = int(palette[8:])
+            self.PALETTES[palette] = utils.make_palette(rainbow_steps=rainbow_steps)
             return self.PALETTES[palette]
 
         # Or is a single named colours

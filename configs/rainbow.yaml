@@ -20,10 +20,6 @@ sections:
     height: 1
     reverse_x: True
 
-palettes:
-  rainbow_60:
-    rainbow_steps: 60
-
 renderer:
   type: multi_all
   renderers:

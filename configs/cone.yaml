@@ -9,18 +9,6 @@ sections:
   cone:
     type: cone
 
-palettes:
-  rainbow_6:
-    rainbow_steps: 6
-  rainbow_13:
-    rainbow_steps: 13
-  rainbow_40:
-    rainbow_steps: 40
-  rainbow_107:
-    rainbow_steps: 107
-  rainbow_256:
-    rainbow_steps: 256
-
 renderer:
   type: multi_timed
   time_seconds: 10
