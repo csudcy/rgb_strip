@@ -22,7 +22,7 @@ class ConeController(BaseController):
         level_offset = 0
         self.LEVEL_OFFSETS = [
             sum(levels[:level_index])
-            for level_index in xrange(len(levels))
+            for level_index in range(len(levels))
         ]
         config = {
             'a': a,

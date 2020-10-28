@@ -16,7 +16,7 @@ class ConeSpinLineRenderer(BaseSingleTimedRenderer):
             start_degrees=0,
             degrees_per_step=10
         ):
-        super(ConeSpinLineRenderer, self).__init__(
+        super().__init__(
             loader, interval_seconds=interval_seconds, section=section, palette=palette, active=active)
         self.COLOUR_INDEX = 0
         self.CURRENT_ANGLE = start_degrees
@@ -24,7 +24,7 @@ class ConeSpinLineRenderer(BaseSingleTimedRenderer):
 
     def do_render_display(self):
         colour = self.PALETTE[self.COLOUR_INDEX]
-        for level_index in xrange(len(self.SECTION.LEVELS)):
+        for level_index in range(len(self.SECTION.LEVELS)):
             self.SECTION.set_led(self.CURRENT_ANGLE, level_index, colour)
 
         self.COLOUR_INDEX = (self.COLOUR_INDEX + 1) % len(self.PALETTE)

@@ -15,7 +15,7 @@ class RainbowRenderer(BaseSingleRenderer):
             initial_x=0,
             initial_y=0
         ):
-        super(RainbowRenderer, self).__init__(loader, section=section, palette=palette, active=active)
+        super().__init__(loader, section=section, palette=palette, active=active)
 
         self.X = initial_x
         self.Y = initial_y

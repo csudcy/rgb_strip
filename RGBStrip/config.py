@@ -35,13 +35,13 @@ class Config(object):
                 self.CONTROLLER,
                 **params
             )
-            for id, params in (section_configs or {}).iteritems()
+            for id, params in (section_configs or {}).items()
         }
 
     def _load_palettes(self, palette_configs):
         return {
             id: utils.make_palette(**params)
-            for id, params in (palette_configs or {}).iteritems()
+            for id, params in (palette_configs or {}).items()
         }
 
     def load_renderer(self, renderer_config):
@@ -68,7 +68,7 @@ class Config(object):
             return None
 
         # Or a list of named colours
-        if hasattr(palette, '__iter__'):
+        if isinstance(palette, list):
             return [
                 utils.resolve_colour(colour)
                 for colour in palette

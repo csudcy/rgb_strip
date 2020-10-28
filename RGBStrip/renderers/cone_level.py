@@ -13,7 +13,7 @@ class ConeLevelRenderer(BaseSingleTimedRenderer):
             palette=None,
             active=True
         ):
-        super(ConeLevelRenderer, self).__init__(
+        super().__init__(
             loader, interval_seconds=interval_seconds, section=section, palette=palette, active=active)
         self.COLOUR_INDEX = 0
 
@@ -21,7 +21,7 @@ class ConeLevelRenderer(BaseSingleTimedRenderer):
         for level_index, level_count in enumerate(self.SECTION.LEVELS):
             colour_index = (self.COLOUR_INDEX + level_index) % len(self.PALETTE)
             colour = self.PALETTE[colour_index]
-            for index in xrange(level_count):
+            for index in range(level_count):
                 self.SECTION.set_led_by_level_index(index, level_index, colour)
 
     def do_render_step(self):

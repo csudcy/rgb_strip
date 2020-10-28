@@ -17,7 +17,7 @@ class ConeSpiralDripRenderer(BaseSingleTimedRenderer):
             segment_gap=5,
             reverse_colour=False
         ):
-        super(ConeSpiralDripRenderer, self).__init__(
+        super().__init__(
             loader, interval_seconds=interval_seconds, section=section, palette=palette, active=active)
         self.REVERSE_COLOUR = reverse_colour
         self.SEGMENT_LENGTH = segment_length
@@ -28,14 +28,14 @@ class ConeSpiralDripRenderer(BaseSingleTimedRenderer):
 
     def do_render_display(self):
         start_index = self.INDEX - self.SEGMENT_TOTAL
-        for segment_index in xrange(start_index, self.LEVEL_SUM, self.SEGMENT_TOTAL):
+        for segment_index in range(start_index, self.LEVEL_SUM, self.SEGMENT_TOTAL):
             # Work out the colour
             colour_index = segment_index
             if self.REVERSE_COLOUR:
                 colour_index = self.LEVEL_SUM - colour_index - 1
             colour = self.PALETTE[colour_index % len(self.PALETTE)]
 
-            for length_index in xrange(self.SEGMENT_LENGTH):
+            for length_index in range(self.SEGMENT_LENGTH):
                 actual_index = segment_index + length_index
 
                 if 0 <= actual_index and actual_index < self.LEVEL_SUM:

@@ -14,8 +14,8 @@ class CursesDisplay(BaseDisplay):
     """
     def display(self):
         # Construct the output
-        for y in xrange(self.CONTROLLER.HEIGHT):
-            for x in xrange(self.CONTROLLER.WIDTH):
+        for y in range(self.CONTROLLER.HEIGHT):
+            for x in range(self.CONTROLLER.WIDTH):
                 char = utils.classify_colour(
                     *self.CONTROLLER.get_rgba(x, y)
                 )
@@ -40,7 +40,7 @@ class CursesDisplay(BaseDisplay):
 
         # Draw the borders
         self.STDSCR.addstr(0, 0, '/'+'-'*self.CONTROLLER.WIDTH+'\\')
-        for y in xrange(self.CONTROLLER.HEIGHT):
+        for y in range(self.CONTROLLER.HEIGHT):
             self.STDSCR.addstr(y+1, 0, '|'+' '*self.CONTROLLER.WIDTH+'|')
         self.STDSCR.addstr(self.CONTROLLER.HEIGHT+1, 0, '\\'+'-'*self.CONTROLLER.WIDTH+'/')
 

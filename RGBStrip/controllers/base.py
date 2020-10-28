@@ -44,7 +44,7 @@ class BaseController(object):
         self._set_led(self._get_offset(index), colour)
 
     def set_leds(self, colour):
-        for offset in xrange(self.BYTES_START, self.BYTES_START + self.BYTES_LED, 4):
+        for offset in range(self.BYTES_START, self.BYTES_START + self.BYTES_LED, 4):
             self._set_led(offset, colour)
 
     def _get_offset(self, index):

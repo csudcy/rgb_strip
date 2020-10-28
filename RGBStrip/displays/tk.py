@@ -15,7 +15,7 @@ def int_to_2_hex(i):
 
 
 HEX_LOOKUP = [
-    int_to_2_hex(i) for i in xrange(256)
+    int_to_2_hex(i) for i in range(256)
 ]
 
 def rgba_to_hex(r, g, b, a):
@@ -73,10 +73,7 @@ class TkFrame(Frame):
         # Setup the correct geometry
         total_width = 2*self.BORDER + self.CONTROLLER.WIDTH*self.LED_SIZE
         total_height = 2*self.BORDER + self.CONTROLLER.HEIGHT*self.LED_SIZE
-        parent.geometry('{w}x{h}+300+300'.format(
-            w=total_width,
-            h=total_height
-        ))
+        parent.geometry(f'{total_width}x{total_height}+300+300')
 
         # Add all the LEDs
         def make_led(x, y):
@@ -93,15 +90,15 @@ class TkFrame(Frame):
         self.LEDS = [
             [
                 make_led(x, y)
-                for y in xrange(self.CONTROLLER.HEIGHT)
+                for y in range(self.CONTROLLER.HEIGHT)
             ]
-            for x in xrange(self.CONTROLLER.WIDTH)
+            for x in range(self.CONTROLLER.WIDTH)
         ]
 
     def update(self):
         # Update all the LEDs
-        for y in xrange(self.CONTROLLER.HEIGHT):
-            for x in xrange(self.CONTROLLER.WIDTH):
+        for y in range(self.CONTROLLER.HEIGHT):
+            for x in range(self.CONTROLLER.WIDTH):
                 colour = self.CONTROLLER.get_rgba(x, y)
                 self.canvas.itemconfig(
                     self.LEDS[x][y],

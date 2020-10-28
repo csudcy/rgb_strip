@@ -30,20 +30,20 @@ class BaseSingleRenderer(BaseRenderer):
     DEFAULT_PALETTE = None
 
     def __init__(self, loader, section=None, palette=None, active=True):
-        super(BaseSingleRenderer, self).__init__(loader, active=active)
+        super().__init__(loader, active=active)
 
         self.SECTION = loader.resolve_section(section)
 
         palette = loader.resolve_palette(palette or self.DEFAULT_PALETTE)
         if not palette:
-            raise Exception('You must provide a palette for %s!' % self.__class__.__name__)
+            raise Exception(f'You must provide a palette for {self.__class__.__name__}!')
         self.PALETTE = palette
 
 
 class BaseSingleTimedRenderer(BaseSingleRenderer):
 
     def __init__(self, loader, interval_seconds=1, section=None, palette=None, active=True):
-        super(BaseSingleTimedRenderer, self).__init__(
+        super().__init__(
             loader, section=section, palette=palette, active=active)
 
         self.INTERVAL_SECONDS = interval_seconds
@@ -68,7 +68,7 @@ class BaseSingleTimedRenderer(BaseSingleRenderer):
 class BaseMultiRenderer(BaseRenderer):
 
     def __init__(self, loader, renderers=None, common_parameters=None, active=True):
-        super(BaseMultiRenderer, self).__init__(loader, active=active)
+        super().__init__(loader, active=active)
 
         self.RENDERERS = []
         for renderers_config in renderers:

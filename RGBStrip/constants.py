@@ -3,7 +3,12 @@ from RGBStrip.controllers.rectangular import RectangularController
 
 from RGBStrip.displays.cursesd import CursesDisplay
 from RGBStrip.displays.rpi_spi import RPiSPIDisplay
-from RGBStrip.displays.tk import TkDisplay
+try:
+    from RGBStrip.displays.tk import TkDisplay
+except ImportError:
+    # Assume TK isn't installed
+    def TkDisplay(*args, **kwargs):
+        raise Exception('Cannot init a TK display; please install TKInter!')
 from RGBStrip.displays.websocket import WebSocketDisplay
 
 from RGBStrip.renderers.clock import ClockRenderer

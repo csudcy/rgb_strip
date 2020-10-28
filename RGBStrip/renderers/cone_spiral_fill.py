@@ -16,7 +16,7 @@ class ConeSpiralFillRenderer(BaseSingleTimedRenderer):
             reverse=False,
             reverse_colour=False
         ):
-        super(ConeSpiralFillRenderer, self).__init__(
+        super().__init__(
             loader, interval_seconds=interval_seconds, section=section, palette=palette, active=active)
         self.REVERSE = reverse
         self.REVERSE_COLOUR = reverse_colour
@@ -25,7 +25,7 @@ class ConeSpiralFillRenderer(BaseSingleTimedRenderer):
         self.LEVEL_SUM = sum(self.SECTION.LEVELS)
 
     def do_render_display(self):
-        for index in xrange(int(self.INDEX) + 1):
+        for index in range(int(self.INDEX) + 1):
             # Work out the colour
             colour_index = index
             if self.REVERSE_COLOUR:

@@ -18,7 +18,7 @@ class BaseDisplay(object):
         if getattr(self, 'SETUP_DONE', False):
             try:
                 self.teardown()
-            except Exception, ex:
+            except Exception as ex:
                 logging.error('Exception during teardown: %s', str(ex))
             self.SETUP_DONE = False
 

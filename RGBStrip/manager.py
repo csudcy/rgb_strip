@@ -18,7 +18,7 @@ class RGBStripManager(Thread):
 
     def load_config(self, yaml_config):
         # Load the config & check it's valid
-        print 'Loading config from yaml...'
+        print('Loading config from yaml...')
         new_config = config.Config(yaml_config)
 
         if self.CONFIG:
@@ -56,7 +56,7 @@ class RGBStripManager(Thread):
                     display.display()
                 time.sleep(self.CONFIG.SLEEP_TIME)
         except KeyboardInterrupt:
-            print 'Bye!'
+            print('Bye!')
         finally:
             for display in self.CONFIG.DISPLAYS:
                 display.safe_teardown()

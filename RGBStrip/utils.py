@@ -30,7 +30,7 @@ def generate_binary_array_lookup(bit_count):
             bit=='1'
             for bit in (bin(num)[2:]).zfill(bit_count)
         ]
-        for num in xrange(2**bit_count)
+        for num in range(2**bit_count)
     ]
 
 
@@ -64,7 +64,7 @@ def fade_in_out(rgb_colours, fade_steps_in, fade_steps_out, fade_hold_on, fade_h
     faded_colours = []
     for colour in rgb_colours:
         # Fade in
-        for i in xrange(fade_steps_in):
+        for i in range(fade_steps_in):
             frac = i / float(fade_steps_in)
             faded_colours.append(
                 (
@@ -75,11 +75,11 @@ def fade_in_out(rgb_colours, fade_steps_in, fade_steps_out, fade_hold_on, fade_h
             )
 
         # Fully on
-        for i in xrange(fade_hold_on):
+        for i in range(fade_hold_on):
             faded_colours.append(colour)
 
         # Fade out
-        for i in xrange(fade_steps_out, 0, -1):
+        for i in range(fade_steps_out, 0, -1):
             frac = i / float(fade_steps_out)
             faded_colours.append(
                 (
@@ -90,7 +90,7 @@ def fade_in_out(rgb_colours, fade_steps_in, fade_steps_out, fade_hold_on, fade_h
             )
 
         # Fully off
-        for i in xrange(fade_hold_off):
+        for i in range(fade_hold_off):
             faded_colours.append([0, 0, 0])
 
     return faded_colours
@@ -136,7 +136,7 @@ def resolve_colour(colour):
     from RGBStrip import constants
 
     # If this is a COLOUR constant, return that
-    if isinstance(colour, basestring):
+    if isinstance(colour, str):
         return constants.COLOURS[colour]
 
     # Otherwise, assume this is an RGB tuple

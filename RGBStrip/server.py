@@ -62,9 +62,9 @@ def handle_websocket():
     while True:
         try:
             message = ws.receive()
-            print 'Unexpected message received: %s' % message
+            print(f'Unexpected message received: {message}')
         except WebSocketError as ex:
-            print 'WebSocketError: %s' % str(ex)
+            print(f'WebSocketError: {str(ex)}')
             break
         finally:
             # Remove this from the list of websockets to send display updates to
@@ -98,22 +98,22 @@ def get_constants():
 
             'controllers': {
                 key: get_args(klass)
-                for key, klass in constants.CONTROLLERS.iteritems()
+                for key, klass in constants.CONTROLLERS.items()
             },
             'displays': {
                 key: get_args(klass, ['controller'])
-                for key, klass in constants.DISPLAYS.iteritems()
+                for key, klass in constants.DISPLAYS.items()
             },
             'renderers': {
                 key: get_args(klass, ['loader'])
-                for key, klass in constants.RENDERERS.iteritems()
+                for key, klass in constants.RENDERERS.items()
             },
             'sections': {
                 key: get_args(klass, ['controller'])
-                for key, klass in constants.SECTIONS.iteritems()
+                for key, klass in constants.SECTIONS.items()
             },
         },
-        'colours': constants.COLOURS.keys(),
+        'colours': list(constants.COLOURS.keys()),
     }
 
 
@@ -148,9 +148,6 @@ def start_server(manager, host='0.0.0.0', port=8080):
         app,
         handler_class=WebSocketHandler
     )
-    print 'NOTE: You must have a websocket display setup for display in browser to work!'
-    print 'Starting server on {host}:{port}...'.format(
-        host=host,
-        port=port
-    )
+    print('NOTE: You must have a websocket display setup for display in browser to work!')
+    print(f'Starting server on {host}:{port}...')
     server.start()

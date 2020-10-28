@@ -15,7 +15,7 @@ class PatchRenderer(BaseSingleRenderer):
             # TODO: remove delay?
             delay=1,
             start_index=0):
-        super(PatchRenderer, self).__init__(loader, section=section, palette=palette, active=active)
+        super().__init__(loader, section=section, palette=palette, active=active)
 
         self.INDEX = start_index % len(self.PALETTE)
         self.STEP_DELAYED = 0
@@ -23,8 +23,8 @@ class PatchRenderer(BaseSingleRenderer):
 
     def do_render(self):
         rgb_colour = self.PALETTE[self.INDEX]
-        for x in xrange(self.SECTION.WIDTH):
-            for y in xrange(self.SECTION.HEIGHT):
+        for x in range(self.SECTION.WIDTH):
+            for y in range(self.SECTION.HEIGHT):
                 self.SECTION.add_led(x, y, rgb_colour)
         self.STEP_DELAYED += 1
         if self.STEP_DELAYED >= self.STEP_DELAY:

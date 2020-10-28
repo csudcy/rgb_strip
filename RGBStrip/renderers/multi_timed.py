@@ -14,7 +14,7 @@ class MultiTimedRenderer(BaseMultiRenderer):
             common_parameters=None,
             active=True,
             time_seconds=10):
-        super(MultiTimedRenderer, self).__init__(
+        super().__init__(
             loader, renderers=renderers, common_parameters=common_parameters, active=active)
 
         self.TIME_SECONDS = time_seconds

@@ -18,7 +18,23 @@ A controller for addressable RGB LED strips with multiple outputs (mainly, Raspb
     * `Enable`
   * `sudo pip install spidev`
 * Install all the required libraries:
-  * `pip install -r requirements.txt`
+  * Install [Poetry](https://python-poetry.org/docs/#installation):
+```
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+```
+  * Install requirements:
+```
+poetry install
+
+# If you want to run the webserver
+poetry install -E web
+
+# If you want to use SPI
+poetry install -E spi
+
+# If you want both
+poetry install -E spi -E web
+```
   * **NOTE:** This can take **very** long time on the Pi (like **30 minutes** long!)
 
 *Note:* It seems like SPI mode cannot be used if any of the pins have been used by GPIO (reboot to fix).
@@ -26,7 +42,7 @@ A controller for addressable RGB LED strips with multiple outputs (mainly, Raspb
 
 ## Run For Development
 
-* Run `python -m RGBStrip --server ./configs/test.yaml`
+* Run `poetry run python -m RGBStrip --server ./configs/test.yaml`
 * Go to http://localhost:8080/
 
 

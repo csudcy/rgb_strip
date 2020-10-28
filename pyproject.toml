@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "RGBStrip"
+version = "0.1.0"
+description = "The RGB strip controller"
+authors = [
+  "Nicholas Lee <csudcy@gmail.com>"
+]
+
+readme = 'README.md'
+
+[tool.poetry.dependencies]
+python = "^3.7,<3.9"  # Compatible python versions must be declared here
+PyYAML = "5.3.1"
+# To use the web server
+bottle = { version = "0.12.18", optional = true }
+gevent = { version = "20.9.0", optional = true }
+gevent-websocket = { version = "0.10.1", optional = true }
+# To use SPI output
+spidev = { version = "3.5", optional = true }
+
+[tool.poetry.extras]
+web = ["bottle", "gevent", "gevent-websocket"]
+spi = ["spidev"]
