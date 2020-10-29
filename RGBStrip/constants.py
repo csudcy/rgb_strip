@@ -2,15 +2,6 @@ from RGBStrip.controllers.cone import ConeController
 from RGBStrip.controllers.rectangular import RectangularController
 from RGBStrip.displays.cursesd import CursesDisplay
 from RGBStrip.displays.rpi_spi import RPiSPIDisplay
-
-try:
-  from RGBStrip.displays.tk import TkDisplay
-except ImportError:
-  # Assume TK isn't installed
-  def TkDisplay(*args, **kwargs):
-    raise Exception('Cannot init a TK display; please install TKInter!')
-
-
 from RGBStrip.displays.websocket import WebSocketDisplay
 from RGBStrip.renderers.clock import ClockRenderer
 from RGBStrip.renderers.cone_level import ConeLevelRenderer
@@ -46,9 +37,14 @@ CONTROLLERS = {
 DISPLAYS = {
     'curses': CursesDisplay,
     'rpi_spi': RPiSPIDisplay,
-    'tk': TkDisplay,
     'websocket': WebSocketDisplay,
 }
+
+try:
+  from RGBStrip.displays.tk import TkDisplay
+  DISPLAYS['tk'] = TkDisplay
+except ImportError:
+  print('Cannot import TkDisplay; tk display type disabled.')
 
 RENDERERS = {
     'clock': ClockRenderer,

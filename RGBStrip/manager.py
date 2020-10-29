@@ -41,7 +41,7 @@ class RGBStripManager(Thread):
     self.load_config(yaml_config)
 
     # Save the new config
-    with open(self.CONFIG_PATH, 'w') as f:
+    with open(self.CONFIG_PATH, 'wb') as f:
       f.write(yaml_config)
 
   def output_forever(self):

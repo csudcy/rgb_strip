@@ -5,7 +5,6 @@ from threading import Thread
 from Tkinter import BOTH, Canvas, Frame, Tk
 
 from .base import BaseDisplay
-
 """
 TODO:
     Close nicely if the window is closed
@@ -28,6 +27,11 @@ def rgba_to_hex(r, g, b, a):
 class TkDisplay(BaseDisplay):
   """A display module for RGBStrip to output to a TkInter GUI.
   """
+
+  def __init__(self, controller):
+    super().__init__(controller)
+    self.root = None
+    self.frame = None
 
   def display(self):
     self.frame.update()

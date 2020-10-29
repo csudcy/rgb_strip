@@ -12,6 +12,10 @@ class CursesDisplay(BaseDisplay):
   Note: On windows, you will need to install a wheel from http://www.lfd.uci.edu/~gohlke/pythonlibs/#curses
   """
 
+  def __init__(self, controller):
+    super().__init__(controller)
+    self.STDSCR = None
+
   def display(self):
     # Construct the output
     for y in range(self.CONTROLLER.HEIGHT):
