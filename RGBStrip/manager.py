@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-from threading import Thread
 import time
+from threading import Thread
 
 from RGBStrip import config
 

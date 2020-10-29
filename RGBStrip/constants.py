@@ -1,8 +1,8 @@
 from RGBStrip.controllers.cone import ConeController
 from RGBStrip.controllers.rectangular import RectangularController
-
 from RGBStrip.displays.cursesd import CursesDisplay
 from RGBStrip.displays.rpi_spi import RPiSPIDisplay
+
 try:
   from RGBStrip.displays.tk import TkDisplay
 except ImportError:
@@ -12,7 +12,6 @@ except ImportError:
 
 
 from RGBStrip.displays.websocket import WebSocketDisplay
-
 from RGBStrip.renderers.clock import ClockRenderer
 from RGBStrip.renderers.cone_level import ConeLevelRenderer
 from RGBStrip.renderers.cone_spin_full import ConeSpinFullRenderer
@@ -25,7 +24,6 @@ from RGBStrip.renderers.multi_all import MultiAllRenderer
 from RGBStrip.renderers.multi_timed import MultiTimedRenderer
 from RGBStrip.renderers.patch import PatchRenderer
 from RGBStrip.renderers.rainbow import RainbowRenderer
-
 from RGBStrip.sections.cone import ConeSection
 from RGBStrip.sections.rectangular import RectangularSection
 

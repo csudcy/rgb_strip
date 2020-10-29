@@ -2,8 +2,8 @@
 # -*- coding: utf8 -*-
 import yaml
 
-from RGBStrip.constants import CONTROLLERS, DISPLAYS, RENDERERS, SECTIONS
 from RGBStrip import utils
+from RGBStrip.constants import CONTROLLERS, DISPLAYS, RENDERERS, SECTIONS
 
 
 class Config(object):

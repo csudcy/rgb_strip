@@ -2,8 +2,9 @@
 # -*- coding: utf8 -*-
 import curses
 
-from .base import BaseDisplay
 from RGBStrip import utils
+
+from .base import BaseDisplay
 
 
 class CursesDisplay(BaseDisplay):

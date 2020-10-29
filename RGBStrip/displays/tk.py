@@ -1,9 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 from threading import Thread
-from Tkinter import Tk, Frame, BOTH, Canvas
+
+from Tkinter import BOTH, Canvas, Frame, Tk
 
 from .base import BaseDisplay
+
 """
 TODO:
     Close nicely if the window is closed
