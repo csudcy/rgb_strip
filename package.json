@@ -1,0 +1,23 @@
+{
+  "name": "rgb_strip",
+  "version": "0.1.0",
+  "description": "RGB Strip",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/csudcy/rgb_strip/"
+  },
+  "scripts": {
+    "check:imports": "poetry run isort --gitignore .",
+    "check:style": "poetry run yapf -vv -r -i .",
+    "check:types": "poetry run pytype --config=pytype.cfg",
+    "check": "npm run check:imports && npm run check:style && npm run check:types",
+    "poetry:install": "poetry install",
+    "poetry:install:spi": "poetry install -E spi",
+    "poetry:update": "poetry update",
+    "serve": "poetry run python -m RGBStrip --server",
+    "serve:test": "poetry run python -m RGBStrip --server ./configs/test.yaml"
+  },
+  "author": "Nicholas Lee <csudcy@gmail.com>",
+  "devDependencies": {},
+  "dependencies": {}
+}

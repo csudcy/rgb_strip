@@ -3,3 +3,5 @@
 pip-log.txt
 *.log
 *.yaml
+.pytype
+rgbstrip.egg-info
