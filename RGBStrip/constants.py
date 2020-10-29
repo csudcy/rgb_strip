@@ -4,11 +4,13 @@ from RGBStrip.controllers.rectangular import RectangularController
 from RGBStrip.displays.cursesd import CursesDisplay
 from RGBStrip.displays.rpi_spi import RPiSPIDisplay
 try:
-    from RGBStrip.displays.tk import TkDisplay
+  from RGBStrip.displays.tk import TkDisplay
 except ImportError:
-    # Assume TK isn't installed
-    def TkDisplay(*args, **kwargs):
-        raise Exception('Cannot init a TK display; please install TKInter!')
+  # Assume TK isn't installed
+  def TkDisplay(*args, **kwargs):
+    raise Exception('Cannot init a TK display; please install TKInter!')
+
+
 from RGBStrip.displays.websocket import WebSocketDisplay
 
 from RGBStrip.renderers.clock import ClockRenderer
@@ -26,7 +28,6 @@ from RGBStrip.renderers.rainbow import RainbowRenderer
 
 from RGBStrip.sections.cone import ConeSection
 from RGBStrip.sections.rectangular import RectangularSection
-
 
 COLOURS = {
     'black': (0, 0, 0),
