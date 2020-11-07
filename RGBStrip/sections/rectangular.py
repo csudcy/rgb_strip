@@ -34,6 +34,18 @@ class RectangularSection(object):
       ax, ay = self._get_absolute_xy(x, y)
       self.CONTROLLER.set_led(ax, ay, colour)
 
+  def add_line_horizontal(self, y, colour):
+    if self.ACTIVE:
+      for x in range(self.WIDTH):
+        ax, ay = self._get_absolute_xy(x, y)
+        self.CONTROLLER.add_led(ax, ay, colour)
+
+  def add_line_vertical(self, x, colour):
+    if self.ACTIVE:
+      for y in range(self.HEIGHT):
+        ax, ay = self._get_absolute_xy(x, y)
+        self.CONTROLLER.add_led(ax, ay, colour)
+
   def increment_xy(self, x, y):
     # Move to the next column
     x += 1

@@ -11,6 +11,7 @@ from RGBStrip.renderers.cone_spiral_drip import ConeSpiralDripRenderer
 from RGBStrip.renderers.cone_spiral_fill import ConeSpiralFillRenderer
 from RGBStrip.renderers.gravity_drip import GravityDripRenderer
 from RGBStrip.renderers.gravity_shot import GravityShotRenderer
+from RGBStrip.renderers.lines import LineRenderer
 from RGBStrip.renderers.multi_all import MultiAllRenderer
 from RGBStrip.renderers.multi_timed import MultiTimedRenderer
 from RGBStrip.renderers.patch import PatchRenderer
@@ -55,6 +56,7 @@ RENDERERS = {
     'cone_spiral_fill': ConeSpiralFillRenderer,
     'gravity_drip': GravityDripRenderer,
     'gravity_shot': GravityShotRenderer,
+    'lines': LineRenderer,
     'multi_all': MultiAllRenderer,
     'multi_timed': MultiTimedRenderer,
     'patch': PatchRenderer,
