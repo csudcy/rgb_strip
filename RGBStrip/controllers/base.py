@@ -1,6 +1,28 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 import math
+from typing import List
+
+
+def _clockless_bytes(byte: int, alpha: int) -> List[int]:
+  """Convert a value into the value to send using the WS2812b protocol.
+
+  For each bit in the given byte, convert it using:
+    0 => 100
+    1 => 110
+  """
+  alpha_byte = int(byte * alpha / 32)
+  binary = bin(alpha_byte)[2:].rjust(8, '0')
+  converted_binary = ''.join('100' if bit == '0' else '110' for bit in binary)
+  return [
+      int(converted_binary[:8], 2),
+      int(converted_binary[8:16], 2),
+      int(converted_binary[16:], 2),
+  ]
+
+
+CLOCKLESS_BYTE_LOOKUP = {(alpha, byte): _clockless_bytes(byte, alpha)
+                         for byte in range(256) for alpha in range(32)}
 
 
 class BaseController(object):
@@ -10,7 +32,7 @@ class BaseController(object):
   def __init__(self, config, led_count, a):
     self.CONFIG = config
     self.LED_COUNT = led_count
-    self.A = a
+    self.A = max(min(int(a), 31), 0)
 
     # Work out some byte counts
     self.BYTES_START = 4
@@ -54,3 +76,25 @@ class BaseController(object):
     self.BYTES[offset + 1] = max(min(int(b), 255), 0)
     self.BYTES[offset + 2] = max(min(int(g), 255), 0)
     self.BYTES[offset + 3] = max(min(int(r), 255), 0)
+
+  def get_bytes_ws2182(self):
+    """Convert stored bytes (APA102) into WS2812B bytes.
+
+    The 2 standards used are:
+    * APA102 - AGBR with clock
+    * WS2812B - BRG without clock
+    """
+    # Get just the LED bytes
+    led_bytes = self.BYTES[self.BYTES_START:-self.BYTES_END]
+
+    # Convert them to WS2812 format
+    output_bytes = []
+    for index in range(0, self.BYTES_LED, 4):
+      output_bytes.extend(CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 2])])
+      output_bytes.extend(CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 3])])
+      output_bytes.extend(CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 1])])
+
+    # Add latch time
+    output_bytes.extend([0, 0])
+
+    return output_bytes

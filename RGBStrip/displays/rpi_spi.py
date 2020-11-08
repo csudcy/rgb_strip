@@ -23,7 +23,7 @@ class RPiSPIDisplay(BaseDisplay):
     # Init the SPI bus
     self.SPI = spidev.SpiDev()
     self.SPI.open(bus, device)
-    self.SPI.max_speed_hz = speed_mhz * 1000 * 1000
+    self.SPI.max_speed_hz = int(speed_mhz * 1000 * 1000)
 
   def display(self):
     self.SPI.writebytes2(self.CONTROLLER.BYTES)
