@@ -15,7 +15,8 @@ class WebSocketDisplay(BaseDisplay):
   def display(self):
     data = json.dumps({
         'config': self.CONTROLLER.CONFIG,
-        'bytes': self.CONTROLLER.BYTES
+        'alpha': self.CONTROLLER.ALPHA,
+        'pixels': self.CONTROLLER.PIXELS,
     })
     for ws in WEBSOCKETS:
       ws.send(data)

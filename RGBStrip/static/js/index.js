@@ -146,14 +146,8 @@ function _make_led(top, left) {
     return $(`<span class="led" style="top: ${top}px; left: ${left}px;"></span>`);
 }
 
-function get_rgba(index, bytes) {
-    const offset = 4 + index * 4,
-        r = bytes[offset + 3],
-        g = bytes[offset + 2],
-        b = bytes[offset + 1],
-        a = ((bytes[offset + 0] && 31) / 31);
-
-    return `rgba(${r},${g},${b},${a})`;
+function get_rgba(pixel, alpha) {
+    return `rgba(${pixel[0]},${pixel[1]},${pixel[2]},${0.5 + alpha / 62})`;
 }
 
 function update_display(data) {
@@ -163,7 +157,7 @@ function update_display(data) {
 
     // Update the LEDs
     LEDS.forEach(function(led, index) {
-        const rgba = get_rgba(index, data.bytes);
+        const rgba = get_rgba(data.pixels[index], data.alpha);
         led.css('backgroundColor', rgba);
     });
 }

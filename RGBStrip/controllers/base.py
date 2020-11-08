@@ -32,66 +32,64 @@ class BaseController(object):
   def __init__(self, config, led_count, a):
     self.CONFIG = config
     self.LED_COUNT = led_count
-    self.A = max(min(int(a), 31), 0)
-
-    # Work out some byte counts
-    self.BYTES_START = 4
-    self.BYTES_LED = self.LED_COUNT * 4
-    end_bit_count = self.LED_COUNT / 2.0
-    self.BYTES_END = int(math.ceil(end_bit_count / 8.0))
-    self.BYTES_TOTAL = self.BYTES_START + self.BYTES_LED + self.BYTES_END
-
-    # Setup the byte array that we will output
-    self.BYTES = [None] * self.BYTES_TOTAL
-
-    # Setup the start & end frames
-    self.BYTES[:self.BYTES_START] = [0x00] * self.BYTES_START
-    self.BYTES[-self.BYTES_END:] = [0xFF] * self.BYTES_END
-
-    # Setup the LED frames so the padding bits are set correctly
-    self.set_leds((0, 0, 0))
+    self.ALPHA = max(min(int(a), 31), 0)
+    self.PIXELS = [(0, 0, 0)] * led_count
 
   def add_led(self, index, colour):
-    offset = self._get_offset(index)
-    r, g, b = colour
-    new_colour = (self.BYTES[offset + 3] + r, self.BYTES[offset + 2] + g,
-                  self.BYTES[offset + 1] + b)
-    self._set_led(offset, new_colour)
+    current_colour = self.PIXELS[index]
+    new_colour = (
+        current_colour[0] + colour[0],
+        current_colour[1] + colour[1],
+        current_colour[2] + colour[2],
+    )
+    self._set_led(index, new_colour)
 
   def set_led(self, index, colour):
-    self._set_led(self._get_offset(index), colour)
+    self._set_led(index, colour)
 
   def set_leds(self, colour):
-    for offset in range(self.BYTES_START, self.BYTES_START + self.BYTES_LED, 4):
-      self._set_led(offset, colour)
+    for index in range(len(self.PIXELS)):
+      self._set_led(index, colour)
 
-  def _get_offset(self, index):
-    return self.BYTES_START + index * 4
-
-  def _set_led(self, offset, colour):
+  def _set_led(self, index, colour):
     r, g, b = colour
-    # Brightness max is 31; or with 224 to add the padding 1s
-    self.BYTES[offset + 0] = max(min(int(self.A), 31), 0) | 224
-    # R, G, B are max 255
-    self.BYTES[offset + 1] = max(min(int(b), 255), 0)
-    self.BYTES[offset + 2] = max(min(int(g), 255), 0)
-    self.BYTES[offset + 3] = max(min(int(r), 255), 0)
+    self.PIXELS[index] = (
+        max(min(int(r), 255), 0),
+        max(min(int(g), 255), 0),
+        max(min(int(b), 255), 0),
+    )
+
+  def iter_bytes_apa102(self):
+    """Convert pixels into APA102 bytes.
+
+    APA102 uses AGBR (with a clock).
+    """
+    # Send reset bytes
+    yield from [0x00, 0x00, 0x00, 0x00]
+
+    # Yield all the pixel data
+    for r, g, b in self.PIXELS:
+      # Brightness max is 31; or with 224 to add the padding 1s
+      yield self.ALPHA | 224
+      # R, G, B are max 255
+      yield max(min(int(b), 255), 0)
+      yield max(min(int(g), 255), 0)
+      yield max(min(int(r), 255), 0)
+
+    # Add end bytes (to push all the data through properly)
+    end_byte_count = int(math.ceil(self.LED_COUNT / 2 / 8))
+    yield from [0xFF] * end_byte_count
 
   def iter_bytes_ws2812(self):
-    """Convert stored bytes (APA102) into WS2812B bytes.
+    """Convert pixels into WS2812B bytes.
 
-    The 2 standards used are:
-    * APA102 - AGBR with clock
-    * WS2812B - BRG without clock
+    WS2812B uses BRG (without a clock).
     """
-    # Get just the LED bytes
-    led_bytes = self.BYTES[self.BYTES_START:-self.BYTES_END]
+    # Yield all the pixel data
+    for r, g, b in self.PIXELS:
+      yield from CLOCKLESS_BYTE_LOOKUP[(self.ALPHA, b)]
+      yield from CLOCKLESS_BYTE_LOOKUP[(self.ALPHA, r)]
+      yield from CLOCKLESS_BYTE_LOOKUP[(self.ALPHA, g)]
 
-    # Convert them to WS2812 format
-    for index in range(0, self.BYTES_LED, 4):
-      yield from CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 2])]
-      yield from CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 3])]
-      yield from CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 1])]
-
-    # Add latch time
-    yield from [0, 0]
+    # Yield the latch time
+    yield from [0x00, 0x00]
