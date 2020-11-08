@@ -83,7 +83,7 @@ def get_constants():
   def get_args(klass_or_function, ignore=[]):
     if inspect.isclass(klass_or_function):
       klass_or_function = klass_or_function.__init__
-    argspec = inspect.getargspec(klass_or_function)
+    argspec = inspect.getfullargspec(klass_or_function)
     ignore.append('self')
     args = list(set(argspec.args) - set(ignore))
     args.sort()
