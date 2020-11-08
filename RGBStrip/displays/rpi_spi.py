@@ -26,4 +26,4 @@ class RPiSPIDisplay(BaseDisplay):
     self.SPI.max_speed_hz = speed_mhz * 1000 * 1000
 
   def display(self):
-    self.SPI.writebytes(self.CONTROLLER.BYTES)
+    self.SPI.writebytes2(self.CONTROLLER.BYTES)
