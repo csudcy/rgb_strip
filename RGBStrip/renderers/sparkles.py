@@ -22,10 +22,10 @@ class Sparkle:
   on_steps: List[int]
   off_steps: List[int]
 
-  def __post_init__(self):
-    self.x: int = 0
-    self.y: int = 0
-    self.stage_steps: Deque[List[float]] = collections.deque()
+  # Not set at init
+  x: int = 0
+  y: int = 0
+  stage_steps: Deque[List[float]] = collections.deque()
 
   def randomise(self):
     self.x = random.randint(0, self.section.WIDTH)
