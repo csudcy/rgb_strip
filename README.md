@@ -3,39 +3,22 @@
 A controller for addressable RGB LED strips with multiple outputs (mainly, Raspberry Pi).
 
 
-## General Setup
+## Development
 
-* On the Pi, make sure everything is up-to-date:
-  * `sudo apt-get update`
-  * `sudo apt-get upgrade`
-* You might need to:
-  * `sudo apt-get install python-pip`
-  * `sudo apt-get install python-tk`
-* To use SPI (`Serial Peripheral Interface`) on the Pi:
-  * `sudo raspi-config`
-    * `Interfacing Options`
-    * `SPI`
-    * `Enable`
-  * `sudo pip install spidev`
-* Install all the required libraries:
-  * Install [Poetry](https://python-poetry.org/docs/#installation):
+### Setup
+
+* Install [Poetry](https://python-poetry.org/docs/#installation):
 ```
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python2 -
 ```
-  * Install requirements:
+* Install requirements:
 ```
 # To install command line & web
 npm run poetry:install
-
-# To install with SPI (only on Raspberry Pi)
-npm run poetry:install:spi
 ```
-  * **NOTE:** This can take **very** long time on the Pi (like **30 minutes** long!)
-
-*Note:* It seems like SPI mode cannot be used if any of the pins have been used by GPIO (reboot to fix).
 
 
-## Run For Development
+### Running
 
 * Run:
 ```
@@ -47,17 +30,56 @@ npm run serve configs/cone.yaml
 * Go to http://localhost:8080/
 
 
-## Run On Startup
+## Raspberry Pi
 
-* Create a `prod.yaml` config.
-* Setup the service:
+### Setup
+
+* To use SPI (`Serial Peripheral Interface`) on the Pi:
+  * `sudo raspi-config`
+    * `Interfacing Options`
+    * `SPI`
+    * `Enable`
+* Update everything & install requirements:
+```
+# Update everything
+sudo apt-get update
+sudo apt-get upgrade
+
+# Install things which don't come with defaut Raspberry Pi OS (lite at least)
+sudo apt-get install --upgrade git cmake python3-pip
+
+# Now we have to update pip...
+python3 -m pip install --upgrade pip
+
+# Restart (just to be safe)
+sudo shutdown -r now
+
+# Install requirements
+pip3 install -r requirements.txt
+
+# If you're going to use SPI
+pip3 install spidev
+```
+
+**Note:** Each upddate/install can take **very** long time on the Pi (**30+ minutes** long depending on your Pi model & SD card).
+
+**Note:** It seems like SPI mode cannot be used if any of the pins have been used by GPIO (reboot to fix).
+
+
+### Running
+
+* Create a config file: `cp ./configs/test.yaml ./configs/prod.yaml`
+* Test the server: `python3 -m RGBStrip --server ./configs/prod.yaml`
+* Check the server is running on http://raspberrypi.local:8080
+  * If the .local address doesn't work, you'll need to find the IP address of your Pi & use that.
+* Once that's working, you can stop it & set it to run at startup:
 ```bash
+# Setup the service
 sudo ln -s /home/pi/rgb_strip/init.d/rgbs.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable rgbs
-```
-* Control the service:
-```
+
+# Control the service
 sudo systemctl start rgbs
 sudo systemctl stop rgbs
 sudo systemctl restart rgbs

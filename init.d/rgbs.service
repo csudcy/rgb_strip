@@ -4,7 +4,7 @@ Description=RGBStrip Service
 [Service]
 WorkingDirectory=/home/pi/rgb_strip/
 User=pi
-ExecStart=/usr/bin/python -m RGBStrip --server ./configs/prod.yaml
+ExecStart=/usr/bin/python3 -m RGBStrip --server ./configs/prod.yaml
 
 [Install]
 WantedBy=multi-user.target

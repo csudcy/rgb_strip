@@ -1,0 +1,9 @@
+bottle==0.12.18
+cffi==1.14.3; platform_python_implementation == "CPython" and sys_platform == "win32"
+gevent==20.9.0
+gevent-websocket==0.10.1
+greenlet==0.4.17; platform_python_implementation == "CPython"
+pycparser==2.20; platform_python_implementation == "CPython" and sys_platform == "win32"
+pyyaml==5.3.1
+zope.event==4.5.0
+zope.interface==5.2.0
