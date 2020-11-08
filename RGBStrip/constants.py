@@ -1,7 +1,6 @@
 from RGBStrip.controllers.cone import ConeController
 from RGBStrip.controllers.rectangular import RectangularController
 from RGBStrip.displays.rpi_spi import RPiSPIDisplay
-from RGBStrip.displays.rpi_spi_ws2812 import RPiSPIDisplayWS2812
 from RGBStrip.displays.websocket import WebSocketDisplay
 from RGBStrip.renderers.clock import ClockRenderer
 from RGBStrip.renderers.cone_level import ConeLevelRenderer
@@ -38,7 +37,6 @@ CONTROLLERS = {
 
 DISPLAYS = {
     'rpi_spi': RPiSPIDisplay,
-    'rpi_spi_ws2812': RPiSPIDisplayWS2812,
     'websocket': WebSocketDisplay,
 }
 

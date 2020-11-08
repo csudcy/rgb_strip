@@ -3,22 +3,24 @@
 import RPi.GPIO as GPIO
 
 from .. import utils
+from .base import BaseDisplay
 
 # Prepare lookup table
 BITS_8 = utils.generate_binary_array_lookup(8)
 
 
-class RPiManualDisplay(object):
+class RPiManualDisplay(BaseDisplay):
   """A display module for RGBStrip to output to Raspberry Pi via any 2 GPIO pins.
   """
 
   def __init__(
       self,
-      rgb_strip,
+      controller,
+      pixel_type,
       pin_data,
       pin_clock,
   ):
-    self.RGB_STRIP = rgb_strip
+    super().__init__(controller, pixel_type)
     self.PIN_DATA = pin_data
     self.PIN_CLOCK = pin_clock
 
@@ -32,8 +34,9 @@ class RPiManualDisplay(object):
         GPIO.OUT,
     )
 
-  def display(self, bytes):
-    for byte in bytes:
+  def display(self):
+    output_bytes = self.iter_bytes()
+    for byte in output_bytes:
       bits = BITS_8[byte]
       for bit in bits:
         # Set the data pin

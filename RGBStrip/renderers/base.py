@@ -4,8 +4,7 @@ import abc
 import time
 
 
-class BaseRenderer(object):
-  __metaclass__ = abc.ABCMeta
+class BaseRenderer(abc.ABC):
 
   def __init__(self, loader, active=True):
     self.ACTIVE = active
