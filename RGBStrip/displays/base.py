@@ -26,13 +26,13 @@ CLOCKLESS_BYTE_LOOKUP = {(alpha, byte): _clockless_bytes(byte, alpha)
 
 class BaseDisplay(object):
 
-  def __init__(self, controller, pixel_type):
+  def __init__(self, controller, pixel_type=None):
     self.CONTROLLER = controller
     if pixel_type == 'apa102':
       self.iter_bytes = self.iter_bytes_apa102
     elif pixel_type == 'ws2812':
       self.iter_bytes = self.iter_bytes_ws2812
-    else:
+    elif pixel_type:
       raise Exception(f'Unknown pixel_type: ${pixel_type}')
 
   def display(self):
@@ -62,6 +62,9 @@ class BaseDisplay(object):
 
   def __exit__(self, exc_type, exc_value, traceback):
     self.teardown()
+
+  def iter_bytes(self):
+    raise Exception('To use iter_bytes, you must call init with a pixel_type!')
 
   def iter_bytes_apa102(self):
     """Convert pixels into APA102 bytes.
