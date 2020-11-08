@@ -36,7 +36,3 @@ class RectangularController(BaseController):
   def set_led(self, x, y, colour):
     index = self._get_index(x, y)
     BaseController.set_led(self, index, colour)
-
-  def get_rgba(self, x, y):
-    index = self._get_index(x, y)
-    return BaseController.get_rgba(self, index)

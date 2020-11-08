@@ -38,7 +38,3 @@ class ConeController(BaseController):
   def set_led(self, level_index, level, colour):
     index = self._get_index(level_index, level)
     BaseController.set_led(self, index, colour)
-
-  def get_rgba(self, angle, level):
-    index = self._get_index(angle, level)
-    return BaseController.get_rgba(self, index)

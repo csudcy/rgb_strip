@@ -54,8 +54,3 @@ class BaseController(object):
     self.BYTES[offset + 1] = max(min(int(b), 255), 0)
     self.BYTES[offset + 2] = max(min(int(g), 255), 0)
     self.BYTES[offset + 3] = max(min(int(r), 255), 0)
-
-  def get_rgba(self, index):
-    offset = self._get_offset(index)
-    return (self.BYTES[offset + 3], self.BYTES[offset + 2],
-            self.BYTES[offset + 1], self.BYTES[offset + 0])
