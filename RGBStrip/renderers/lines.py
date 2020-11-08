@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Optional
+from typing import List, Optional
 
 from RGBStrip import utils
 from RGBStrip.renderers.base import BaseSingleRenderer
@@ -14,7 +14,7 @@ from RGBStrip.sections.rectangular import RectangularSection
 @dataclass
 class Line:
   section: RectangularSection
-  color: str
+  color: List[float]
   move_steps: int
   max_gap: int
   max_position: int
@@ -23,8 +23,8 @@ class Line:
   prev_line: Optional[Line]
 
   # Not set at init
-  position: float = None
-  gap: int = None
+  position: float = 0
+  gap: int = 0
   steps_since_move: int = 0
 
   # stuck: bool = False
@@ -62,6 +62,9 @@ class Line:
   @property
   def is_on_screen(self):
     return 0 <= self.position and self.position < self.max_position
+
+  def draw(self):
+    raise Exception('Children must override draw!')
 
 
 class HorizontalLine(Line):

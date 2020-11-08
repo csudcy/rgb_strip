@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 
+from typing import Tuple
+
 
 class RectangularSection(object):
   """Allow a rectangular section of an RGBStrip to be controlled.
@@ -8,45 +10,45 @@ class RectangularSection(object):
 
   def __init__(self,
                controller,
-               x,
-               y,
-               width,
-               height,
-               active=True,
-               reverse_x=False,
-               reverse_y=False):
+               x: int,
+               y: int,
+               width: int,
+               height: int,
+               active: bool = True,
+               reverse_x: bool = False,
+               reverse_y: bool = False):
     self.CONTROLLER = controller
-    self.X = x
-    self.Y = y
-    self.WIDTH = width
-    self.HEIGHT = height
-    self.ACTIVE = active
-    self.REVERSE_X = reverse_x
-    self.REVERSE_Y = reverse_y
+    self.X: int = x
+    self.Y: int = y
+    self.WIDTH: int = width
+    self.HEIGHT: int = height
+    self.ACTIVE: bool = active
+    self.REVERSE_X: bool = reverse_x
+    self.REVERSE_Y: bool = reverse_y
 
-  def add_led(self, x, y, colour):
+  def add_led(self, x: int, y: int, colour):
     if self.ACTIVE:
       ax, ay = self._get_absolute_xy(x, y)
       self.CONTROLLER.add_led(ax, ay, colour)
 
-  def set_led(self, x, y, colour):
+  def set_led(self, x: int, y: int, colour):
     if self.ACTIVE:
       ax, ay = self._get_absolute_xy(x, y)
       self.CONTROLLER.set_led(ax, ay, colour)
 
-  def add_line_horizontal(self, y, colour):
+  def add_line_horizontal(self, y: int, colour):
     if self.ACTIVE:
       for x in range(self.WIDTH):
         ax, ay = self._get_absolute_xy(x, y)
         self.CONTROLLER.add_led(ax, ay, colour)
 
-  def add_line_vertical(self, x, colour):
+  def add_line_vertical(self, x: int, colour):
     if self.ACTIVE:
       for y in range(self.HEIGHT):
         ax, ay = self._get_absolute_xy(x, y)
         self.CONTROLLER.add_led(ax, ay, colour)
 
-  def increment_xy(self, x, y):
+  def increment_xy(self, x: int, y: int) -> Tuple[int, int]:
     # Move to the next column
     x += 1
     if x >= self.WIDTH:
@@ -57,7 +59,7 @@ class RectangularSection(object):
         y = 0
     return x, y
 
-  def _get_absolute_xy(self, x, y):
+  def _get_absolute_xy(self, x: int, y: int) -> Tuple[int, int]:
     x = x % self.WIDTH
     y = y % self.HEIGHT
     if self.REVERSE_X:
