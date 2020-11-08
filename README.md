@@ -55,16 +55,55 @@ python3 -m pip install --upgrade pip
 sudo shutdown -r now
 
 # Install requirements
-pip3 install -r requirements.txt
-
-# If you're going to use SPI
-pip3 install spidev
+python3 -m pip install -r requirements.txt
 ```
 
 **Note:** Each upddate/install can take **very** long time on the Pi (**30+ minutes** long depending on your Pi model & SD card).
 
 **Note:** It seems like SPI mode cannot be used if any of the pins have been used by GPIO (reboot to fix).
 
+### Using SPI for WS2812b Poxles
+
+Because there's no clock signal for WS2812b pixles, the timing is very important. Therefore, you should really be using SPI for WS2812b pixels. Unfortunately, it seems like having to do multiple SPI writes is too slow. Therefore, we have to make sure the data for all pixels can be sent in one go. But, that's limited by the buffer size.
+
+WS2812b pixels use 9 bytes per pixel (3 channels and 3 bytes per channel). Therefore, the maximum number of pixels which can be sent in one go are:
+```
+Buffer   Pixels
+ 4,096      455
+ 8,192      910
+16,384    1,820
+32,768    3,640
+65,536    7,281
+```
+Note: Buffer size is limited to 65,536 bytes by the hardware DMA buffer.
+
+Therefore, if you need 455 pixels or less, you can take the easy route:
+```
+python3 -m pip install spidev
+```
+
+If you need more pixels, we need to increase the SPIdev buffer (see [this issue](https://github.com/doceme/py-spidev/issues/62) for more info):
+```
+# Get the latest spidev source
+cd ~
+curl https://codeload.github.com/doceme/py-spidev/zip/master --output spidev.zip
+unzip spidev.zip
+
+# Change the system buffer size
+sudo nano /boot/cmdline.txt
+# Add " spidev.bufsiz=65536" at the end of the line
+# Write - ctrl+o then enter
+# Quit - ctrl+x
+
+# Change the spidev buffer size & install
+cd py-spidev-master
+sed spidev_module.c -e "s/4096/65536/g" -i
+make PYTHON=python3
+sudo python3 setup.py install
+
+# Reboot to apply changes
+sudo shutdown -r now
+```
 
 ### Running
 

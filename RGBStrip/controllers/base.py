@@ -77,7 +77,7 @@ class BaseController(object):
     self.BYTES[offset + 2] = max(min(int(g), 255), 0)
     self.BYTES[offset + 3] = max(min(int(r), 255), 0)
 
-  def get_bytes_ws2182(self):
+  def iter_bytes_ws2812(self):
     """Convert stored bytes (APA102) into WS2812B bytes.
 
     The 2 standards used are:
@@ -88,13 +88,10 @@ class BaseController(object):
     led_bytes = self.BYTES[self.BYTES_START:-self.BYTES_END]
 
     # Convert them to WS2812 format
-    output_bytes = []
     for index in range(0, self.BYTES_LED, 4):
-      output_bytes.extend(CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 2])])
-      output_bytes.extend(CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 3])])
-      output_bytes.extend(CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 1])])
+      yield from CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 2])]
+      yield from CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 3])]
+      yield from CLOCKLESS_BYTE_LOOKUP[(self.A, led_bytes[index + 1])]
 
     # Add latch time
-    output_bytes.extend([0, 0])
-
-    return output_bytes
+    yield from [0, 0]
