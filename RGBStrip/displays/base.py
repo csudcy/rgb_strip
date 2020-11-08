@@ -90,13 +90,13 @@ class BaseDisplay(object):
   def iter_bytes_ws2812(self):
     """Convert pixels into WS2812B bytes.
 
-    WS2812B uses BRG (without a clock).
+    WS2812B uses GRB (without a clock).
     """
     # Yield all the pixel data
     for r, g, b in self.CONTROLLER.PIXELS:
-      yield from CLOCKLESS_BYTE_LOOKUP[(self.CONTROLLER.ALPHA, b)]
-      yield from CLOCKLESS_BYTE_LOOKUP[(self.CONTROLLER.ALPHA, r)]
       yield from CLOCKLESS_BYTE_LOOKUP[(self.CONTROLLER.ALPHA, g)]
+      yield from CLOCKLESS_BYTE_LOOKUP[(self.CONTROLLER.ALPHA, r)]
+      yield from CLOCKLESS_BYTE_LOOKUP[(self.CONTROLLER.ALPHA, b)]
 
     # Yield the latch time
     yield from [0x00, 0x00]
