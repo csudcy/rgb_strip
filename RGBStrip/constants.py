@@ -12,6 +12,7 @@ from RGBStrip.renderers.gravity_drip import GravityDripRenderer
 from RGBStrip.renderers.gravity_shot import GravityShotRenderer
 from RGBStrip.renderers.lines import LineRenderer
 from RGBStrip.renderers.multi_all import MultiAllRenderer
+from RGBStrip.renderers.multi_sequential import MultiSequential
 from RGBStrip.renderers.multi_timed import MultiTimedRenderer
 from RGBStrip.renderers.patch import PatchRenderer
 from RGBStrip.renderers.rainbow import RainbowRenderer
@@ -51,6 +52,7 @@ RENDERERS = {
     'gravity_shot': GravityShotRenderer,
     'lines': LineRenderer,
     'multi_all': MultiAllRenderer,
+    'multi_sequential': MultiSequential,
     'multi_timed': MultiTimedRenderer,
     'patch': PatchRenderer,
     'rainbow': RainbowRenderer,

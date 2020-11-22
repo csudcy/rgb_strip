@@ -6,6 +6,9 @@ import time
 
 class BaseRenderer(abc.ABC):
 
+  # Does this display have a "finished" point
+  IS_FINISHABLE = False
+
   def __init__(self, loader, active=True):
     self.ACTIVE = active
 
@@ -21,6 +24,11 @@ class BaseRenderer(abc.ABC):
     """Do any necessary cleanup.
     """
     pass
+
+  def is_finished(self):
+    """Check if this display is in a "finished" state.
+    """
+    raise Exception('Finishable displays must implement is_finished!')
 
 
 class BaseSingleRenderer(BaseRenderer):
