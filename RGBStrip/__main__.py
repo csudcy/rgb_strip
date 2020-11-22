@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-import gzip
 import os
 import pickle
 from typing import Optional
@@ -77,7 +76,7 @@ def render(
 
     # Save the render
     print(f'  {name}...')
-    with gzip.open(os.path.join(directory, f'{name}.pickle.gz'), 'wb') as f:
+    with open(os.path.join(directory, f'{name}.pickle'), 'wb') as f:
       pickle.dump(render, f)
 
   print('Done!')
