@@ -58,3 +58,9 @@ class MultiSequential(BaseMultiRenderer):
       self._init_for_renderer(self.RENDERER_INDEX + 1)
 
     self.CURRENT_RENDERER.render()
+
+  def render_to_memory(self, controller):
+    return [
+        renderer.render_to_memory(controller)
+        for renderer in self.RENDERERS
+    ]

@@ -31,6 +31,44 @@ class BaseRenderer(abc.ABC):
     """
     raise Exception('Finishable displays must implement is_finished!')
 
+  def render_to_memory(self, controller):
+    """Render myself to memory.
+    """
+    frames = self._render_frames_to_memory(controller)
+    return {
+        'name': self.NAME,
+        'frames': frames,
+    }
+
+  def _render_frames_to_memory(self, controller, frames_unfinishable=1000, frames_max=2000):
+    """Render all my frames to memory.
+    """
+    print(f'{self.NAME}: Rendering frames...')
+    frames = []
+    for frame_count in range(frames_max):
+      if frame_count % 100 == 0:
+        print(f'  Rendered {frame_count} frames...')
+      # Check if finished
+      if self.IS_FINISHABLE:
+        if self.is_finished():
+          break
+      else:
+        if frame_count >= frames_unfinishable:
+          break
+
+      controller.set_leds((0, 0, 0))
+      self._render_frame()
+      # frame = [
+      #     r << 16 | g << 8 | b
+      #     for r, g, b in controller.PIXELS
+      # ]
+      frames.append(controller.PIXELS[:])
+    print(f'  Rendered {len(frames)} frames!')
+    return frames
+
+  def _render_frame(self):
+    self.render()
+
 
 class BaseSingleRenderer(BaseRenderer):
 
@@ -77,6 +115,17 @@ class BaseSingleTimedRenderer(BaseSingleRenderer):
   @abc.abstractmethod
   def do_render_step(self):
     pass
+
+  def render_to_memory(self, controller):
+    """Render myself to memory.
+    """
+    rendered = super().render_to_memory(controller)
+    rendered['interval_seconds'] = self.INTERVAL_SECONDS
+    return rendered
+
+  def _render_frame(self):
+    self.do_render_display()
+    self.do_render_step()
 
 
 class BaseMultiRenderer(BaseRenderer):

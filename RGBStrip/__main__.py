@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
+import gzip
+import json
+import os
 from typing import Optional
 
 import click
@@ -48,6 +51,36 @@ def server(
   # Block on the manager thread
   manager.output_forever()
 
+
+@main.command()
+@click.argument('config')
+@click.argument('directory')
+def render(
+    config: str,
+    directory: Optional[str],
+  ):
+  # Create the manager from config
+  manager = RGBStripManager(config)
+
+  print('Rendering...')
+  rendered = manager.CONFIG.RENDERER.render_to_memory(manager.CONFIG.CONTROLLER)
+
+  print('Saving...')
+  if not isinstance(rendered, list):
+    rendered = [rendered]
+  for render in rendered:
+    # Check this renderer has a name
+    name = render["name"]
+    if not name:
+      print('  Cannot save renders without a name!')
+      continue
+
+    # Save the render
+    print(f'  {name}...')
+    with gzip.open(os.path.join(directory, f'{name}.json.gz'), 'wt') as f:
+      json.dump(render, f)
+
+  print('Done!')
 
 if __name__ == "__main__":
   main()
