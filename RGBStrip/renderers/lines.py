@@ -17,6 +17,7 @@ class Line:
   color: List[float]
   max_gap: int
   max_position: int
+  line_count: int
   reverse: bool
   # fill: bool
   prev_line: Optional[Line]
@@ -32,7 +33,7 @@ class Line:
     if self.prev_line is None:
       # I'm the first line; work out an absolute position
       if self.reverse:
-        self.position = (self.max_position - 1) * (self.max_gap + 1)
+        self.position = self.max_position  + (self.line_count - 1) * self.max_gap - 1
       else:
         self.position = 0
     else:
@@ -64,13 +65,13 @@ class Line:
 class HorizontalLine(Line):
 
   def draw(self):
-    self.section.add_line_horizontal(round(self.position), self.color)
+    self.section.add_line_horizontal(self.position, self.color)
 
 
 class VerticalLine(Line):
 
   def draw(self):
-    self.section.add_line_vertical(round(self.position), self.color)
+    self.section.add_line_vertical(self.position, self.color)
 
 
 class LineRenderer(BaseSingleTimedRenderer):
@@ -88,6 +89,7 @@ class LineRenderer(BaseSingleTimedRenderer):
       # Custom
       direction='DOWN',  # Up, Down, Left, Right
       line_gap=4,  # Number of lines between lines
+      line_count=100,  # Number of lines to use
       # style='FILL',  # NO_FILL, FILL
   ):
     super().__init__(
@@ -112,13 +114,14 @@ class LineRenderer(BaseSingleTimedRenderer):
     # Create all the lines
     self.LINES = []
     prev_line = None
-    for i in range(max_position):
+    for i in range(line_count):
       self.LINES.append(
           LineClass(
               section=self.SECTION,
               color=self.PALETTE[i % len(self.PALETTE)],
               max_gap=line_gap,
               max_position=max_position,
+              line_count=line_count,
               reverse=reverse,
               # fill=(style == 'FILL'),
               prev_line=prev_line,
