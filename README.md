@@ -108,7 +108,7 @@ sudo shutdown -r now
 ### Running
 
 * Create a config file: `cp ./configs/test.yaml ./configs/prod.yaml`
-* Test the server: `python3 -m RGBStrip --server ./configs/prod.yaml`
+* Test the server: `python3 -m RGBStrip server ./configs/prod.yaml`
 * Check the server is running on http://raspberrypi.local:8080
   * If the .local address doesn't work, you'll need to find the IP address of your Pi & use that.
 * Once that's working, you can stop it & set it to run at startup:

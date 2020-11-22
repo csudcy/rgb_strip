@@ -1,37 +1,53 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-import argparse
+from typing import Optional
 
-from RGBStrip import manager
+import click
 
-# Parse our args
-parser = argparse.ArgumentParser()
-parser.add_argument('-s',
-                    '--server',
-                    help='If the web server should be run',
-                    action='store_true')
-parser.add_argument('--host', help='The host for the web server to bind to')
-parser.add_argument('--port',
-                    help='The port for the web server to bind to',
-                    type=int)
-parser.add_argument('config', help='The config file to load')
-args = parser.parse_args()
+from RGBStrip.manager import RGBStripManager
 
-# Start manager & load the config
-manager = manager.RGBStripManager(args.config)
 
-# If we need a server, start it now
-if args.server:
+@click.group()
+def main() -> None:
+  """Validate, diff, and convert Kintaro schemas!"""
+
+
+@main.command()
+@click.argument('config')
+def run(config: str):
+  # Create the manager from config
+  manager = RGBStripManager(config)
+
+  # Block on the manager thread
+  manager.output_forever()
+
+
+@main.command()
+@click.argument('config')
+@click.option('--host', help='The host for the web server to bind to')
+@click.option('--port', help='The port for the web server to bind to', type=int)
+def server(
+    config: str,
+    host: Optional[str],
+    port: Optional[int],
+  ):
   # Import this here so we don't require gevent when not using the server
   from RGBStrip import server
 
+  # Create the manager from config
+  manager = RGBStripManager(config)
+
   # Start the server (non-blocking)
   kwargs = {}
-  if args.host:
-    kwargs['host'] = args.host
-  if args.port:
-    kwargs['port'] = args.port
+  if host:
+    kwargs['host'] = host
+  if port:
+    kwargs['port'] = port
   server.start_server(manager, **kwargs)
 
-# Block on the manager thread
-manager.output_forever()
+  # Block on the manager thread
+  manager.output_forever()
+
+
+if __name__ == "__main__":
+  main()
