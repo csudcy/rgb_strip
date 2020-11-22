@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 import gzip
-import json
 import os
+import pickle
 from typing import Optional
 
 import click
@@ -77,8 +77,8 @@ def render(
 
     # Save the render
     print(f'  {name}...')
-    with gzip.open(os.path.join(directory, f'{name}.json.gz'), 'wt') as f:
-      json.dump(render, f)
+    with gzip.open(os.path.join(directory, f'{name}.pickle.gz'), 'wb') as f:
+      pickle.dump(render, f)
 
   print('Done!')
 

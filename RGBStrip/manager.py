@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 import gzip
-import json
 import os
+import pickle
 import random
 import time
 from threading import Thread
@@ -78,12 +78,12 @@ class RGBStripManager(Thread):
     print(f'Loading renders from {self.CONFIG.RENDER_DIRECTORY} ...')
     for filename in os.listdir(self.CONFIG.RENDER_DIRECTORY):
       print(f'  Loading {filename} ...')
-      if not filename.endswith('.json.gz'):
-        print('  Not .json.gz; skipped')
+      if not filename.endswith('.pickle.gz'):
+        print('  Not .pickle.gz; skipped')
         continue
       filepath = os.path.join(self.CONFIG.RENDER_DIRECTORY, filename)
-      with gzip.open(filepath, 'rt') as f:
-        renders.append(json.load(f))
+      with gzip.open(filepath, 'rb') as f:
+        renders.append(pickle.load(f))
       print(f'   Loaded {len(renders[-1]["frames"])} frames!')
     print(f'Loaded {len(renders)} renders!')
 
