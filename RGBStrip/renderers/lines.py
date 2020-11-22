@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 from RGBStrip import utils
-from RGBStrip.renderers.base import BaseSingleRenderer
+from RGBStrip.renderers.base import BaseSingleTimedRenderer
 from RGBStrip.sections.rectangular import RectangularSection
 
 
@@ -15,7 +15,6 @@ from RGBStrip.sections.rectangular import RectangularSection
 class Line:
   section: RectangularSection
   color: List[float]
-  move_steps: int
   max_gap: int
   max_position: int
   reverse: bool
@@ -25,7 +24,6 @@ class Line:
   # Not set at init
   position: float = 0
   gap: int = 0
-  steps_since_move: int = 0
 
   # stuck: bool = False
 
@@ -42,20 +40,16 @@ class Line:
       self.update_position()
 
   def do_render(self):
-    self.update_position()
     if self.is_on_screen:
       self.draw()
 
   def update_position(self):
-    mult = -1 if self.reverse else 1
-
     if self.prev_line is None:
       # I'm the first line; do a relative move
-      self.steps_since_move += 1
-      if self.steps_since_move >= self.move_steps:
-        # Move now
-        self.steps_since_move = 0
-        self.position += mult
+      if self.reverse:
+        self.position -= 1
+      else:
+        self.position += 1
     else:
       self.position = self.prev_line.position - self.gap
 
@@ -79,23 +73,24 @@ class VerticalLine(Line):
     self.section.add_line_vertical(round(self.position), self.color)
 
 
-class LineRenderer(BaseSingleRenderer):
+class LineRenderer(BaseSingleTimedRenderer):
 
   def __init__(
       self,
       loader,
       name=None,
+      interval_seconds=0.2,
       section=None,
       palette=None,
       active=True,
       # Custom
       direction='DOWN',  # Up, Down, Left, Right
-      move_steps=5,  # Steps between moving lines
       line_gap=4,  # Number of lines between lines
       # style='FILL',  # NO_FILL, FILL
   ):
     super().__init__(
-        loader, name=name, section=section, palette=palette, active=active)
+        loader, name=name, interval_seconds=interval_seconds, section=section,
+        palette=palette, active=active)
     direction = direction.upper()
 
     if direction in ('DOWN', 'UP'):
@@ -119,7 +114,6 @@ class LineRenderer(BaseSingleRenderer):
           LineClass(
               section=self.SECTION,
               color=self.PALETTE[i % len(self.PALETTE)],
-              move_steps=move_steps,
               max_gap=line_gap,
               max_position=max_position,
               reverse=reverse,
@@ -128,15 +122,18 @@ class LineRenderer(BaseSingleRenderer):
           ))
       prev_line = self.LINES[-1]
 
-  def do_render(self):
+  def do_render_display(self):
+    for line in self.LINES:
+      line.do_render()
+
+  def do_render_step(self):
     # If all lines are on the screen, we're full - reverse them all
     # If all lines are off the screen, we're empty - reverse them all
     all_on_screen = all(line.is_on_screen for line in self.LINES)
     all_off_screen = all(not line.is_on_screen for line in self.LINES)
-    if all_on_screen or all_off_screen:
-      for line in self.LINES:
-        line.reverse = not line.reverse
-        line.update_position()
+    reverse_now = (all_on_screen or all_off_screen)
 
     for line in self.LINES:
-      line.do_render()
+      if reverse_now:
+        line.reverse = not line.reverse
+      line.update_position()
