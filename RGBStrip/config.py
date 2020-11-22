@@ -17,14 +17,17 @@ class Config(object):
     # Requires nothing
     self.CONTROLLER = self._load_controller(config['controller'])
     self.PALETTES = self._load_palettes(config.get('palettes', {}))
-    self.SLEEP_TIME = config.get('general', {}).get('sleep_time', 0.01)
+    general = config.get('general', {})
+    self.SLEEP_TIME = general.get('sleep_time', 0.01)
+    self.RENDER_DIRECTORY = general.get('render_directory')
+    self.RENDER_DIRECTORY_SPEED = general.get('render_directory_speed')
 
     # Requires CONTROLLER
-    self.SECTIONS = self._load_sections(config['sections'])
-    self.DISPLAYS = self._load_displays(config['displays'])
+    self.SECTIONS = self._load_sections(config.get('sections', []))
+    self.DISPLAYS = self._load_displays(config.get('displays', []))
 
     # Requires SECTIONS & PALETTES
-    self.RENDERER = self.load_renderer(config['renderer'])
+    self.RENDERER = self.load_renderer(config.get('renderer', None))
 
   def _load_controller(self, controller_config):
     return CONTROLLERS[controller_config.pop('type')](**controller_config)
@@ -42,6 +45,8 @@ class Config(object):
     }
 
   def load_renderer(self, renderer_config):
+    if renderer_config is None:
+      return None
     return RENDERERS[renderer_config.pop('type')](self, **renderer_config)
 
   def _load_displays(self, display_configs):

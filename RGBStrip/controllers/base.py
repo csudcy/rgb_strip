@@ -35,3 +35,6 @@ class BaseController(object):
         max(min(int(g), 255), 0),
         max(min(int(b), 255), 0),
     )
+
+  def set_frame(self, pixels):
+    self.PIXELS = pixels
