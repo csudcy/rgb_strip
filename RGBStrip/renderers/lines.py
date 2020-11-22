@@ -84,6 +84,7 @@ class LineRenderer(BaseSingleRenderer):
   def __init__(
       self,
       loader,
+      name=None,
       section=None,
       palette=None,
       active=True,
@@ -93,7 +94,8 @@ class LineRenderer(BaseSingleRenderer):
       line_gap=4,  # Number of lines between lines
       # style='FILL',  # NO_FILL, FILL
   ):
-    super().__init__(loader, section=section, palette=palette, active=active)
+    super().__init__(
+        loader, name=name, section=section, palette=palette, active=active)
     direction = direction.upper()
 
     if direction in ('DOWN', 'UP'):

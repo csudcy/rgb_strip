@@ -8,6 +8,7 @@ class ConeSpiralDripRenderer(BaseSingleTimedRenderer):
   def __init__(
       self,
       loader,
+      name=None,
       interval_seconds=0.1,
       section=None,
       palette=None,
@@ -17,6 +18,7 @@ class ConeSpiralDripRenderer(BaseSingleTimedRenderer):
       segment_gap=5,
       reverse_colour=False):
     super().__init__(loader,
+                     name=name,
                      interval_seconds=interval_seconds,
                      section=section,
                      palette=palette,

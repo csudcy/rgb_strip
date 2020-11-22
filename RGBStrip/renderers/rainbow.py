@@ -8,12 +8,14 @@ class RainbowRenderer(BaseSingleRenderer):
 
   def __init__(self,
                loader,
+               name=None,
                section=None,
                palette=None,
                active=True,
                initial_x=0,
                initial_y=0):
-    super().__init__(loader, section=section, palette=palette, active=active)
+    super().__init__(
+        loader, name=name, section=section, palette=palette, active=active)
 
     self.X = initial_x
     self.Y = initial_y

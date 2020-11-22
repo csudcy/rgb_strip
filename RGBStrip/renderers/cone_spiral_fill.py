@@ -8,6 +8,7 @@ class ConeSpiralFillRenderer(BaseSingleTimedRenderer):
   def __init__(
       self,
       loader,
+      name=None,
       interval_seconds=0.2,
       section=None,
       palette=None,
@@ -16,6 +17,7 @@ class ConeSpiralFillRenderer(BaseSingleTimedRenderer):
       reverse=False,
       reverse_colour=False):
     super().__init__(loader,
+                     name=name,
                      interval_seconds=interval_seconds,
                      section=section,
                      palette=palette,

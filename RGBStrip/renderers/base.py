@@ -9,7 +9,8 @@ class BaseRenderer(abc.ABC):
   # Does this display have a "finished" point
   IS_FINISHABLE = False
 
-  def __init__(self, loader, active=True):
+  def __init__(self, loader, name=None, active=True):
+    self.NAME = name
     self.ACTIVE = active
 
   def render(self):
@@ -35,8 +36,8 @@ class BaseSingleRenderer(BaseRenderer):
 
   DEFAULT_PALETTE = None
 
-  def __init__(self, loader, section=None, palette=None, active=True):
-    super().__init__(loader, active=active)
+  def __init__(self, loader, name=None, section=None, palette=None, active=True):
+    super().__init__(loader, name=name, active=active)
 
     self.SECTION = loader.resolve_section(section)
 
@@ -51,11 +52,13 @@ class BaseSingleTimedRenderer(BaseSingleRenderer):
 
   def __init__(self,
                loader,
+               name=None,
                interval_seconds=1,
                section=None,
                palette=None,
                active=True):
-    super().__init__(loader, section=section, palette=palette, active=active)
+    super().__init__(
+        loader, name=name, section=section, palette=palette, active=active)
 
     self.INTERVAL_SECONDS = interval_seconds
     self.NEXT_STEP = time.time() + interval_seconds
@@ -80,10 +83,11 @@ class BaseMultiRenderer(BaseRenderer):
 
   def __init__(self,
                loader,
+               name=None,
                renderers=None,
                common_parameters=None,
                active=True):
-    super().__init__(loader, active=active)
+    super().__init__(loader, name=name, active=active)
 
     self.RENDERERS = []
     for renderers_config in renderers:

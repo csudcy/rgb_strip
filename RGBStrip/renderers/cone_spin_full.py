@@ -5,8 +5,9 @@ from RGBStrip.renderers.base import BaseSingleRenderer
 
 class ConeSpinFullRenderer(BaseSingleRenderer):
 
-  def __init__(self, loader, section=None, palette=None, active=True):
-    super().__init__(loader, section=section, palette=palette, active=active)
+  def __init__(self, loader,name=None, section=None, palette=None, active=True):
+    super().__init__(
+        loader, name=name, section=section, palette=palette, active=active)
     self.COLOUR_INDEX = 0
     self.PALETTE_LENGTH = len(self.PALETTE)
 

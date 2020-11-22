@@ -8,6 +8,7 @@ class ConeSpinLineRenderer(BaseSingleTimedRenderer):
   def __init__(
       self,
       loader,
+      name=None,
       interval_seconds=0.2,
       section=None,
       palette=None,
@@ -16,6 +17,7 @@ class ConeSpinLineRenderer(BaseSingleTimedRenderer):
       start_degrees=0,
       degrees_per_step=10):
     super().__init__(loader,
+                     name=name,
                      interval_seconds=interval_seconds,
                      section=section,
                      palette=palette,

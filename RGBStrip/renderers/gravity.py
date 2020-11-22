@@ -12,6 +12,7 @@ class GravityRenderer(BaseSingleRenderer):
 
   def __init__(self,
                loader,
+               name=None,
                section=None,
                palette=None,
                active=True,
@@ -20,7 +21,8 @@ class GravityRenderer(BaseSingleRenderer):
                min_speed=0.5,
                max_speed=1.0,
                g_speed=None):
-    super().__init__(loader, section=section, palette=palette, active=active)
+    super().__init__(
+        loader, name=name, section=section, palette=palette, active=active)
 
     self.MAX_SHOTS = max_shots
     self.SHOT_ADD_CHANCE = shot_add_chance

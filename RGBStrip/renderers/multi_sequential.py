@@ -9,15 +9,17 @@ class MultiSequential(BaseMultiRenderer):
 
   def __init__(self,
                loader,
+               name=None,
                renderers=None,
                common_parameters=None,
-               active=True):
+               active=True,
+               # How many frames to render for "unfinishable" renderers.
+               frames_unfinishable=1000):
     super().__init__(loader,
+                     name=name,
                      renderers=renderers,
                      common_parameters=common_parameters,
-                     active=active,
-                     # How many frames to render for "unfinishable" renderers.
-                     frames_unfinishable=1000)
+                     active=active)
     self.FRAMES_UNFINISHABLE = frames_unfinishable
     self.FINISHED = False
     self._init_for_renderer(0)

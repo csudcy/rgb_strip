@@ -55,6 +55,7 @@ class SparklesRenderer(BaseSingleRenderer):
   def __init__(
       self,
       loader,
+      name=None,
       section=None,
       palette=None,
       active=True,
@@ -64,7 +65,8 @@ class SparklesRenderer(BaseSingleRenderer):
       on_steps: List[int] = (30, 100),  # Range of steps to stay on
       off_steps: List[int] = (5, 25),  # Range of steps to stay off
   ):
-    super().__init__(loader, section=section, palette=palette, active=active)
+    super().__init__(
+        loader, name=name, section=section, palette=palette, active=active)
 
     # Create all the sparkles
     leds_total = self.SECTION.WIDTH * self.SECTION.HEIGHT
