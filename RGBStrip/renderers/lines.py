@@ -75,6 +75,8 @@ class VerticalLine(Line):
 
 class LineRenderer(BaseSingleTimedRenderer):
 
+  IS_FINISHABLE = True
+
   def __init__(
       self,
       loader,
@@ -91,6 +93,7 @@ class LineRenderer(BaseSingleTimedRenderer):
     super().__init__(
         loader, name=name, interval_seconds=interval_seconds, section=section,
         palette=palette, active=active)
+    self.FINISHED = False
     direction = direction.upper()
 
     if direction in ('DOWN', 'UP'):
@@ -131,9 +134,14 @@ class LineRenderer(BaseSingleTimedRenderer):
     # If all lines are off the screen, we're empty - reverse them all
     all_on_screen = all(line.is_on_screen for line in self.LINES)
     all_off_screen = all(not line.is_on_screen for line in self.LINES)
-    reverse_now = (all_on_screen or all_off_screen)
+    self.FINISHED = (all_on_screen or all_off_screen)
 
     for line in self.LINES:
-      if reverse_now:
+      if self.FINISHED:
         line.reverse = not line.reverse
       line.update_position()
+
+  def is_finished(self):
+    """Check if this display is in a "finished" state.
+    """
+    return self.FINISHED
