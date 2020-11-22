@@ -1,0 +1,98 @@
+controller:
+  type: rectangular
+  width: 12
+  height: 120
+  a: 5
+
+displays:
+  - type: websocket
+#  - type: rpi_spi_ws2812
+
+sections:
+  spokes:
+    type: rectangular
+    x: 0
+    y: 0
+    width: 12
+    height: 120
+
+renderer:
+  type: multi_sequential
+  common_parameters:
+    section: spokes
+  renderers:
+    # LINES - DOWN
+    -
+      name: lines_down_red
+      type: lines
+      palette: red
+      direction: down
+    -
+      name: lines_down_green
+      type: lines
+      palette: green
+      direction: down
+    -
+      name: lines_down_blue
+      type: lines
+      palette: blue
+      direction: down
+    -
+      name: lines_down_white
+      type: lines
+      palette: white
+      direction: down
+    -
+      name: lines_down_rainbow
+      type: lines
+      palette: rainbow_120
+      direction: down
+
+    # LINES - LEFT
+    -
+      name: lines_left_red
+      type: lines
+      palette: red
+      direction: left
+    -
+      name: lines_left_green
+      type: lines
+      palette: green
+      direction: left
+    -
+      name: lines_left_blue
+      type: lines
+      palette: blue
+      direction: left
+    -
+      name: lines_left_white
+      type: lines
+      palette: white
+      direction: left
+    -
+      name: lines_left_rainbow
+      type: lines
+      palette: rainbow_120
+      direction: left
+
+    # SPARKLES
+    -
+      name: sparkles_red
+      type: sparkles
+      palette: red
+    -
+      name: sparkles_green
+      type: sparkles
+      palette: green
+    -
+      name: sparkles_blue
+      type: sparkles
+      palette: blue
+    -
+      name: sparkles_white
+      type: sparkles
+      palette: white
+    -
+      name: sparkles_rainbow
+      type: sparkles
+      palette: rainbow_7

@@ -15,7 +15,10 @@
     "poetry:install:spi": "poetry install -E spi",
     "poetry:update": "poetry update && poetry export --format=requirements.txt --without-hashes > requirements.txt",
     "serve": "poetry run python -m RGBStrip server",
-    "serve:test": "poetry run python -m RGBStrip server ./configs/test.yaml"
+    "serve:test": "poetry run python -m RGBStrip server ./configs/test.yaml",
+    "tree:render": "poetry run python -m RGBStrip render ./tree/render.yaml ./tree/renders/",
+    "tree:render:serve": "poetry run python -m RGBStrip server ./tree/render.yaml",
+    "tree:serve": "poetry run python -m RGBStrip server ./tree/display.yaml"
   },
   "author": "Nicholas Lee <csudcy@gmail.com>",
   "devDependencies": {},

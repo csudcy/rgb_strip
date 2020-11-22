@@ -1,0 +1,13 @@
+controller:
+  type: rectangular
+  width: 12
+  height: 120
+  a: 5
+
+displays:
+  - type: websocket
+#  - type: rpi_spi_ws2812
+
+general:
+  render_directory: ./tree/renders/
+  render_directory_speed: 3
