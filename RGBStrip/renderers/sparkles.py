@@ -10,7 +10,7 @@ from enum import Enum
 from typing import Deque, List
 
 from RGBStrip import utils
-from RGBStrip.renderers.base import BaseSingleRenderer
+from RGBStrip.renderers.base import BaseSingleTimedRenderer
 from RGBStrip.sections.rectangular import RectangularSection
 
 
@@ -25,6 +25,7 @@ class Sparkle:
   # Not set at init
   x: int = 0
   y: int = 0
+  colour: List[float] = None
   stage_steps: Deque[List[float]] = collections.deque()
 
   def randomise(self):
@@ -39,34 +40,37 @@ class Sparkle:
             random.randint(*self.off_steps),
         ))
 
-  def do_render(self):
+  def update_colour(self):
     try:
-      colour = self.stage_steps.pop()
+      self.colour = self.stage_steps.pop()
     except IndexError:
       # No more steps; start again
       self.randomise()
-      colour = self.stage_steps.pop()
+      self.colour = self.stage_steps.pop()
 
-    self.section.set_led(self.x, self.y, colour)
+  def do_render(self):
+    self.section.set_led(self.x, self.y, self.colour)
 
 
-class SparklesRenderer(BaseSingleRenderer):
+class SparklesRenderer(BaseSingleTimedRenderer):
 
   def __init__(
       self,
       loader,
       name=None,
+      interval_seconds=0.1,
       section=None,
       palette=None,
       active=True,
       # Custom
       coverage: int = 20,  # Percentage of lights which should be sparkling
-      fade_steps: List[int] = (50, 200),  # Range of steps to fade for
-      on_steps: List[int] = (30, 100),  # Range of steps to stay on
-      off_steps: List[int] = (5, 25),  # Range of steps to stay off
+      fade_steps: List[int] = (5, 20),  # Range of steps to fade for
+      on_steps: List[int] = (3, 10),  # Range of steps to stay on
+      off_steps: List[int] = (1, 3),  # Range of steps to stay off
   ):
     super().__init__(
-        loader, name=name, section=section, palette=palette, active=active)
+        loader, name=name, interval_seconds=interval_seconds, section=section,
+        palette=palette, active=active)
 
     # Create all the sparkles
     leds_total = self.SECTION.WIDTH * self.SECTION.HEIGHT
@@ -80,7 +84,13 @@ class SparklesRenderer(BaseSingleRenderer):
             off_steps=off_steps,
         ) for _ in range(leds_on)
     ]
+    # Setup the first colours of the sparkles
+    self.do_render_step()
 
-  def do_render(self):
+  def do_render_display(self):
     for sparkle in self.SPARKLES:
       sparkle.do_render()
+
+  def do_render_step(self):
+    for sparkle in self.SPARKLES:
+      sparkle.update_colour()
