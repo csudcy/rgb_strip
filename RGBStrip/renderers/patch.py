@@ -16,8 +16,11 @@ class PatchRenderer(BaseSingleRenderer):
       # TODO: remove delay?
       delay=1,
       start_index=0):
-    super().__init__(
-        loader, name=name, section=section, palette=palette, active=active)
+    super().__init__(loader,
+                     name=name,
+                     section=section,
+                     palette=palette,
+                     active=active)
 
     self.INDEX = start_index % len(self.PALETTE)
     self.STEP_DELAYED = 0

@@ -33,7 +33,8 @@ class Line:
     if self.prev_line is None:
       # I'm the first line; work out an absolute position
       if self.reverse:
-        self.position = self.max_position  + (self.line_count - 1) * self.max_gap - 1
+        self.position = (self.max_position +
+                         (self.line_count - 1) * self.max_gap - 1)
       else:
         self.position = 0
     else:
@@ -92,9 +93,12 @@ class LineRenderer(BaseSingleTimedRenderer):
       line_count=100,  # Number of lines to use
       # style='FILL',  # NO_FILL, FILL
   ):
-    super().__init__(
-        loader, name=name, interval_seconds=interval_seconds, section=section,
-        palette=palette, active=active)
+    super().__init__(loader,
+                     name=name,
+                     interval_seconds=interval_seconds,
+                     section=section,
+                     palette=palette,
+                     active=active)
     self.FINISHED = False
     direction = direction.upper()
 

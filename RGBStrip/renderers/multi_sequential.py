@@ -7,14 +7,15 @@ class MultiSequential(BaseMultiRenderer):
 
   FINISHABLE = True
 
-  def __init__(self,
-               loader,
-               name=None,
-               renderers=None,
-               common_parameters=None,
-               active=True,
-               # How many frames to render for "unfinishable" renderers.
-               frames_unfinishable=1000):
+  def __init__(
+      self,
+      loader,
+      name=None,
+      renderers=None,
+      common_parameters=None,
+      active=True,
+      # How many frames to render for "unfinishable" renderers.
+      frames_unfinishable=1000):
     super().__init__(loader,
                      name=name,
                      renderers=renderers,
@@ -61,6 +62,5 @@ class MultiSequential(BaseMultiRenderer):
 
   def render_to_memory(self, controller):
     return [
-        renderer.render_to_memory(controller)
-        for renderer in self.RENDERERS
+        renderer.render_to_memory(controller) for renderer in self.RENDERERS
     ]

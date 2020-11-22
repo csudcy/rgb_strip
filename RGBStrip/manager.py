@@ -14,6 +14,7 @@ class RGBStripManager(Thread):
 
   def __init__(self, config_path):
     Thread.__init__(self)
+    self.IS_ALIVE = True
 
     # Load the config
     self.CONFIG = None
@@ -53,7 +54,6 @@ class RGBStripManager(Thread):
     try:
       for display in self.CONFIG.DISPLAYS:
         display.setup()
-      self.IS_ALIVE = True
       if self.CONFIG.RENDER_DIRECTORY:
         self._render_from_directory()
       else:

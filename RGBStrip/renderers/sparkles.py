@@ -7,7 +7,7 @@ import math
 import random
 from dataclasses import dataclass
 from enum import Enum
-from typing import Deque, List
+from typing import Deque, List, Optional
 
 from RGBStrip import utils
 from RGBStrip.renderers.base import BaseSingleTimedRenderer
@@ -25,7 +25,7 @@ class Sparkle:
   # Not set at init
   x: int = 0
   y: int = 0
-  colour: List[float] = None
+  colour: Optional[List[float]] = None
   stage_steps: Deque[List[float]] = collections.deque()
 
   def randomise(self):
@@ -68,9 +68,12 @@ class SparklesRenderer(BaseSingleTimedRenderer):
       on_steps: List[int] = (3, 10),  # Range of steps to stay on
       off_steps: List[int] = (1, 3),  # Range of steps to stay off
   ):
-    super().__init__(
-        loader, name=name, interval_seconds=interval_seconds, section=section,
-        palette=palette, active=active)
+    super().__init__(loader,
+                     name=name,
+                     interval_seconds=interval_seconds,
+                     section=section,
+                     palette=palette,
+                     active=active)
 
     # Create all the sparkles
     leds_total = self.SECTION.WIDTH * self.SECTION.HEIGHT

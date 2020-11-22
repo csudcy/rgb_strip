@@ -33,7 +33,7 @@ def server(
     config: str,
     host: Optional[str],
     port: Optional[int],
-  ):
+):
   # Import this here so we don't require gevent when not using the server
   from RGBStrip import server
 
@@ -58,7 +58,7 @@ def server(
 def render(
     config: str,
     directory: Optional[str],
-  ):
+):
   # Create the manager from config
   manager = RGBStripManager(config)
 
@@ -81,6 +81,7 @@ def render(
       json.dump(render, f)
 
   print('Done!')
+
 
 if __name__ == "__main__":
   main()

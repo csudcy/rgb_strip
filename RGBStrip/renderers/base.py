@@ -40,7 +40,10 @@ class BaseRenderer(abc.ABC):
         'frames': frames,
     }
 
-  def _render_frames_to_memory(self, controller, frames_unfinishable=1000, frames_max=2000):
+  def _render_frames_to_memory(self,
+                               controller,
+                               frames_unfinishable=1000,
+                               frames_max=2000):
     """Render all my frames to memory.
     """
     print(f'{self.NAME}: Rendering frames...')
@@ -74,7 +77,12 @@ class BaseSingleRenderer(BaseRenderer):
 
   DEFAULT_PALETTE = None
 
-  def __init__(self, loader, name=None, section=None, palette=None, active=True):
+  def __init__(self,
+               loader,
+               name=None,
+               section=None,
+               palette=None,
+               active=True):
     super().__init__(loader, name=name, active=active)
 
     self.SECTION = loader.resolve_section(section)
@@ -95,8 +103,11 @@ class BaseSingleTimedRenderer(BaseSingleRenderer):
                section=None,
                palette=None,
                active=True):
-    super().__init__(
-        loader, name=name, section=section, palette=palette, active=active)
+    super().__init__(loader,
+                     name=name,
+                     section=section,
+                     palette=palette,
+                     active=active)
 
     self.INTERVAL_SECONDS = interval_seconds
     self.NEXT_STEP = time.time() + interval_seconds
