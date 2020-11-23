@@ -21,8 +21,8 @@ class RPiSPIDisplay(BaseDisplay):
     super().__init__(controller, pixel_type)
 
     # Force WS2812 to 2.22MHz
-    if pixel_type == 'ws2812' and speed < 2 or speed > 2.4:
-      print('Forcing ws2812 to the correct speed')
+    if pixel_type == 'ws2812' and speed_mhz < 2 or speed_mhz > 2.4:
+      print('Forcing ws2812 to the correct speed_mhz')
       speed_mhz = 2.22
 
     # Init the SPI bus
