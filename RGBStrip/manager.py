@@ -75,15 +75,20 @@ class RGBStripManager(Thread):
     # Load pre-renders into memory
     renders = []
     print(f'Loading renders from {self.CONFIG.RENDER_DIRECTORY} ...')
-    for filename in os.listdir(self.CONFIG.RENDER_DIRECTORY):
-      print(f'  Loading {filename} ...')
-      if not filename.endswith('.pickle'):
-        print('  Not .pickle; skipped')
+    for path in os.listdir(self.CONFIG.RENDER_DIRECTORY):
+      print(f'  Loading {path} ...')
+      render_directory = os.path.join(self.CONFIG.RENDER_DIRECTORY, path)
+      init_filepath = os.path.join(render_directory, 'init.pickle')
+      if not os.path.exists(init_filepath):
+        print('  No init.pickle; skipped')
         continue
-      filepath = os.path.join(self.CONFIG.RENDER_DIRECTORY, filename)
-      with open(filepath, 'rb') as f:
-        renders.append(pickle.load(f))
-      print(f'   Loaded {len(renders[-1]["frames"])} frames!')
+
+      with open(init_filepath, 'rb') as f:
+        render = pickle.load(f)
+      render['render_directory'] = render_directory
+      renders.append(render)
+
+      print(f'   Loaded {render["name"]}!')
     print(f'Loaded {len(renders)} renders!')
 
     next_frame_time = 0
@@ -97,7 +102,6 @@ class RGBStripManager(Thread):
           # Move to another render
           current_render = random.choice(renders)
           print(f'New render: {current_render["name"]}')
-          frames = current_render['frames']
           if 'interval_seconds' in current_render:
             frame_interval = current_render['interval_seconds']
             if self.CONFIG.RENDER_DIRECTORY_SPEED:
@@ -108,7 +112,7 @@ class RGBStripManager(Thread):
           # Get the range of indices to use
           # TODO: Add random start/end points?
           # TODO: Add speed multiplier
-          frame_count = len(current_render['frames'])
+          frame_count = current_render['frame_count']
           if random.randint(0, 1):
             # Reverse
             frame_indices = iter(range(frame_count - 1, 0, -1))
@@ -119,10 +123,16 @@ class RGBStripManager(Thread):
         # Set the next frame time
         next_frame_time = time.time() + frame_interval
 
+        # Load the frame
+        framepath = os.path.join(current_render['render_directory'],
+                                 f'{frame_index:04}.pickle')
+        with open(framepath, 'rb') as f:
+          frame = pickle.load(f)
+
         # Send it to controller
         if frame_index % 100 == 0:
-          print(f'Frame {frame_index} / {len(frames)}')
-        self.CONFIG.CONTROLLER.set_frame(frames[frame_index])
+          print(f'Frame {frame_index} / {frame_count}')
+        self.CONFIG.CONTROLLER.set_frame(frame)
 
         # Update the displays
         for display in self.CONFIG.DISPLAYS:

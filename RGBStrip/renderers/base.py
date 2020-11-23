@@ -46,11 +46,7 @@ class BaseRenderer(abc.ABC):
                                frames_max=2000):
     """Render all my frames to memory.
     """
-    print(f'{self.NAME}: Rendering frames...')
-    frames = []
     for frame_count in range(frames_max):
-      if frame_count % 100 == 0:
-        print(f'  Rendered {frame_count} frames...')
       # Check if finished
       if self.IS_FINISHABLE:
         if self.is_finished():
@@ -61,13 +57,7 @@ class BaseRenderer(abc.ABC):
 
       controller.set_leds((0, 0, 0))
       self._render_frame()
-      # frame = [
-      #     r << 16 | g << 8 | b
-      #     for r, g, b in controller.PIXELS
-      # ]
-      frames.append(controller.PIXELS[:])
-    print(f'  Rendered {len(frames)} frames!')
-    return frames
+      yield controller.PIXELS[:]
 
   def _render_frame(self):
     self.render()
