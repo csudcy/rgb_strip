@@ -6,7 +6,9 @@ controller:
 
 displays:
   - type: websocket
-#  - type: rpi_spi_ws2812
+#  - type: rpi_spi
+#    pixel_type: ws2812
+#    speed_mhz: 2.22
 
 sections:
   spokes:
