@@ -1,7 +1,7 @@
 controller:
   type: rectangular
-  width: 12
-  height: 120
+  width: 120
+  height: 12
   a: 5
 
 displays:
@@ -11,5 +11,20 @@ displays:
 #    speed_mhz: 2.22
 
 general:
-  render_directory: ./tree/renders/
-  render_directory_speed: 3
+  render_files:
+    directory: ./tree/renders/
+    speed: 3
+    names:
+      - lines_left_red
+      - lines_left_green
+      - lines_left_blue
+      - lines_left_pink
+      - lines_left_white
+      - lines_left_rainbow
+      - sparkles_red
+      - sparkles_green
+      - sparkles_blue
+      - sparkles_pink
+      - sparkles_white
+      - sparkles_rainbow
+      - rainbow

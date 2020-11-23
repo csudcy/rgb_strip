@@ -1,7 +1,7 @@
 controller:
   type: rectangular
-  width: 12
-  height: 120
+  width: 120
+  height: 12
   a: 5
 
 displays:
@@ -15,41 +15,14 @@ sections:
     type: rectangular
     x: 0
     y: 0
-    width: 12
-    height: 120
+    width: 120
+    height: 12
 
 renderer:
   type: multi_sequential
   common_parameters:
     section: spokes
   renderers:
-    # LINES - DOWN
-    -
-      name: lines_down_red
-      type: lines
-      palette: red
-      direction: down
-    -
-      name: lines_down_green
-      type: lines
-      palette: green
-      direction: down
-    -
-      name: lines_down_blue
-      type: lines
-      palette: blue
-      direction: down
-    -
-      name: lines_down_white
-      type: lines
-      palette: white
-      direction: down
-    -
-      name: lines_down_rainbow
-      type: lines
-      palette: rainbow_120
-      direction: down
-
     # LINES - LEFT
     -
       name: lines_left_red
@@ -65,6 +38,11 @@ renderer:
       name: lines_left_blue
       type: lines
       palette: blue
+      direction: left
+    -
+      name: lines_left_pink
+      type: lines
+      palette: pink
       direction: left
     -
       name: lines_left_white
@@ -91,6 +69,10 @@ renderer:
       type: sparkles
       palette: blue
     -
+      name: sparkles_pink
+      type: sparkles
+      palette: pink
+    -
       name: sparkles_white
       type: sparkles
       palette: white
@@ -98,3 +80,9 @@ renderer:
       name: sparkles_rainbow
       type: sparkles
       palette: rainbow_7
+
+    # PATCHES
+    -
+      name: rainbow
+      type: patch
+      palette: rainbow_200
