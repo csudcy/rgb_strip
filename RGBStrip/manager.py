@@ -53,7 +53,7 @@ class RGBStripManager(Thread):
     try:
       for display in self.CONFIG.DISPLAYS:
         display.setup()
-      if self.CONFIG.RENDER_DIRECTORY:
+      if self.CONFIG.RENDER_FILES:
         self._render_from_directory()
       else:
         self._render_live()
@@ -72,12 +72,21 @@ class RGBStripManager(Thread):
       time.sleep(self.CONFIG.SLEEP_TIME)
 
   def _render_from_directory(self):
+    # Get the config
+    directory = self.CONFIG.RENDER_FILES['directory']
+    speed = self.CONFIG.RENDER_FILES.get('speed', 1)
+    names = self.CONFIG.RENDER_FILES.get('names')
+
     # Load pre-renders into memory
     renders = []
-    print(f'Loading renders from {self.CONFIG.RENDER_DIRECTORY} ...')
-    for path in os.listdir(self.CONFIG.RENDER_DIRECTORY):
+    print(f'Loading renders from {directory} ...')
+    for path in os.listdir(directory):
       print(f'  Loading {path} ...')
-      render_directory = os.path.join(self.CONFIG.RENDER_DIRECTORY, path)
+      if names and path not in names:
+        print('  Not in names; skipped')
+        continue
+
+      render_directory = os.path.join(directory, path)
       init_filepath = os.path.join(render_directory, 'init.pickle')
       if not os.path.exists(init_filepath):
         print('  No init.pickle; skipped')
@@ -103,9 +112,7 @@ class RGBStripManager(Thread):
           current_render = random.choice(renders)
           print(f'New render: {current_render["name"]}')
           if 'interval_seconds' in current_render:
-            frame_interval = current_render['interval_seconds']
-            if self.CONFIG.RENDER_DIRECTORY_SPEED:
-              frame_interval /= self.CONFIG.RENDER_DIRECTORY_SPEED
+            frame_interval = current_render['interval_seconds'] / speed
           else:
             frame_interval = 0
 

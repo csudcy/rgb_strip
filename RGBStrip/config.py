@@ -19,8 +19,7 @@ class Config(object):
     self.PALETTES = self._load_palettes(config.get('palettes', {}))
     general = config.get('general', {})
     self.SLEEP_TIME = general.get('sleep_time', 0.01)
-    self.RENDER_DIRECTORY = general.get('render_directory')
-    self.RENDER_DIRECTORY_SPEED = general.get('render_directory_speed')
+    self.RENDER_FILES = general.get('render_files')
 
     # Requires CONTROLLER
     self.SECTIONS = self._load_sections(config.get('sections', []))
