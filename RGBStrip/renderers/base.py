@@ -131,12 +131,16 @@ class BaseSingleTimedRenderer(BaseSingleRenderer):
 
 class BaseMultiRenderer(BaseRenderer):
 
-  def __init__(self,
-               loader,
-               name=None,
-               renderers=None,
-               common_parameters=None,
-               active=True):
+  def __init__(
+      self,
+      loader,
+      name=None,
+      renderers=None,
+      common_parameters=None,
+      active=True,
+      # Ignore any further arguments (in case common parameters was used)
+      **kwargs,
+  ):
     super().__init__(loader, name=name, active=active)
 
     self.RENDERERS = []

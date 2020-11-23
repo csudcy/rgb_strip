@@ -15,7 +15,10 @@ class MultiSequential(BaseMultiRenderer):
       common_parameters=None,
       active=True,
       # How many frames to render for "unfinishable" renderers.
-      frames_unfinishable=1000):
+      frames_unfinishable=1000,
+      # Ignore any further arguments (in case common parameters was used)
+      **kwargs,
+  ):
     super().__init__(loader,
                      name=name,
                      renderers=renderers,
