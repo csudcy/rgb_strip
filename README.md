@@ -32,9 +32,34 @@ npm run serve configs/cone.yaml
 
 ## Raspberry Pi
 
-### Setup
+I use a Raspberry Pi to drive my lights. Specifically, a [Rasperry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/). Once you've got one & an SD card you'll need to choose an OS; I've tried with:
+* [Raspberry Pi OS](https://www.raspberrypi.org/software/) - The defacto standard for running a Pi
+* [DietPi](https://dietpi.com/) - In an attempt to get faster boots, I (unsuccessfully so far) tried to use this.
 
-* To use SPI (`Serial Peripheral Interface`) on the Pi:
+Some common notes:
+* Each upddate/install below can take **very** long time on the Pi (**30+ minutes** long depending on your Pi model & SD card).
+* It seems like SPI mode cannot be used if any of the pins have been used by GPIO (reboot to fix).
+
+### 1a. Raspberry Pi OS
+
+* Download [Raspberry Pi OS](https://www.raspberrypi.org/software/operating-systems/) (recommend the "Lite" version) & flash it
+* Setup [headless wifi](https://www.raspberrypi.org/documentation/configuration/wireless/headless.md) & [headless ssh](https://www.raspberrypi.org/documentation/remote-access/ssh/):
+  * Create a file called `wpa_supplicant.conf` on the boot partition and put this in it:
+```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=<Insert 2 letter ISO 3166-1 country code here>
+
+network={
+  ssid="<Name of your wireless LAN>"
+  psk="<Password for your wireless LAN>"
+}
+```
+  * Create a file called `ssh` on the boot partition.
+* Boot the Pi
+  * On first boot, the partition will be resized
+* `ssh pi@<IP>`, password `raspberry`
+* To enable the SPI interface:
   * `sudo raspi-config`
     * `Interfacing Options`
     * `SPI`
@@ -53,18 +78,47 @@ python3 -m pip install --upgrade pip
 
 # Restart (just to be safe)
 sudo shutdown -r now
-
-# Install requirements
-python3 -m pip install -r requirements.txt
 ```
+* Now continue with the `Remaining Setup` instructions
 
-**Note:** Each upddate/install can take **very** long time on the Pi (**30+ minutes** long depending on your Pi model & SD card).
+### 1b. DietPi
 
-**Note:** It seems like SPI mode cannot be used if any of the pins have been used by GPIO (reboot to fix).
+I'm trying out [Diet Pi](https://dietpi.com) in an attempt to get faster boot times - maybe even a faster server!
 
-### Using SPI for WS2812b Poxles
+**NOTE**: I ran into an issue where DietPi wouldn't properly drive the pixels (the first one would just flash green) so gave & moved back to Raspberry Pi OS. Good luck if you try DietPi!
 
-Because there's no clock signal for WS2812b pixles, the timing is very important. Therefore, you should really be using SPI for WS2812b pixels. Unfortunately, it seems like having to do multiple SPI writes is too slow. Therefore, we have to make sure the data for all pixels can be sent in one go. But, that's limited by the buffer size.
+* Get DietPi & flash it
+* On the boot partition, edit:
+  * `dietpi.txt`
+    * `AUTO_SETUP_ACCEPT_LICENSE=1` So you don't have to manually accept the license
+    * `AUTO_SETUP_NET_WIFI_ENABLED=1` So you don't have to manually start the wifi
+    * `AUTO_SETUP_AUTOMATED=1` So it goes through the setup automatically
+    * `CONFIG_BOOT_WAIT_FOR_NETWORK=2` Make the boot wait infinitely for network
+    * `CONFIG_SERIAL_CONSOLE_ENABLE=0` We don't need the serial console so disable it
+  * `dietpi-wifi.txt` - Setup your wifi details
+    * **Note**: This is only used on first boot; if you forget to set it, the easiest thing to do it re-flash & start again.
+    * `aWIFI_SSID`
+    * `aWIFI_KEY`
+  * `config.txt` (Note, when running, this is at `/boot/config.txt` and can be edited using `nano`)
+    * `dtparam=spi=on`
+* Boot the Pi
+  * On first boot, the partition will be resized and everything will be updated (so it can take a while)
+* `ssh root@<IP>`, password `dietpi`
+* If you want to, you can change the boot wait for network setting in `/boot/dietpi.txt` by set `CONFIG_BOOT_WAIT_FOR_NETWORK=1`
+  * You can set `CONFIG_BOOT_WAIT_FOR_NETWORK=0` (so boot doesn't wait for network). However, this made `timesyncd` take a long time (removing network saved ~5 seconds, `timesyncd` wait was ~60 seconds).
+* Install some dependencies
+```
+# 17=Git, 130=Python3
+dietpi-software install 17 130
+# TODO: Is this needed?
+# apt-get install cmake
+apt-get install build-essential libffi-dev
+```
+* Now continue with the `Remaining Setup` instructions (though you don't need to `sudo` everything since you're logged in as root)
+
+### 2. Using SPI for WS2812b Pixels
+
+Because there's no clock signal for WS2812b pixles, the timing is very important. Therefore, you should really be using SPI (`Serial Peripheral Interface`) for WS2812b pixels. Unfortunately, it seems like having to do multiple SPI writes is too slow. Therefore, we have to make sure the data for all pixels can be sent in one go. But, that's limited by the buffer size.
 
 WS2812b pixels use 9 bytes per pixel (3 channels and 3 bytes per channel). Therefore, the maximum number of pixels which can be sent in one go are:
 ```
@@ -105,12 +159,31 @@ sudo python3 setup.py install
 sudo shutdown -r now
 ```
 
+### 3. Remaining Setup
+
+```
+# Clone the repo
+cd ~
+git clone https://github.com/csudcy/rgb_strip
+cd rgb_strip
+
+# Install requirements
+python3 -m pip install -r requirements.txt
+
+# Test the server
+python3 -m RGBStrip server ./configs/test.yaml
+
+# Copy pre-renders to the pi
+scp -r ./tree/renders/ pi@<IP>:/home/pi/rgb_strip/tree/renders/
+```
+
 ### Running
 
 * Create a config file: `cp ./configs/test.yaml ./configs/prod.yaml`
 * Test the server: `python3 -m RGBStrip server ./configs/prod.yaml`
 * Check the server is running on http://raspberrypi.local:8080
   * If the .local address doesn't work, you'll need to find the IP address of your Pi & use that.
+  * DietPi defaults to the hostname dieti.local
 * Once that's working, you can stop it & set it to run at startup:
 ```bash
 # Setup the service
