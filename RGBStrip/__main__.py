@@ -113,5 +113,5 @@ if __name__ == "__main__":
     main()
   except Exception:
     # Make sure the traceback is printed
-    traceback.print_tb()
+    traceback.print_exc()
     raise
