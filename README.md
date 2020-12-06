@@ -174,7 +174,7 @@ python3 -m pip install -r requirements.txt
 python3 -m RGBStrip server ./configs/test.yaml
 
 # Copy pre-renders to the pi
-scp -r ./tree/renders/ pi@<IP>:/home/pi/rgb_strip/tree/renders/
+scp -r ./tree/renders/ pi@<IP>:/home/pi/rgb_strip/tree/renders
 ```
 
 ### Running

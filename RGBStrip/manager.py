@@ -115,12 +115,14 @@ class RGBStripManager(Thread):
       frame_count = len(render['frame_lengths'])
 
       # Open the data file & iterate over the frames
-      with open(render['framedata_path'], 'rb') as framedata:
+      with open(render['framedata_path'], 'rb') as framedata_file:
         for frame_index, frame_length in enumerate(render['frame_lengths']):
-          # Load the next frame & send it to controller
-          frame = framedata.read(frame_length)
           if frame_index % 100 == 0:
             print(f'Frame {frame_index} / {frame_count}')
+
+          # Load the next frame & send it to controller
+          framedata = framedata_file.read(frame_length)
+          frame = pickle.loads(framedata)
           self.CONFIG.CONTROLLER.set_frame(frame)
 
           # Update the displays
