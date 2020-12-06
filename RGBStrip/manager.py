@@ -94,58 +94,43 @@ class RGBStripManager(Thread):
 
       with open(init_filepath, 'rb') as f:
         render = pickle.load(f)
-      render['render_directory'] = render_directory
+      render['framedata_path'] = os.path.join(render_directory, 'data.pickle')
       renders.append(render)
 
       print(f'   Loaded {render["name"]}!')
     print(f'Loaded {len(renders)} renders!')
 
+    # TODO: Add random start/end points?
+    # TODO: Add speed multiplier
+    # TODO: Add reverse to render
     next_frame_time = 0
-    frame_indices = iter([])
     while (self.IS_ALIVE):
-      # Check if it's time to display the next frame
-      if time.time() > next_frame_time:
-        try:
-          frame_index = next(frame_indices)
-        except StopIteration:
-          # Move to another render
-          current_render = random.choice(renders)
-          print(f'New render: {current_render["name"]}')
-          if 'interval_seconds' in current_render:
-            frame_interval = current_render['interval_seconds'] / speed
-          else:
-            frame_interval = 0
+      # Choose a new render
+      render = random.choice(renders)
+      print(f'New render: {render["name"]}')
+      if 'interval_seconds' in render:
+        frame_interval = render['interval_seconds'] / speed
+      else:
+        frame_interval = 0
+      frame_count = len(render['frame_lengths'])
 
-          # Get the range of indices to use
-          # TODO: Add random start/end points?
-          # TODO: Add speed multiplier
-          frame_count = current_render['frame_count']
-          if random.randint(0, 1):
-            # Reverse
-            frame_indices = iter(range(frame_count - 1, 0, -1))
-          else:
-            frame_indices = iter(range(frame_count))
-          frame_index = next(frame_indices)
+      # Open the data file & iterate over the frames
+      with open(render['framedata_path'], 'rb') as framedata:
+        for frame_index, frame_length in enumerate(render['frame_lengths']):
+          # Load the next frame & send it to controller
+          frame = framedata.read(frame_length)
+          if frame_index % 100 == 0:
+            print(f'Frame {frame_index} / {frame_count}')
+          self.CONFIG.CONTROLLER.set_frame(frame)
 
-        # Set the next frame time
-        next_frame_time = time.time() + frame_interval
+          # Update the displays
+          for display in self.CONFIG.DISPLAYS:
+            display.display()
 
-        # Load the frame
-        framepath = os.path.join(current_render['render_directory'],
-                                 f'{frame_index:04}.pickle')
-        with open(framepath, 'rb') as f:
-          frame = pickle.load(f)
-
-        # Send it to controller
-        if frame_index % 100 == 0:
-          print(f'Frame {frame_index} / {frame_count}')
-        self.CONFIG.CONTROLLER.set_frame(frame)
-
-        # Update the displays
-        for display in self.CONFIG.DISPLAYS:
-          display.display()
-
-      time.sleep(self.CONFIG.SLEEP_TIME)
+          # Wait until it's time to display the next frame
+          while time.time() <= next_frame_time:
+            time.sleep(self.CONFIG.SLEEP_TIME)
+          next_frame_time = time.time() + frame_interval
 
   def run(self):
     self.output_forever()

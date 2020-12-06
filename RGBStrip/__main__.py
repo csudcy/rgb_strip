@@ -86,16 +86,19 @@ def render(
 
     # Save the frames
     frames = render.pop('frames')
-    for frame_count, frame in enumerate(frames):
-      if frame_count % 100 == 0:
-        print(f'{name}: Rendered {frame_count} frames...')
-      framepath = os.path.join(render_directory, f'{frame_count:04}.pickle')
-      with open(framepath, 'wb') as f:
-        pickle.dump(frame, f)
-    print(f'{name}: Rendered {frame_count} frames')
+    frame_lengths = []
+    framedata_path = os.path.join(render_directory, f'data.pickle')
+    with open(framedata_path, 'wb') as f:
+      for frame_count, frame in enumerate(frames):
+        if frame_count % 100 == 0:
+          print(f'{name}: Saved {frame_count} frames...')
+        frame_dumped = pickle.dumps(frame)
+        frame_lengths.append(len(frame_dumped))
+        f.write(frame_dumped)
+    print(f'{name}: Saved {frame_count} frames')
 
     # Save the init.pickle file
-    render['frame_count'] = frame_count
+    render['frame_lengths'] = frame_lengths
     print(f'{name}: Writing init.pickle...')
     with open(os.path.join(render_directory, f'init.pickle'), 'wb') as f:
       pickle.dump(render, f)
