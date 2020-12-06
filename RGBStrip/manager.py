@@ -129,6 +129,8 @@ class RGBStripManager(Thread):
           for display in self.CONFIG.DISPLAYS:
             display.display()
 
+          # Ensure at least 1 sleep so that the webserver can run
+          time.sleep(self.CONFIG.SLEEP_TIME)
           # Wait until it's time to display the next frame
           while time.time() <= next_frame_time:
             time.sleep(self.CONFIG.SLEEP_TIME)
