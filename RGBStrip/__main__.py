@@ -3,6 +3,7 @@
 import os
 import pickle
 import shutil
+import traceback
 from typing import Optional
 
 import click
@@ -108,4 +109,9 @@ def render(
 
 
 if __name__ == "__main__":
-  main()
+  try:
+    main()
+  except Exception:
+    # Make sure the traceback is printed
+    traceback.print_tb()
+    raise
