@@ -55,6 +55,38 @@ renderer:
       palette: rainbow_120
       direction: left
 
+    # LINES - RIGHT
+    -
+      name: lines_right_red
+      type: lines
+      palette: red
+      direction: right
+    -
+      name: lines_right_green
+      type: lines
+      palette: green
+      direction: right
+    -
+      name: lines_right_blue
+      type: lines
+      palette: blue
+      direction: right
+    -
+      name: lines_right_pink
+      type: lines
+      palette: pink
+      direction: right
+    -
+      name: lines_right_white
+      type: lines
+      palette: white
+      direction: right
+    -
+      name: lines_right_rainbow
+      type: lines
+      palette: rainbow_120
+      direction: right
+
     # SPARKLES
     -
       name: sparkles_red
@@ -80,9 +112,3 @@ renderer:
       name: sparkles_rainbow
       type: sparkles
       palette: rainbow_7
-
-    # PATCHES
-    -
-      name: rainbow
-      type: patch
-      palette: rainbow_200

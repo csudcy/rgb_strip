@@ -21,10 +21,15 @@ general:
       - lines_left_pink
       - lines_left_white
       - lines_left_rainbow
+      - lines_right_red
+      - lines_right_green
+      - lines_right_blue
+      - lines_right_pink
+      - lines_right_white
+      - lines_right_rainbow
       - sparkles_red
       - sparkles_green
       - sparkles_blue
       - sparkles_pink
       - sparkles_white
       - sparkles_rainbow
-      - rainbow
