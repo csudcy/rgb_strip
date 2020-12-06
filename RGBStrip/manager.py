@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-import os
 import pickle
 import random
 import time
@@ -53,7 +52,7 @@ class RGBStripManager(Thread):
     try:
       for display in self.CONFIG.DISPLAYS:
         display.setup()
-      if self.CONFIG.RENDER_FILES:
+      if self.CONFIG.RENDERS:
         self._render_from_directory()
       else:
         self._render_live()
@@ -72,53 +71,18 @@ class RGBStripManager(Thread):
       time.sleep(self.CONFIG.SLEEP_TIME)
 
   def _render_from_directory(self):
-    # Get the config
-    directory = self.CONFIG.RENDER_FILES['directory']
-    speed = self.CONFIG.RENDER_FILES.get('speed', 1)
-    names = self.CONFIG.RENDER_FILES.get('names')
-
-    # Load pre-renders into memory
-    renders = []
-    print(f'Loading renders from {directory} ...')
-    for path in os.listdir(directory):
-      print(f'  Loading {path} ...')
-      if names and path not in names:
-        print('  Not in names; skipped')
-        continue
-
-      render_directory = os.path.join(directory, path)
-      init_filepath = os.path.join(render_directory, 'init.pickle')
-      if not os.path.exists(init_filepath):
-        print('  No init.pickle; skipped')
-        continue
-
-      with open(init_filepath, 'rb') as f:
-        render = pickle.load(f)
-      render['framedata_path'] = os.path.join(render_directory, 'data.pickle')
-      renders.append(render)
-
-      print(f'   Loaded {render["name"]}!')
-    print(f'Loaded {len(renders)} renders!')
-
     # TODO: Add random start/end points?
-    # TODO: Add speed multiplier
-    # TODO: Add reverse to render
     next_frame_time = 0
     while (self.IS_ALIVE):
       # Choose a new render
-      render = random.choice(renders)
+      render = random.choice(self.CONFIG.RENDERS)
       print(f'New render: {render["name"]}')
-      if 'interval_seconds' in render:
-        frame_interval = render['interval_seconds'] / speed
-      else:
-        frame_interval = 0
-      frame_count = len(render['frame_lengths'])
 
       # Open the data file & iterate over the frames
       with open(render['framedata_path'], 'rb') as framedata_file:
         for frame_index, frame_length in enumerate(render['frame_lengths']):
           if frame_index % 100 == 0:
-            print(f'Frame {frame_index} / {frame_count}')
+            print(f"Frame {frame_index} / {render['frame_count']}")
 
           # Load the next frame & send it to controller
           framedata = framedata_file.read(frame_length)
@@ -134,7 +98,7 @@ class RGBStripManager(Thread):
           # Wait until it's time to display the next frame
           while time.time() <= next_frame_time:
             time.sleep(self.CONFIG.SLEEP_TIME)
-          next_frame_time = time.time() + frame_interval
+          next_frame_time = time.time() + render['frame_interval']
 
   def run(self):
     self.output_forever()
