@@ -19,7 +19,10 @@ class WebSocketDisplay(BaseDisplay):
         'pixels': self.CONTROLLER.PIXELS,
     })
     for ws in WEBSOCKETS:
-      ws.send(data)
+      try:
+        ws.send(data)
+      except Exception:
+        self.remove_websocket(ws)
 
 
 def add_websocket(ws):
