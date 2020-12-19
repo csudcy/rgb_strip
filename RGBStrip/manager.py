@@ -52,7 +52,7 @@ class RGBStripManager(Thread):
     try:
       for display in self.CONFIG.DISPLAYS:
         display.setup()
-      if self.CONFIG.RENDERS:
+      if self.CONFIG.RENDER_GROUPS:
         self._render_from_directory()
       else:
         self._render_live()
@@ -75,7 +75,8 @@ class RGBStripManager(Thread):
     next_frame_time = 0
     while (self.IS_ALIVE):
       # Choose a new render
-      render = random.choice(self.CONFIG.RENDERS)
+      render_group = random.choice(self.CONFIG.RENDER_GROUPS)
+      render = random.choice(render_group)
       print(f'New render: {render.name}')
 
       for frame in render.frames:

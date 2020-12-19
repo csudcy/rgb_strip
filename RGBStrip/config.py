@@ -22,7 +22,7 @@ class Config(object):
     self.PALETTES = self._load_palettes(config.get('palettes', {}))
     general = config.get('general', {})
     self.SLEEP_TIME = general.get('sleep_time', 0.01)
-    self.RENDERS = self._load_renders(general.get('render_files'))
+    self.RENDER_GROUPS = self._load_render_groups(general.get('render_files'))
 
     # Requires CONTROLLER
     self.SECTIONS = self._load_sections(config.get('sections', []))
@@ -31,7 +31,7 @@ class Config(object):
     # Requires SECTIONS & PALETTES
     self.RENDERER = self.load_renderer(config.get('renderer'))
 
-    if not (self.RENDERS or self.RENDERER):
+    if not (self.RENDER_GROUPS or self.RENDERER):
       raise Exception('You must define either renderers or render_files')
 
   def _load_controller(self, controller_config):
@@ -49,34 +49,33 @@ class Config(object):
         for id, params in (palette_configs or {}).items()
     }
 
-  def _load_renders(self, render_files_config) -> List[render_file.RenderReader]:
+  def _load_render_groups(self, render_files_config) -> List[List[render_file.RenderReader]]:
     if not render_files_config:
       return []
 
     # Get the config
     directory = render_files_config['directory']
     speed = render_files_config.get('speed', 1)
-    names = render_files_config.get('names')
+    name_groups = render_files_config.get('name_groups')
 
     # Load pre-renders into memory
     print(f'Loading renders from {directory} ...')
-    renders = []
-    for path in os.listdir(directory):
-      if not path.endswith('.json'):
-        continue
-      name = path[:-5]
+    render_groups = []
+    for name_group in name_groups:
+      render_group = []
+      for name in name_group:
+        # Check if we want to use this renderer
+        print(f'  Loading {name} ...')
+        render = render_file.RenderReader.load(directory, name)
+        if render:
+          render_group.append(render)
+          print(f'    Loaded.')
+        else:
+          print(f'    Not found!')
+      render_groups.append(render_group)
+    print(f'Loaded {len(render_groups)} render groups!')
 
-      # Check if we want to use this renderer
-      print(f'  Loading {name} ...')
-      if names and name not in names:
-        print('    Not in names; skipped')
-        continue
-
-      renders.append(render_file.RenderReader.load(directory, name))
-      print(f'    Loaded.')
-    print(f'Loaded {len(renders)} renders!')
-
-    return renders
+    return render_groups
 
   def load_renderer(self, renderer_config):
     if renderer_config is None:
