@@ -6,7 +6,6 @@ import collections
 import math
 import random
 from dataclasses import dataclass
-from enum import Enum
 from typing import Deque, List, Optional
 
 from RGBStrip import utils
