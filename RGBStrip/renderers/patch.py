@@ -28,4 +28,4 @@ class PatchRenderer(BaseSingleTimedRenderer):
         self.SECTION.add_led(x, y, rgb_colour)
 
   def do_render_step(self):
-      self.INDEX = (self.INDEX + 1) % len(self.PALETTE)
+    self.INDEX = (self.INDEX + 1) % len(self.PALETTE)

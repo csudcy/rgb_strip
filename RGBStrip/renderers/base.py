@@ -34,14 +34,16 @@ class BaseRenderer(abc.ABC):
     """
     raise Exception('Finishable displays must implement is_finished!')
 
-  def render_all_to_memory(self, controller) -> Iterator[render_file.RenderWriter]:
+  def render_all_to_memory(self,
+                           controller) -> Iterator[render_file.RenderWriter]:
     yield self.render_to_memory(controller)
 
   def render_to_memory(self, controller, **kwargs) -> render_file.RenderWriter:
     """Render myself to memory.
     """
     return render_file.RenderWriter(self.NAME,
-        self._render_frames_to_memory(controller), **kwargs)
+                                    self._render_frames_to_memory(controller),
+                                    **kwargs)
 
   def _render_frames_to_memory(self,
                                controller,
@@ -123,8 +125,8 @@ class BaseSingleTimedRenderer(BaseSingleRenderer):
   def render_to_memory(self, controller) -> render_file.RenderWriter:
     """Render myself to memory.
     """
-    return super().render_to_memory(
-        controller, frame_interval=self.INTERVAL_SECONDS)
+    return super().render_to_memory(controller,
+                                    frame_interval=self.INTERVAL_SECONDS)
 
   def _render_frame(self):
     self.do_render_display()

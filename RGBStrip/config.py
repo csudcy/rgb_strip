@@ -2,6 +2,7 @@
 # -*- coding: utf8 -*-
 import os
 from typing import List
+
 import yaml
 
 from RGBStrip import render_file
@@ -49,7 +50,8 @@ class Config(object):
         for id, params in (palette_configs or {}).items()
     }
 
-  def _load_render_groups(self, render_files_config) -> List[List[render_file.RenderReader]]:
+  def _load_render_groups(
+      self, render_files_config) -> List[List[render_file.RenderReader]]:
     if not render_files_config:
       return []
 

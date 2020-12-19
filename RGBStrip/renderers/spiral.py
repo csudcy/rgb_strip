@@ -8,7 +8,6 @@ from typing import List, Optional
 from RGBStrip.renderers.base import BaseSingleTimedRenderer
 
 
-
 @dataclass
 class SpiralConfig:
   first_dy: int

@@ -66,7 +66,8 @@ class MultiSequential(BaseMultiRenderer):
 
     self.CURRENT_RENDERER.render()
 
-  def render_all_to_memory(self, controller) -> Iterator[render_file.RenderWriter]:
+  def render_all_to_memory(self,
+                           controller) -> Iterator[render_file.RenderWriter]:
     for renderer in self.RENDERERS:
       yield renderer.render_to_memory(controller)
 

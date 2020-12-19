@@ -1,12 +1,15 @@
 import itertools
 import json
 import os
-from typing import Any, Iterable, Iterator, List, Tuple, Optional
+from typing import Any, Iterable, Iterator, List, Optional, Tuple
 
 
 class RenderWriter:
 
-  def __init__(self, name: str, frames: Iterable[Any], frame_interval: int=0) -> None:
+  def __init__(self,
+               name: str,
+               frames: Iterable[Any],
+               frame_interval: int = 0) -> None:
     if not name:
       raise Exception('Cannot render to memory without a name!')
 
@@ -52,7 +55,8 @@ class RenderWriter:
 
 class RenderReader:
 
-  def __init__(self, name: str, frame_interval: int, frame_count: int, frame_length: int, framedata_path: str) -> None:
+  def __init__(self, name: str, frame_interval: int, frame_count: int,
+               frame_length: int, framedata_path: str) -> None:
     self.name = name
     self.frame_interval = frame_interval
     self.frame_count = frame_count
@@ -88,6 +92,5 @@ class RenderReader:
   def load_frame(self, data: bytes) -> List[Tuple[int, int, int]]:
     pixels = [iter(data)] * 3
     return [
-        (int(r), int(g), int(b))
-        for r, g, b in itertools.zip_longest(*pixels)
+        (int(r), int(g), int(b)) for r, g, b in itertools.zip_longest(*pixels)
     ]
