@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 import os
-import pickle
+from typing import List
 import yaml
 
+from RGBStrip import render_file
 from RGBStrip import utils
 from RGBStrip.constants import CONTROLLERS, DISPLAYS, RENDERERS, SECTIONS
 
@@ -48,7 +49,7 @@ class Config(object):
         for id, params in (palette_configs or {}).items()
     }
 
-  def _load_renders(self, render_files_config):
+  def _load_renders(self, render_files_config) -> List[render_file.RenderReader]:
     if not render_files_config:
       return []
 
@@ -64,34 +65,14 @@ class Config(object):
       # Check if we want to use this renderer
       print(f'  Loading {path} ...')
       if names and path not in names:
-        print('  Not in names; skipped')
+        print('    Not in names; skipped')
         continue
-
-      # Check this really is a render
-      render_directory = os.path.join(directory, path)
-      init_filepath = os.path.join(render_directory, 'init.pickle')
-      if not os.path.exists(init_filepath):
-        print('  No init.pickle; skipped')
-        continue
-
-      # Load the renderer
-      with open(init_filepath, 'rb') as f:
-        render = pickle.load(f)
-
-      # Add some extra config stuff
-      if 'interval_seconds' in render:
-        frame_interval = render['interval_seconds'] / speed
+      render = render_file.RenderReader.load(os.path.join(directory, path))
+      if render:
+        renders.append(render)
+        print(f'    Loaded.')
       else:
-        frame_interval = 0
-      render.update({
-          'frame_count': len(render['frame_lengths']),
-          'frame_interval': frame_interval,
-          'framedata_path': os.path.join(render_directory, 'data.pickle'),
-      })
-
-      renders.append(render)
-
-      print(f'   Loaded {render["name"]}!')
+        print(f'    Skipped.')
     print(f'Loaded {len(renders)} renders!')
 
     return renders

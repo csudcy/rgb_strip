@@ -2,6 +2,9 @@
 # -*- coding: utf8 -*-
 import abc
 import time
+from typing import Iterator
+
+from RGBStrip import render_file
 
 
 class BaseRenderer(abc.ABC):
@@ -31,14 +34,14 @@ class BaseRenderer(abc.ABC):
     """
     raise Exception('Finishable displays must implement is_finished!')
 
-  def render_to_memory(self, controller):
+  def render_all_to_memory(self, controller) -> Iterator[render_file.RenderWriter]:
+    yield self.render_to_memory(controller)
+
+  def render_to_memory(self, controller, **kwargs) -> render_file.RenderWriter:
     """Render myself to memory.
     """
-    frames = self._render_frames_to_memory(controller)
-    return {
-        'name': self.NAME,
-        'frames': frames,
-    }
+    return render_file.RenderWriter(self.NAME,
+        self._render_frames_to_memory(controller), **kwargs)
 
   def _render_frames_to_memory(self,
                                controller,
@@ -117,12 +120,11 @@ class BaseSingleTimedRenderer(BaseSingleRenderer):
   def do_render_step(self):
     pass
 
-  def render_to_memory(self, controller):
+  def render_to_memory(self, controller) -> render_file.RenderWriter:
     """Render myself to memory.
     """
-    rendered = super().render_to_memory(controller)
-    rendered['interval_seconds'] = self.INTERVAL_SECONDS
-    return rendered
+    return super().render_to_memory(
+        controller, frame_interval=self.INTERVAL_SECONDS)
 
   def _render_frame(self):
     self.do_render_display()

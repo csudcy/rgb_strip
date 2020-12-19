@@ -76,29 +76,21 @@ class RGBStripManager(Thread):
     while (self.IS_ALIVE):
       # Choose a new render
       render = random.choice(self.CONFIG.RENDERS)
-      print(f'New render: {render["name"]}')
+      print(f'New render: {render.name}')
 
-      # Open the data file & iterate over the frames
-      with open(render['framedata_path'], 'rb') as framedata_file:
-        for frame_index, frame_length in enumerate(render['frame_lengths']):
-          if frame_index % 100 == 0:
-            print(f"Frame {frame_index} / {render['frame_count']}")
+      for frame in render.frames:
+        self.CONFIG.CONTROLLER.set_frame(frame)
 
-          # Load the next frame & send it to controller
-          framedata = framedata_file.read(frame_length)
-          frame = pickle.loads(framedata)
-          self.CONFIG.CONTROLLER.set_frame(frame)
+        # Update the displays
+        for display in self.CONFIG.DISPLAYS:
+          display.display()
 
-          # Update the displays
-          for display in self.CONFIG.DISPLAYS:
-            display.display()
-
-          # Ensure at least 1 sleep so that the webserver can run
+        # Ensure at least 1 sleep so that the webserver can run
+        time.sleep(self.CONFIG.SLEEP_TIME)
+        # Wait until it's time to display the next frame
+        while time.time() <= next_frame_time:
           time.sleep(self.CONFIG.SLEEP_TIME)
-          # Wait until it's time to display the next frame
-          while time.time() <= next_frame_time:
-            time.sleep(self.CONFIG.SLEEP_TIME)
-          next_frame_time = time.time() + render['frame_interval']
+        next_frame_time = time.time() + render.frame_interval
 
   def run(self):
     self.output_forever()

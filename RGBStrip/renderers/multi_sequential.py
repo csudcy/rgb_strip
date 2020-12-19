@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
+from typing import Iterator
+
+from RGBStrip import render_file
 from RGBStrip.renderers.base import BaseMultiRenderer
 
 
@@ -63,6 +66,9 @@ class MultiSequential(BaseMultiRenderer):
 
     self.CURRENT_RENDERER.render()
 
-  def render_to_memory(self, controller):
+  def render_all_to_memory(self, controller) -> Iterator[render_file.RenderWriter]:
     for renderer in self.RENDERERS:
       yield renderer.render_to_memory(controller)
+
+  def render_to_memory(self, controller, **data) -> render_file.RenderWriter:
+    raise Exception('Cannot render_to_memory a multi renderer!')
