@@ -1,6 +1,6 @@
+import json
 import os
 import pickle
-import shutil
 from typing import Any, Iterable, Iterator, List, Optional
 
 
@@ -15,19 +15,10 @@ class RenderWriter:
     self.frame_interval = frame_interval
 
   def write(self, directory: str) -> None:
-    print(f'{self.name}: Rendering...')
-
-    # Make sure the output directory exists & is clear
-    render_directory = os.path.join(directory, self.name)
-    if os.path.exists(render_directory):
-      print(f'{self.name}: Removing directory...')
-      shutil.rmtree(render_directory)
-    print(f'{self.name}: Adding directory...')
-    os.makedirs(render_directory)
-
     # Save the frames
+    print(f'{self.name}: Writing data file...')
     frame_lengths = []
-    framedata_path = os.path.join(render_directory, f'data.pickle')
+    framedata_path = os.path.join(directory, f'{self.name}.data')
     with open(framedata_path, 'wb') as f:
       for frame_count, frame in enumerate(self.frames):
         if frame_count % 100 == 0:
@@ -37,54 +28,54 @@ class RenderWriter:
         f.write(frame_dumped)
     print(f'{self.name}: Saved {frame_count} frames')
 
-    # Save the init.pickle file
+    unique_frame_lengths = set(frame_lengths)
+    if len(list(unique_frame_lengths)) != 1:
+      raise Exception(f'Got frames of multiple lengths: {unique_frame_lengths}')
+
+    # Save the meta JSON file
+    print(f'{self.name}: Writing JSON file...')
     render_data = {
-        'name': self.name,
-        'frame_lengths': frame_lengths,
+        'frame_count': len(frame_lengths),
+        'frame_length': frame_lengths[0],
         'frame_interval': self.frame_interval,
     }
-    print(f'{self.name}: Writing init.pickle...')
-    with open(os.path.join(render_directory, f'init.pickle'), 'wb') as f:
-      pickle.dump(render_data, f)
+    with open(os.path.join(directory, f'{self.name}.json'), 'w') as f:
+      json.dump(render_data, f, indent=2, sort_keys=True)
     print(f'{self.name}: Done!')
 
 
 class RenderReader:
 
-  def __init__(self, name: str, frame_interval: int, frame_lengths: List[int], framedata_path: str) -> None:
+  def __init__(self, name: str, frame_interval: int, frame_count: int, frame_length: int, framedata_path: str) -> None:
     self.name = name
     self.frame_interval = frame_interval
-    self.frame_lengths = frame_lengths
-    self.frame_count = len(frame_lengths)
+    self.frame_count = frame_count
+    self.frame_length = frame_length
     self.framedata_path = framedata_path
 
   @classmethod
-  def load(cls, directory: str) -> Optional['cls']:
-    # Check this really is a render
-    init_filepath = os.path.join(directory, 'init.pickle')
-    if not os.path.exists(init_filepath):
-      return
-
+  def load(cls, directory: str, name: str) -> Optional['cls']:
     # Load the renderer
-    with open(init_filepath, 'rb') as f:
-      render = pickle.load(f)
+    with open(os.path.join(directory, f'{name}.json'), 'r') as f:
+      render = json.load(f)
 
     return cls(
-        name=render['name'],
+        name=name,
         frame_interval=render['frame_interval'],
-        frame_lengths=render['frame_lengths'],
-        framedata_path=os.path.join(directory, 'data.pickle'),
+        frame_count=render['frame_count'],
+        frame_length=render['frame_length'],
+        framedata_path=os.path.join(directory, f'{name}.data'),
     )
 
   @property
   def frames(self) -> Iterator[Any]:
     # Open the data file & iterate over the frames
     with open(self.framedata_path, 'rb') as framedata_file:
-      for frame_index, frame_length in enumerate(self.frame_lengths):
+      for frame_index in range(self.frame_count):
         if frame_index % 100 == 0:
           print(f'Frame {frame_index} / {self.frame_count}')
 
         # Load the next frame & send it to controller
-        framedata = framedata_file.read(frame_length)
+        framedata = framedata_file.read(self.frame_length)
         frame = pickle.loads(framedata)
         yield frame

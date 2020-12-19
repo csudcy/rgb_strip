@@ -62,17 +62,18 @@ class Config(object):
     print(f'Loading renders from {directory} ...')
     renders = []
     for path in os.listdir(directory):
+      if not path.endswith('.json'):
+        continue
+      name = path[:-5]
+
       # Check if we want to use this renderer
-      print(f'  Loading {path} ...')
-      if names and path not in names:
+      print(f'  Loading {name} ...')
+      if names and name not in names:
         print('    Not in names; skipped')
         continue
-      render = render_file.RenderReader.load(os.path.join(directory, path))
-      if render:
-        renders.append(render)
-        print(f'    Loaded.')
-      else:
-        print(f'    Skipped.')
+
+      renders.append(render_file.RenderReader.load(directory, name))
+      print(f'    Loaded.')
     print(f'Loaded {len(renders)} renders!')
 
     return renders
