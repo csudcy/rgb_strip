@@ -17,6 +17,7 @@ from RGBStrip.renderers.multi_timed import MultiTimedRenderer
 from RGBStrip.renderers.patch import PatchRenderer
 from RGBStrip.renderers.rainbow import RainbowRenderer
 from RGBStrip.renderers.sparkles import SparklesRenderer
+from RGBStrip.renderers.spiral import SpiralRenderer
 from RGBStrip.sections.cone import ConeSection
 from RGBStrip.sections.rectangular import RectangularSection
 
@@ -57,6 +58,7 @@ RENDERERS = {
     'patch': PatchRenderer,
     'rainbow': RainbowRenderer,
     'sparkles': SparklesRenderer,
+    'spiral': SpiralRenderer,
 }
 
 SECTIONS = {
