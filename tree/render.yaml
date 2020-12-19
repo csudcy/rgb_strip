@@ -112,3 +112,179 @@ renderer:
       name: sparkles_rainbow
       type: sparkles
       palette: rainbow_7
+
+    # SPIRALS - FORWARD
+    -
+      name: spiral_forward_red
+      type: spiral
+      palette: red
+      direction: /
+      reverse: False
+    -
+      name: spiral_forward_green
+      type: spiral
+      palette: green
+      direction: /
+      reverse: False
+    -
+      name: spiral_forward_blue
+      type: spiral
+      palette: blue
+      direction: /
+      reverse: False
+    -
+      name: spiral_forward_pink
+      type: spiral
+      palette: pink
+      direction: /
+      reverse: False
+    -
+      name: spiral_forward_white
+      type: spiral
+      palette: white
+      direction: /
+      reverse: False
+    -
+      name: spiral_forward_rainbow_7
+      type: spiral
+      palette: rainbow_7
+      direction: /
+      reverse: False
+    -
+      name: spiral_forward_rainbow_120
+      type: spiral
+      palette: rainbow_120
+      direction: /
+      reverse: False
+
+    # SPIRALS - FORWARD REVERSE
+    -
+      name: spiral_forward_reverse_red
+      type: spiral
+      palette: red
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_green
+      type: spiral
+      palette: green
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_blue
+      type: spiral
+      palette: blue
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_pink
+      type: spiral
+      palette: pink
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_white
+      type: spiral
+      palette: white
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_rainbow_7
+      type: spiral
+      palette: rainbow_7
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_rainbow_120
+      type: spiral
+      palette: rainbow_120
+      direction: /
+      reverse: True
+
+    # SPIRALS - BACKWARD
+    -
+      name: spiral_backward_red
+      type: spiral
+      palette: red
+      direction: \
+      reverse: False
+    -
+      name: spiral_backward_green
+      type: spiral
+      palette: green
+      direction: \
+      reverse: False
+    -
+      name: spiral_backward_blue
+      type: spiral
+      palette: blue
+      direction: \
+      reverse: False
+    -
+      name: spiral_backward_pink
+      type: spiral
+      palette: pink
+      direction: \
+      reverse: False
+    -
+      name: spiral_backward_white
+      type: spiral
+      palette: white
+      direction: \
+      reverse: False
+    -
+      name: spiral_backward_rainbow_7
+      type: spiral
+      palette: rainbow_7
+      direction: \
+      reverse: False
+    -
+      name: spiral_backward_rainbow_120
+      type: spiral
+      palette: rainbow_120
+      direction: \
+      reverse: False
+
+    # SPIRALS - BACKWARD REVERSE
+    -
+      name: spiral_backward_reverse_red
+      type: spiral
+      palette: red
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_green
+      type: spiral
+      palette: green
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_blue
+      type: spiral
+      palette: blue
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_pink
+      type: spiral
+      palette: pink
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_white
+      type: spiral
+      palette: white
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_rainbow_7
+      type: spiral
+      palette: rainbow_7
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_rainbow_120
+      type: spiral
+      palette: rainbow_120
+      direction: \
+      reverse: True

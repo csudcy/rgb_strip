@@ -33,3 +33,31 @@ general:
       - sparkles_pink
       - sparkles_white
       - sparkles_rainbow
+      - spiral_forward_red
+      - spiral_forward_green
+      - spiral_forward_blue
+      - spiral_forward_pink
+      - spiral_forward_white
+      - spiral_forward_rainbow_7
+      - spiral_forward_rainbow_120
+      - spiral_forward_reverse_red
+      - spiral_forward_reverse_green
+      - spiral_forward_reverse_blue
+      - spiral_forward_reverse_pink
+      - spiral_forward_reverse_white
+      - spiral_forward_reverse_rainbow_7
+      - spiral_forward_reverse_rainbow_120
+      - spiral_backward_red
+      - spiral_backward_green
+      - spiral_backward_blue
+      - spiral_backward_pink
+      - spiral_backward_white
+      - spiral_backward_rainbow_7
+      - spiral_backward_rainbow_120
+      - spiral_backward_reverse_red
+      - spiral_backward_reverse_green
+      - spiral_backward_reverse_blue
+      - spiral_backward_reverse_pink
+      - spiral_backward_reverse_white
+      - spiral_backward_reverse_rainbow_7
+      - spiral_backward_reverse_rainbow_120
