@@ -1,7 +1,7 @@
+import itertools
 import json
 import os
-import pickle
-from typing import Any, Iterable, Iterator, List, Optional
+from typing import Any, Iterable, Iterator, List, Tuple, Optional
 
 
 class RenderWriter:
@@ -23,7 +23,7 @@ class RenderWriter:
       for frame_count, frame in enumerate(self.frames):
         if frame_count % 100 == 0:
           print(f'{self.name}: Saved {frame_count} frames...')
-        frame_dumped = pickle.dumps(frame)
+        frame_dumped = bytes(self.dump_frame(frame))
         frame_lengths.append(len(frame_dumped))
         f.write(frame_dumped)
     print(f'{self.name}: Saved {frame_count} frames')
@@ -42,6 +42,12 @@ class RenderWriter:
     with open(os.path.join(directory, f'{self.name}.json'), 'w') as f:
       json.dump(render_data, f, indent=2, sort_keys=True)
     print(f'{self.name}: Done!')
+
+  def dump_frame(self, frame: List[Tuple[int, int, int]]) -> Iterator[int]:
+    for r, g, b in frame:
+      yield r
+      yield g
+      yield b
 
 
 class RenderReader:
@@ -77,5 +83,11 @@ class RenderReader:
 
         # Load the next frame & send it to controller
         framedata = framedata_file.read(self.frame_length)
-        frame = pickle.loads(framedata)
-        yield frame
+        yield self.load_frame(framedata)
+
+  def load_frame(self, data: bytes) -> List[Tuple[int, int, int]]:
+    pixels = [iter(data)] * 3
+    return [
+        (int(r), int(g), int(b))
+        for r, g, b in itertools.zip_longest(*pixels)
+    ]
