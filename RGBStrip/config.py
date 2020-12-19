@@ -68,6 +68,8 @@ class Config(object):
         print(f'  Loading {name} ...')
         render = render_file.RenderReader.load(directory, name)
         if render:
+          # Apply the speed modifier
+          render.frame_interval /= speed
           render_group.append(render)
           print(f'    Loaded.')
         else:
