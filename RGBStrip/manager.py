@@ -29,6 +29,8 @@ class RGBStripManager(Thread):
       # Clear existing config
       if self.CONFIG.RENDERER:
         self.CONFIG.RENDERER.stop()
+      else:
+        self.NEXT_RENDER = True
       for display in self.CONFIG.DISPLAYS:
         display.teardown()
 
@@ -74,6 +76,8 @@ class RGBStripManager(Thread):
     # TODO: Add random start/end points?
     next_frame_time = 0
     while (self.IS_ALIVE):
+      self.NEXT_RENDER = False
+
       # Choose a new render
       render_group = random.choice(self.CONFIG.RENDER_GROUPS)
       render = random.choice(render_group)
@@ -92,6 +96,9 @@ class RGBStripManager(Thread):
         while time.time() <= next_frame_time:
           time.sleep(self.CONFIG.SLEEP_TIME)
         next_frame_time = time.time() + render.frame_interval
+
+        if self.NEXT_RENDER:
+          break
 
   def run(self):
     self.output_forever()
