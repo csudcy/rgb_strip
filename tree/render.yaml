@@ -288,3 +288,65 @@ renderer:
       palette: rainbow_120
       direction: \
       reverse: True
+
+    # IMAGES
+    -
+      name: image_1
+      type: image
+      image: tree/images/1.gif
+    -
+      name: image_2
+      type: image
+      image: tree/images/2.gif
+    -
+      name: image_3
+      type: image
+      image: tree/images/3.gif
+    -
+      name: image_4
+      type: image
+      image: tree/images/4.gif
+    -
+      name: image_5
+      type: image
+      image: tree/images/5.gif
+    -
+      name: image_6
+      type: image
+      image: tree/images/6.gif
+    -
+      name: image_7
+      type: image
+      image: tree/images/7.gif
+    -
+      name: image_8
+      type: image
+      image: tree/images/8.gif
+    -
+      name: image_9
+      type: image
+      image: tree/images/9.gif
+    -
+      name: image_10
+      type: image
+      image: tree/images/10.gif
+    -
+      name: image_11
+      type: image
+      image: tree/images/11.gif
+    -
+      name: image_12
+      type: image
+      image: tree/images/12.gif
+    -
+      name: image_13
+      type: image
+      image: tree/images/13.gif
+    -
+      name: image_14
+      type: image
+      image: tree/images/14.gif
+    -
+      name: image_15
+      type: image
+      image: tree/images/15.gif
