@@ -1,21 +1,12 @@
-
-
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 from __future__ import annotations
 
-import collections
-import math
 import random
-from dataclasses import dataclass
-from typing import Deque, List, Optional
 
 from PIL import Image
-# from PIL import GifImagePlugin
 
-from RGBStrip import utils
 from RGBStrip.renderers.base import BaseSingleTimedRenderer
-from RGBStrip.sections.rectangular import RectangularSection
 
 
 class ImageRenderer(BaseSingleTimedRenderer):

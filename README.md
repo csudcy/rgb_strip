@@ -73,6 +73,9 @@ sudo apt-get upgrade
 # Install things which don't come with defaut Raspberry Pi OS (lite at least)
 sudo apt-get install --upgrade git cmake python3-pip
 
+# For Pillow support
+sudo apt-get install libopenjp2-7 libtiff5
+
 # Now we have to update pip...
 python3 -m pip install --upgrade pip
 

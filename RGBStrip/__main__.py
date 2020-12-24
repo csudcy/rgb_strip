@@ -10,7 +10,7 @@ from RGBStrip.manager import RGBStripManager
 
 @click.group()
 def main() -> None:
-  """Validate, diff, and convert Kintaro schemas!"""
+  """Configurable interface for driving addressable RGB LEDs."""
 
 
 @main.command()
