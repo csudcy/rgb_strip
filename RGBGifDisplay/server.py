@@ -41,4 +41,4 @@ def display_thread_iterator():
 def run(display_thread):
   global DISPLAY_THREAD
   DISPLAY_THREAD = display_thread
-  app.run()
+  app.run(host='0.0.0.0')
