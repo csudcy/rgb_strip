@@ -1,22 +1,19 @@
 controller:
   type: rectangular
-  width: 120
-  height: 12
+  width: 240
+  height: 24
   a: 5
 
 displays:
   - type: websocket
-#  - type: rpi_spi
-#    pixel_type: ws2812
-#    speed_mhz: 2.22
 
 sections:
   spokes:
     type: rectangular
     x: 0
     y: 0
-    width: 120
-    height: 12
+    width: 240
+    height: 24
 
 renderer:
   type: multi_sequential
@@ -52,40 +49,8 @@ renderer:
     -
       name: lines_left_rainbow
       type: lines
-      palette: rainbow_120
+      palette: rainbow_240
       direction: left
-
-    # LINES - RIGHT
-    -
-      name: lines_right_red
-      type: lines
-      palette: red
-      direction: right
-    -
-      name: lines_right_green
-      type: lines
-      palette: green
-      direction: right
-    -
-      name: lines_right_blue
-      type: lines
-      palette: blue
-      direction: right
-    -
-      name: lines_right_pink
-      type: lines
-      palette: pink
-      direction: right
-    -
-      name: lines_right_white
-      type: lines
-      palette: white
-      direction: right
-    -
-      name: lines_right_rainbow
-      type: lines
-      palette: rainbow_120
-      direction: right
 
     # SPARKLES
     -
@@ -151,55 +116,11 @@ renderer:
       direction: /
       reverse: False
     -
-      name: spiral_forward_rainbow_120
+      name: spiral_forward_rainbow_240
       type: spiral
-      palette: rainbow_120
+      palette: rainbow_240
       direction: /
       reverse: False
-
-    # SPIRALS - FORWARD REVERSE
-    -
-      name: spiral_forward_reverse_red
-      type: spiral
-      palette: red
-      direction: /
-      reverse: True
-    -
-      name: spiral_forward_reverse_green
-      type: spiral
-      palette: green
-      direction: /
-      reverse: True
-    -
-      name: spiral_forward_reverse_blue
-      type: spiral
-      palette: blue
-      direction: /
-      reverse: True
-    -
-      name: spiral_forward_reverse_pink
-      type: spiral
-      palette: pink
-      direction: /
-      reverse: True
-    -
-      name: spiral_forward_reverse_white
-      type: spiral
-      palette: white
-      direction: /
-      reverse: True
-    -
-      name: spiral_forward_reverse_rainbow_7
-      type: spiral
-      palette: rainbow_7
-      direction: /
-      reverse: True
-    -
-      name: spiral_forward_reverse_rainbow_120
-      type: spiral
-      palette: rainbow_120
-      direction: /
-      reverse: True
 
     # SPIRALS - BACKWARD
     -
@@ -239,114 +160,8 @@ renderer:
       direction: \
       reverse: False
     -
-      name: spiral_backward_rainbow_120
+      name: spiral_backward_rainbow_240
       type: spiral
-      palette: rainbow_120
+      palette: rainbow_240
       direction: \
       reverse: False
-
-    # SPIRALS - BACKWARD REVERSE
-    -
-      name: spiral_backward_reverse_red
-      type: spiral
-      palette: red
-      direction: \
-      reverse: True
-    -
-      name: spiral_backward_reverse_green
-      type: spiral
-      palette: green
-      direction: \
-      reverse: True
-    -
-      name: spiral_backward_reverse_blue
-      type: spiral
-      palette: blue
-      direction: \
-      reverse: True
-    -
-      name: spiral_backward_reverse_pink
-      type: spiral
-      palette: pink
-      direction: \
-      reverse: True
-    -
-      name: spiral_backward_reverse_white
-      type: spiral
-      palette: white
-      direction: \
-      reverse: True
-    -
-      name: spiral_backward_reverse_rainbow_7
-      type: spiral
-      palette: rainbow_7
-      direction: \
-      reverse: True
-    -
-      name: spiral_backward_reverse_rainbow_120
-      type: spiral
-      palette: rainbow_120
-      direction: \
-      reverse: True
-
-    # IMAGES
-    -
-      name: image_1
-      type: image
-      image: tree/images/1.gif
-    -
-      name: image_2
-      type: image
-      image: tree/images/2.gif
-    -
-      name: image_3
-      type: image
-      image: tree/images/3.gif
-    -
-      name: image_4
-      type: image
-      image: tree/images/4.gif
-    -
-      name: image_5
-      type: image
-      image: tree/images/5.gif
-    -
-      name: image_6
-      type: image
-      image: tree/images/6.gif
-    -
-      name: image_7
-      type: image
-      image: tree/images/7.gif
-    -
-      name: image_8
-      type: image
-      image: tree/images/8.gif
-    -
-      name: image_9
-      type: image
-      image: tree/images/9.gif
-    -
-      name: image_10
-      type: image
-      image: tree/images/10.gif
-    -
-      name: image_11
-      type: image
-      image: tree/images/11.gif
-    -
-      name: image_12
-      type: image
-      image: tree/images/12.gif
-    -
-      name: image_13
-      type: image
-      image: tree/images/13.gif
-    -
-      name: image_14
-      type: image
-      image: tree/images/14.gif
-    -
-      name: image_15
-      type: image
-      image: tree/images/15.gif
