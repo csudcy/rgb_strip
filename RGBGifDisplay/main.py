@@ -6,6 +6,12 @@ import click
 
 import rgb_gif_display
 
+DISPLAYS = {
+    'none': rgb_gif_display.GifDisplayNone,
+    'terminal': rgb_gif_display.GifDisplayTerminal,
+    'ws2812': rgb_gif_display.GifDisplayWS2812,
+}
+
 
 @click.group()
 def main() -> None:
@@ -24,24 +30,19 @@ def main() -> None:
               help='How many ms to delay between frames',
               type=int,
               default=0)
-@click.option('--emulate',
-              help='Emulate the display in terminal',
-              type=bool,
-              default=False,
-              is_flag=True)
+@click.option('--display',
+              help='The display to use for output',
+              type=click.Choice(DISPLAYS.keys()),
+              default='terminal')
 def run(
     width: int,
     height: int,
     directory: str,
     alpha: int,
     delay: int,
-    emulate: bool,
+    display: str,
 ):
-  if emulate:
-    GifDisplayClass = rgb_gif_display.GifDisplayEmulator
-  else:
-    GifDisplayClass = rgb_gif_display.GifDisplayLeds
-
+  GifDisplayClass = DISPLAYS[display]
   display_thread = GifDisplayClass(width, height, alpha, delay, directory)
   display_thread.daemon = True
   display_thread.start()
