@@ -5,6 +5,7 @@ import traceback
 import click
 
 import rgb_gif_display
+import server
 
 DISPLAYS = {
     'none': rgb_gif_display.GifDisplayNone,
@@ -46,7 +47,9 @@ def run(
   display_thread = GifDisplayClass(width, height, alpha, delay, directory)
   display_thread.daemon = True
   display_thread.start()
-  display_thread.join()
+
+  # Block on the server
+  server.run(display_thread)
 
 
 if __name__ == "__main__":
