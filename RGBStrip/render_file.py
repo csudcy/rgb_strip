@@ -3,6 +3,8 @@ import json
 import os
 from typing import Any, Iterable, Iterator, List, Optional, Tuple
 
+from PIL import Image
+
 
 class RenderWriter:
 
@@ -51,6 +53,33 @@ class RenderWriter:
       yield r
       yield g
       yield b
+
+  def write_gif(self, directory: str, width: int, height: int) -> None:
+    # Save the frames
+    print(f'{self.name}: Generating images...')
+    images = []
+    for frame_count, frame in enumerate(self.frames):
+      if frame_count % 100 == 0:
+        print(f'{self.name}: Generated {frame_count} frames...')
+
+      image = Image.new('RGB', (width, height))
+      image.putdata(list(self.dump_frame_gif(frame, width, height)))
+      images.append(image)
+
+    print(f'{self.name}: Saving {frame_count} frames to gif...')
+    filename = os.path.join(directory, f'{self.name}.gif')
+    images[0].save(filename, save_all=True, append_images=images[1:])
+
+  def dump_frame_gif(self, frame: List[Tuple[int, int, int]], width: int,
+                     height: int) -> Iterator[Tuple[int, int, int]]:
+    for y in range(height):
+      offset = y * width
+      for x in range(width):
+        if y % 2 == 0:
+          index = offset + x
+        else:
+          index = offset + width - x - 1
+        yield frame[index]
 
 
 class RenderReader:

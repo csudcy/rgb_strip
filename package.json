@@ -20,6 +20,7 @@
     "serve": "poetry run python -m RGBStrip server",
     "serve:test": "poetry run python -m RGBStrip server ./configs/test.yaml",
     "tree:render": "poetry run python -m RGBStrip render ./tree/render.yaml ./tree/renders/",
+    "tree:render:gif": "poetry run python -m RGBStrip render ./tree/render.yaml ./tree/image_renders/ --gif",
     "tree:render:serve": "poetry run python -m RGBStrip server ./tree/render.yaml",
     "tree:serve": "poetry run python -m RGBStrip server ./tree/display.yaml"
   },
