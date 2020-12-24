@@ -66,7 +66,13 @@ class GifDisplayBase(Thread):
     while True:
       name, image = random.choice(self.images)
       print(f'{name} ({image.n_frames} frames)')
-      for frame_index in range(image.n_frames):
+
+      if random.choice((True, False)):
+        frame_range = range(image.n_frames)
+      else:
+        frame_range = range(image.n_frames - 1, 0, -1)
+
+      for frame_index in frame_range:
         image.seek(frame_index)
         resized = image.resize((self.width, self.height))
         converted = resized.convert('RGB')
