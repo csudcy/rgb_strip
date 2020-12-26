@@ -1,4 +1,4 @@
-import io
+import time
 
 import flask
 
@@ -17,25 +17,22 @@ def stream():
 
 
 def display_thread_iterator():
-  import time
-  now = time.time()
-  last_image = None
+  current_image_bytes = None
   while True:
-    if last_image == DISPLAY_THREAD.image:
+    if current_image_bytes == DISPLAY_THREAD.image_bytes:
       # Wait for a bit
       time.sleep(0.001)
     else:
       # Show a new image
-      last_image = DISPLAY_THREAD.image
-      buffer = io.BytesIO()
-      DISPLAY_THREAD.image.save(buffer, format='BMP')
-      yield from (
-          b'--frame\r\n',
-          b'Content-Type: image/png\r\n',
-          b'\r\n',
-          buffer.getvalue(),
-          b'\r\n',
-      )
+      current_image_bytes = DISPLAY_THREAD.image_bytes
+      output = b'\r\n'.join((
+          b'--frame',
+          b'Content-Type: image/png',
+          b'',
+          current_image_bytes,
+          b'',
+      ))
+      yield output
 
 
 def run(display_thread):

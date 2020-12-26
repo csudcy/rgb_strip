@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
+import io
 import os
 import random
 import time
@@ -80,7 +81,12 @@ class GifDisplayBase(Thread):
         image.seek(frame_index)
         resized = image.resize((self.width, self.height))
         converted = resized.convert('RGB')
-        self.image = converted
+
+        # Dump a PNG of the image
+        buffer = io.BytesIO()
+        converted.save(buffer, format='png')
+        self.image_bytes = buffer.getvalue()
+
         if self.device:
           self.device.display(converted)
         time.sleep(self.delay_seconds)
