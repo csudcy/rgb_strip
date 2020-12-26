@@ -1,0 +1,10 @@
+[Unit]
+Description=RGBImageDisplay Service
+
+[Service]
+WorkingDirectory=/home/pi/rgb_strip/RGBImageDisplay/
+User=root
+ExecStart=/usr/bin/python3 main.py run 12 120 /home/pi/rgb_strip/tree/image_renders/ --delay=1 --alpha=140 --display=ws2812
+
+[Install]
+WantedBy=multi-user.target
