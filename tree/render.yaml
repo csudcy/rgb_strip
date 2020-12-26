@@ -1,7 +1,7 @@
 controller:
   type: rectangular
-  width: 240
-  height: 24
+  width: 12
+  height: 120
   a: 5
 
 displays:
@@ -12,45 +12,45 @@ sections:
     type: rectangular
     x: 0
     y: 0
-    width: 240
-    height: 24
+    width: 12
+    height: 120
 
 renderer:
   type: multi_sequential
   common_parameters:
     section: spokes
   renderers:
-    # LINES - LEFT
+    # LINES
     -
-      name: lines_left_red
+      name: lines_red
       type: lines
       palette: red
-      direction: left
+      direction: down
     -
-      name: lines_left_green
+      name: lines_green
       type: lines
       palette: green
-      direction: left
+      direction: down
     -
-      name: lines_left_blue
+      name: lines_blue
       type: lines
       palette: blue
-      direction: left
+      direction: down
     -
-      name: lines_left_pink
+      name: lines_pink
       type: lines
       palette: pink
-      direction: left
+      direction: down
     -
-      name: lines_left_white
+      name: lines_white
       type: lines
       palette: white
-      direction: left
+      direction: down
     -
-      name: lines_left_rainbow
+      name: lines_rainbow
       type: lines
-      palette: rainbow_240
-      direction: left
+      palette: rainbow_120
+      direction: down
 
     # SPARKLES
     -
@@ -116,9 +116,9 @@ renderer:
       direction: /
       reverse: False
     -
-      name: spiral_forward_rainbow_240
+      name: spiral_forward_rainbow_120
       type: spiral
-      palette: rainbow_240
+      palette: rainbow_120
       direction: /
       reverse: False
 
@@ -160,8 +160,8 @@ renderer:
       direction: \
       reverse: False
     -
-      name: spiral_backward_rainbow_240
+      name: spiral_backward_rainbow_120
       type: spiral
-      palette: rainbow_240
+      palette: rainbow_120
       direction: \
       reverse: False
