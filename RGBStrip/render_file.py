@@ -54,7 +54,7 @@ class RenderWriter:
       yield g
       yield b
 
-  def write_gif(self, directory: str, width: int, height: int) -> None:
+  def write_png(self, directory: str, width: int, height: int) -> None:
     # Save the frames
     print(f'{self.name}: Generating images...')
     images = []
@@ -63,14 +63,14 @@ class RenderWriter:
         print(f'{self.name}: Generated {frame_count} frames...')
 
       image = Image.new('RGB', (width, height))
-      image.putdata(list(self.dump_frame_gif(frame, width, height)))
+      image.putdata(list(self.dump_frame_image(frame, width, height)))
       images.append(image)
 
-    print(f'{self.name}: Saving {frame_count} frames to gif...')
-    filename = os.path.join(directory, f'{self.name}.gif')
+    print(f'{self.name}: Saving {frame_count} frames to png...')
+    filename = os.path.join(directory, f'{self.name}.png')
     images[0].save(filename, save_all=True, append_images=images[1:])
 
-  def dump_frame_gif(self, frame: List[Tuple[int, int, int]], width: int,
+  def dump_frame_image(self, frame: List[Tuple[int, int, int]], width: int,
                      height: int) -> Iterator[Tuple[int, int, int]]:
     for y in range(height):
       offset = y * width

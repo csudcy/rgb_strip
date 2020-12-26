@@ -5,13 +5,13 @@ import traceback
 
 import click
 
-import rgb_gif_display
+import rgb_image_display
 import server
 
 DISPLAYS = {
-    'none': rgb_gif_display.GifDisplayNone,
-    'terminal': rgb_gif_display.GifDisplayTerminal,
-    'ws2812': rgb_gif_display.GifDisplayWS2812,
+    'none': rgb_image_display.ImageDisplayNone,
+    'terminal': rgb_image_display.ImageDisplayTerminal,
+    'ws2812': rgb_image_display.ImageDisplayWS2812,
 }
 
 ROTATE_MAP = {
@@ -25,7 +25,7 @@ ROTATE_MAP = {
 
 @click.group()
 def main() -> None:
-  """Display GIFs on neopixels!"""
+  """Display moving images on neopixels!"""
 
 
 @main.command()
@@ -68,8 +68,8 @@ def run(
   else:
     logging.basicConfig(level=logging.INFO)
 
-  GifDisplayClass = DISPLAYS[display]
-  display_thread = GifDisplayClass(width, height, ROTATE_MAP[rotate], alpha, delay, directory)
+  ImageDisplayClass = DISPLAYS[display]
+  display_thread = ImageDisplayClass(width, height, ROTATE_MAP[rotate], alpha, delay, directory)
   display_thread.daemon = True
   display_thread.start()
 

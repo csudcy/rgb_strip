@@ -53,15 +53,15 @@ def server(
 @main.command()
 @click.argument('config')
 @click.argument('directory')
-@click.option('--gif',
-              help='Render to gif',
+@click.option('--png',
+              help='Render to png',
               type=bool,
               default=False,
               is_flag=True)
 def render(
     config: str,
     directory: Optional[str],
-    gif: bool,
+    png: bool,
 ):
   # Create the manager from config
   manager = RGBStripManager(config)
@@ -71,9 +71,9 @@ def render(
       manager.CONFIG.CONTROLLER)
 
   print('Saving...')
-  if gif:
+  if png:
     for render in renders:
-      render.write_gif(directory, manager.CONFIG.CONTROLLER.WIDTH,
+      render.write_png(directory, manager.CONFIG.CONTROLLER.WIDTH,
                        manager.CONFIG.CONTROLLER.HEIGHT)
   else:
     for render in renders:

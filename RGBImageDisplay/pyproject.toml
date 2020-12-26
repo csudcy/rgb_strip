@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "RGBGifDisplay"
+name = "RGBImageDisplay"
 version = "0.1.0"
-description = "Display GIFs on an RGB controller"
+description = "Display images on an RGB controller"
 authors = [
   "Nicholas Lee <csudcy@gmail.com>"
 ]

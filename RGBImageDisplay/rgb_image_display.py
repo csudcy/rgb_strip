@@ -20,7 +20,7 @@ LOGGER = logging.getLogger(__name__)
 NamedImageType = Tuple[str, Image.Image]
 
 
-class GifDisplayBase(Thread):
+class ImageDisplayBase(Thread):
 
   def __init__(
       self,
@@ -126,7 +126,7 @@ class GifDisplayBase(Thread):
         time.sleep(self.delay_seconds)
 
 
-class GifDisplayLumaBase(GifDisplayBase):
+class ImageDisplayLumaBase(ImageDisplayBase):
 
   LUMA_CLASS = None
 
@@ -142,12 +142,12 @@ class GifDisplayLumaBase(GifDisplayBase):
     return device
 
 
-class GifDisplayTerminal(GifDisplayLumaBase):
+class ImageDisplayTerminal(ImageDisplayLumaBase):
 
   LUMA_CLASS = asciiblock
 
 
-class GifDisplayWS2812(GifDisplayLumaBase):
+class ImageDisplayWS2812(ImageDisplayLumaBase):
 
   LUMA_CLASS = ws2812
 
@@ -156,7 +156,7 @@ class GifDisplayWS2812(GifDisplayLumaBase):
     return super()._get_device(mapping=mapping)
 
 
-class GifDisplayNone(GifDisplayBase):
+class ImageDisplayNone(ImageDisplayBase):
 
   def _get_device(self):
     return None
