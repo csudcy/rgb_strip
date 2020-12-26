@@ -1,6 +1,9 @@
+import logging
 import time
 
 import flask
+
+LOGGER = logging.getLogger(__name__)
 
 app = flask.Flask(__name__)
 
@@ -17,6 +20,7 @@ def stream():
 
 
 def display_thread_iterator():
+  LOGGER.info('Serving new image iterator...')
   current_image_bytes = None
   while True:
     if current_image_bytes == DISPLAY_THREAD.image_bytes:
@@ -24,6 +28,7 @@ def display_thread_iterator():
       time.sleep(0.001)
     else:
       # Show a new image
+      LOGGER.debug('Showing new image...')
       current_image_bytes = DISPLAY_THREAD.image_bytes
       output = b'\r\n'.join((
           b'--frame',
@@ -32,6 +37,7 @@ def display_thread_iterator():
           current_image_bytes,
           b'',
       ))
+      LOGGER.debug('Sending bytes...')
       yield output
 
 

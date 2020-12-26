@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
+import logging
 import traceback
 
 import click
@@ -19,6 +20,7 @@ ROTATE_MAP = {
     '180': 2,
     '270': 3,
 }
+
 
 
 @click.group()
@@ -46,6 +48,11 @@ def main() -> None:
               help='The display to use for output',
               type=click.Choice(DISPLAYS.keys()),
               default='terminal')
+@click.option('--debug',
+              help='Enable debug output',
+              type=bool,
+              default=False,
+              is_flag=True)
 def run(
     width: int,
     height: int,
@@ -54,7 +61,13 @@ def run(
     alpha: int,
     delay: int,
     display: str,
+    debug: bool,
 ):
+  if debug:
+    logging.basicConfig(level=logging.DEBUG)
+  else:
+    logging.basicConfig(level=logging.INFO)
+
   GifDisplayClass = DISPLAYS[display]
   display_thread = GifDisplayClass(width, height, ROTATE_MAP[rotate], alpha, delay, directory)
   display_thread.daemon = True

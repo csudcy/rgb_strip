@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 import io
+import logging
 import os
 import random
 import time
@@ -13,6 +14,8 @@ from luma.emulator.device import emulator
 from luma.emulator.device import asciiblock
 from luma.led_matrix.device import ws2812
 from PIL import Image
+
+LOGGER = logging.getLogger(__name__)
 
 NamedImageType = Tuple[str, Image.Image]
 
@@ -48,18 +51,18 @@ class GifDisplayBase(Thread):
       filepath = os.path.join(directory, filename)
 
       # Check it's an image
-      print(f'Checking {filename}...')
+      LOGGER.info(f'Checking {filename}...')
       try:
         image = Image.open(filepath)
       except PIL.UnidentifiedImageError:
-        print('  Skipped: Not an image')
+        LOGGER.info('  Skipped: Not an image')
         continue
 
       if not hasattr(image, 'n_frames'):
-        print('  Skipped: Must be multiple frames')
+        LOGGER.info('  Skipped: Must be multiple frames')
         continue
 
-      print('  Good!')
+      LOGGER.info('  Good!')
       images.append((filename, image))
 
     if not images:
@@ -70,7 +73,7 @@ class GifDisplayBase(Thread):
   def run(self):
     while True:
       name, image = random.choice(self.images)
-      print(f'{name} ({image.n_frames} frames)')
+      LOGGER.info(f'{name} ({image.n_frames} frames)')
 
       if random.choice((True, False)):
         frame_range = range(image.n_frames)
@@ -78,17 +81,27 @@ class GifDisplayBase(Thread):
         frame_range = range(image.n_frames - 1, 0, -1)
 
       for frame_index in frame_range:
+        LOGGER.debug(f'Seeking frame {frame_index}...')
         image.seek(frame_index)
-        resized = image.resize((self.width, self.height))
-        converted = resized.convert('RGB')
+
+        current_image = image
+        if image.size != (self.width, self.height):
+          LOGGER.debug('Resizing...')
+          current_image = current_image.resize((self.width, self.height))
+        if image.mode != 'RGB':
+          LOGGER.debug('Converting...')
+          current_image = current_image.convert('RGB')
 
         # Dump a PNG of the image
+        LOGGER.debug('Dumping...')
         buffer = io.BytesIO()
-        converted.save(buffer, format='png')
+        current_image.save(buffer, format='png')
         self.image_bytes = buffer.getvalue()
 
         if self.device:
-          self.device.display(converted)
+          LOGGER.debug('Displaying...')
+          self.device.display(current_image)
+        LOGGER.debug('Waiting...')
         time.sleep(self.delay_seconds)
 
 
