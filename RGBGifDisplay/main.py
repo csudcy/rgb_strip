@@ -13,6 +13,13 @@ DISPLAYS = {
     'ws2812': rgb_gif_display.GifDisplayWS2812,
 }
 
+ROTATE_MAP = {
+    '0': 0,
+    '90': 1,
+    '180': 2,
+    '270': 3,
+}
+
 
 @click.group()
 def main() -> None:
@@ -23,6 +30,10 @@ def main() -> None:
 @click.argument('width', type=int)
 @click.argument('height', type=int)
 @click.argument('directory')
+@click.option('--rotate',
+              help='How many degrees to rotate the display by',
+              type=click.Choice(ROTATE_MAP.keys()),
+              default='0')
 @click.option('--alpha',
               help='How bright to show the pixels (0-255)',
               type=int,
@@ -39,12 +50,13 @@ def run(
     width: int,
     height: int,
     directory: str,
+    rotate: int,
     alpha: int,
     delay: int,
     display: str,
 ):
   GifDisplayClass = DISPLAYS[display]
-  display_thread = GifDisplayClass(width, height, alpha, delay, directory)
+  display_thread = GifDisplayClass(width, height, ROTATE_MAP[rotate], alpha, delay, directory)
   display_thread.daemon = True
   display_thread.start()
 

@@ -22,6 +22,7 @@ class GifDisplayBase(Thread):
       self,
       width: int,
       height: int,
+      rotate: int,
       alpha: int,
       delay: int,
       directory: str,
@@ -29,12 +30,15 @@ class GifDisplayBase(Thread):
     super().__init__()
     self.width = width
     self.height = height
-    self.device = self._get_device(width, height, alpha)
+    if rotate in (1, 3):
+      # Display is rotated; switch width & height
+      width, height = height, width
+    self.device = self._get_device(width, height, rotate, alpha)
 
     self.delay_seconds = delay / 1000.0
     self.images = self._get_images(directory)
 
-  def _get_device(self, width: int, height: int):
+  def _get_device(self, width: int, height: int, rotate: int, alpha: int):
     raise Exception('Must be overridden!')
 
   def _get_images(self, directory: str) -> List[NamedImageType]:
@@ -84,21 +88,21 @@ class GifDisplayBase(Thread):
 
 class GifDisplayTerminal(GifDisplayBase):
 
-  def _get_device(self, width: int, height: int, alpha: int):
-    device = asciiblock(width=width, height=height)
+  def _get_device(self, width: int, height: int, rotate: int, alpha: int):
+    device = asciiblock(width=width, height=height, rotate=rotate)
     device.contrast(alpha)
     return device
 
 
 class GifDisplayWS2812(GifDisplayBase):
 
-  def _get_device(self, width: int, height: int, alpha: int):
-    device = ws2812(width=width, height=height)
+  def _get_device(self, width: int, height: int, rotate: int, alpha: int):
+    device = ws2812(width=width, height=height, rotate=rotate)
     device.contrast(alpha)
     return device
 
 
 class GifDisplayNone(GifDisplayBase):
 
-  def _get_device(self, width: int, height: int, alpha: int):
+  def _get_device(self, width: int, height: int, rotate: int, alpha: int):
     return None
