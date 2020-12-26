@@ -34,13 +34,39 @@ class GifDisplayBase(Thread):
     super().__init__()
     self.width = width
     self.height = height
-    if rotate in (1, 3):
-      # Display is rotated; switch width & height
-      width, height = height, width
-    self.device = self._get_device(width, height, rotate, alpha)
-
+    self.rotate = rotate
+    self.alpha = alpha
     self.delay_seconds = delay / 1000.0
+    self.device = self._get_device()
     self.images = self._get_images(directory)
+
+  def _make_mapping(self):
+    """
+    Given LEDs arranged like this:
+      0  7  8
+      1  6  9
+      2  5  10
+      3  4  11
+
+    Map them to positions expected like this:
+      0  1  2
+      3  4  5
+      6  7  8
+      9  10 11
+
+    Return an array like this:
+      [0, 7, 8, 1, 6, 9, 2, 5, 10, 3, 4, 11]
+    """
+    # TODO: Take self.rotate into account
+    mapping = []
+    for y in range(self.height):
+      for x in range(self.width):
+        if x % 2 == 0:
+          index = x * self.height + y
+        else:
+          index = x * self.height + (self.height - y - 1)
+        mapping.append(index)
+    return mapping
 
   def _get_device(self, width: int, height: int, rotate: int, alpha: int):
     raise Exception('Must be overridden!')
@@ -75,12 +101,7 @@ class GifDisplayBase(Thread):
       name, image = random.choice(self.images)
       LOGGER.info(f'{name} ({image.n_frames} frames)')
 
-      if random.choice((True, False)):
-        frame_range = range(image.n_frames)
-      else:
-        frame_range = range(image.n_frames - 1, 0, -1)
-
-      for frame_index in frame_range:
+      for frame_index in range(image.n_frames):
         LOGGER.debug(f'Seeking frame {frame_index}...')
         image.seek(frame_index)
 
@@ -105,23 +126,37 @@ class GifDisplayBase(Thread):
         time.sleep(self.delay_seconds)
 
 
-class GifDisplayTerminal(GifDisplayBase):
+class GifDisplayLumaBase(GifDisplayBase):
 
-  def _get_device(self, width: int, height: int, rotate: int, alpha: int):
-    device = asciiblock(width=width, height=height, rotate=rotate)
-    device.contrast(alpha)
+  LUMA_CLASS = None
+
+  def _get_device(self, **kwargs):
+    if self.rotate in (1, 3):
+      # Display is rotated; switch width & height
+      width, height = self.height, self.width
+    else:
+      width, height = self.width, self.height
+    device = self.LUMA_CLASS(width=width, height=height, rotate=self.rotate,
+                             **kwargs)
+    device.contrast(self.alpha)
     return device
 
 
-class GifDisplayWS2812(GifDisplayBase):
+class GifDisplayTerminal(GifDisplayLumaBase):
 
-  def _get_device(self, width: int, height: int, rotate: int, alpha: int):
-    device = ws2812(width=width, height=height, rotate=rotate)
-    device.contrast(alpha)
-    return device
+  LUMA_CLASS = asciiblock
+
+
+class GifDisplayWS2812(GifDisplayLumaBase):
+
+  LUMA_CLASS = ws2812
+
+  def _get_device(self):
+    mapping = self._make_mapping()
+    return super()._get_device(mapping=mapping)
 
 
 class GifDisplayNone(GifDisplayBase):
 
-  def _get_device(self, width: int, height: int, rotate: int, alpha: int):
+  def _get_device(self):
     return None
