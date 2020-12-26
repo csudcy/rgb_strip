@@ -20,37 +20,69 @@ renderer:
   common_parameters:
     section: spokes
   renderers:
-    # LINES
+    # LINES - DOWN
     -
-      name: lines_red
+      name: lines_down_red
       type: lines
       palette: red
       direction: down
     -
-      name: lines_green
+      name: lines_down_green
       type: lines
       palette: green
       direction: down
     -
-      name: lines_blue
+      name: lines_down_blue
       type: lines
       palette: blue
       direction: down
     -
-      name: lines_pink
+      name: lines_down_pink
       type: lines
       palette: pink
       direction: down
     -
-      name: lines_white
+      name: lines_down_white
       type: lines
       palette: white
       direction: down
     -
-      name: lines_rainbow
+      name: lines_down_rainbow
       type: lines
       palette: rainbow_120
       direction: down
+
+    # LINES - UP
+    -
+      name: lines_up_red
+      type: lines
+      palette: red
+      direction: up
+    -
+      name: lines_up_green
+      type: lines
+      palette: green
+      direction: up
+    -
+      name: lines_up_blue
+      type: lines
+      palette: blue
+      direction: up
+    -
+      name: lines_up_pink
+      type: lines
+      palette: pink
+      direction: up
+    -
+      name: lines_up_white
+      type: lines
+      palette: white
+      direction: up
+    -
+      name: lines_up_rainbow
+      type: lines
+      palette: rainbow_120
+      direction: up
 
     # SPARKLES
     -
@@ -122,6 +154,50 @@ renderer:
       direction: /
       reverse: False
 
+    # SPIRALS - FORWARD REVERSE
+    -
+      name: spiral_forward_reverse_red
+      type: spiral
+      palette: red
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_green
+      type: spiral
+      palette: green
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_blue
+      type: spiral
+      palette: blue
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_pink
+      type: spiral
+      palette: pink
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_white
+      type: spiral
+      palette: white
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_rainbow_7
+      type: spiral
+      palette: rainbow_7
+      direction: /
+      reverse: True
+    -
+      name: spiral_forward_reverse_rainbow_120
+      type: spiral
+      palette: rainbow_120
+      direction: /
+      reverse: True
+
     # SPIRALS - BACKWARD
     -
       name: spiral_backward_red
@@ -165,3 +241,47 @@ renderer:
       palette: rainbow_120
       direction: \
       reverse: False
+
+    # SPIRALS - BACKWARD REVERSE
+    -
+      name: spiral_backward_reverse_red
+      type: spiral
+      palette: red
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_green
+      type: spiral
+      palette: green
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_blue
+      type: spiral
+      palette: blue
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_pink
+      type: spiral
+      palette: pink
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_white
+      type: spiral
+      palette: white
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_rainbow_7
+      type: spiral
+      palette: rainbow_7
+      direction: \
+      reverse: True
+    -
+      name: spiral_backward_reverse_rainbow_120
+      type: spiral
+      palette: rainbow_120
+      direction: \
+      reverse: True
