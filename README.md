@@ -241,3 +241,33 @@ My DotStar (specifically, `APA102`) has these 4 connections:
   * Restart websocket on error
   * More config validation?
   * Don't let crashes stop the server
+
+
+## Image Display Notes
+
+```
+git commit --amend --no-edit --author="csudcy <csudcy@gmail.com>" && git rebase --continue
+
+scp ./tree/image_renders/* pi@192.168.0.67:/home/pi/rgb_strip/tree/image_renders
+scp ./tree/image_renders/lines_red.gif pi@192.168.0.67:/home/pi/rgb_strip/tree/image_renders/
+scp ./RGBImageDisplay/* pi@192.168.0.67:/home/pi/rgb_strip/RGBImageDisplay/
+
+rsync -rvz ./tree/image_renders_new/ pi@192.168.0.67:/home/pi/rgb_strip/tree/image_renders/
+
+scp ./init.d/* pi@192.168.0.67:/home/pi/rgb_strip/init.d/
+
+cd RGBImageDisplay
+sudo python3 -m pip install -r requirements.txt
+sudo python3 -m pip install rpi-ws281x ws2812
+sudo python3 main.py run 120 12 /home/pi/rgb_strip/tree/image_renders/ --delay=5 --alpha=40 --display=ws2812
+```
+Renderer
+  Add rain effect
+  Add game of life effect?
+
+Improve display server
+  Update config (unsaved?)
+  Move specific
+  Allow groups/images to be enabled/disabled
+
+Update readme
