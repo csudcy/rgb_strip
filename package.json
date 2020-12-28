@@ -24,10 +24,8 @@
     "poetry:update": "poetry update && poetry export --format=requirements.txt --without-hashes > requirements.txt",
     "serve": "poetry run python -m RGBStrip server",
     "serve:test": "poetry run python -m RGBStrip server ./configs/test.yaml",
-    "tree:render": "poetry run python -m RGBStrip render ./tree/render.yaml ./tree/renders/",
-    "tree:render:png": "poetry run python -m RGBStrip render ./tree/render.yaml ./tree/image_renders/ --png",
-    "tree:render:serve": "poetry run python -m RGBStrip server ./tree/render.yaml",
-    "tree:serve": "poetry run python -m RGBStrip server ./tree/display.yaml"
+    "tree:render": "cd RGBImageRenderer && poetry run python main.py render ../tree/render_new.yaml ../tree/image_renders_new/",
+    "tree:serve": "cd RGBImageDisplay && poetry run python main.py run 12 120 ../tree/image_renders_new/ --delay=0 --alpha=255 --rotate=90"
   },
   "author": "Nicholas Lee <csudcy@gmail.com>",
   "devDependencies": {},

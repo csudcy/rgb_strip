@@ -1,0 +1,51 @@
+width: 12
+height: 120
+effects:
+  -
+    name: lines_{palette}_rev{reverse}
+    type: lines
+    multis:
+      palette:
+        - red
+        - green
+        - blue
+        - pink
+        - white
+        - rainbow_7
+        - rainbow_38
+        - rainbow_95
+        - rainbow_190
+      reverse:
+        - False
+        - True
+  -
+    name: sparkles_{palette}
+    type: sparkles
+    multis:
+      palette:
+        - red
+        - green
+        - blue
+        - pink
+        - white
+        - rainbow_7
+        - rainbow_120
+    render_count: 3
+  -
+    name: spiral_{direction}_{palette}_rev{reverse}
+    type: spiral
+    multis:
+      palette:
+        - red
+        - green
+        - blue
+        - pink
+        - white
+        - rainbow_7
+        - rainbow_120
+      direction:
+        - forward
+        - backward
+      reverse:
+        - False
+        - True
