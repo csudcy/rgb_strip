@@ -4,7 +4,6 @@ import logging
 import traceback
 
 import click
-
 import rgb_image_display
 import server
 
@@ -20,7 +19,6 @@ ROTATE_MAP = {
     '180': 2,
     '270': 3,
 }
-
 
 
 @click.group()
@@ -69,7 +67,8 @@ def run(
     logging.basicConfig(level=logging.INFO)
 
   ImageDisplayClass = DISPLAYS[display]
-  display_thread = ImageDisplayClass(width, height, ROTATE_MAP[rotate], alpha, delay, directory)
+  display_thread = ImageDisplayClass(width, height, ROTATE_MAP[rotate], alpha,
+                                     delay, directory)
   display_thread.daemon = True
   display_thread.start()
 

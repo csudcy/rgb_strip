@@ -71,7 +71,7 @@ class RenderWriter:
     images[0].save(filename, save_all=True, append_images=images[1:])
 
   def dump_frame_image(self, frame: List[Tuple[int, int, int]], width: int,
-                     height: int) -> Iterator[Tuple[int, int, int]]:
+                       height: int) -> Iterator[Tuple[int, int, int]]:
     for y in range(height):
       offset = y * width
       for x in range(width):

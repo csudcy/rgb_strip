@@ -5,8 +5,7 @@ from typing import List
 
 import yaml
 
-from RGBStrip import render_file
-from RGBStrip import utils
+from RGBStrip import render_file, utils
 from RGBStrip.constants import CONTROLLERS, DISPLAYS, RENDERERS, SECTIONS
 
 

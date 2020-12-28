@@ -10,8 +10,7 @@ from typing import List, Tuple
 
 import PIL
 from luma.core.device import device as LumaDevice
-from luma.emulator.device import emulator
-from luma.emulator.device import asciiblock
+from luma.emulator.device import asciiblock, emulator
 from luma.led_matrix.device import ws2812
 from PIL import Image
 
@@ -136,7 +135,9 @@ class ImageDisplayLumaBase(ImageDisplayBase):
       width, height = self.height, self.width
     else:
       width, height = self.width, self.height
-    device = self.LUMA_CLASS(width=width, height=height, rotate=self.rotate,
+    device = self.LUMA_CLASS(width=width,
+                             height=height,
+                             rotate=self.rotate,
                              **kwargs)
     device.contrast(self.alpha)
     return device

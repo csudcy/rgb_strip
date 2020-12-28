@@ -24,7 +24,7 @@ class ImageRenderer(BaseSingleTimedRenderer):
       palette=None,
       active=True,
       # Custom
-      image: str=None,  # Image to load & show
+      image: str = None,  # Image to load & show
   ):
     super().__init__(loader,
                      name=name,
