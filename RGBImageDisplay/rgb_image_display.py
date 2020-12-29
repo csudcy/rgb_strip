@@ -29,7 +29,6 @@ class ImageDisplayBase(Thread):
   device: Any
   image_groups: Dict[str, List[NamedImageType]]
 
-
   def __init__(
       self,
       width: int,
@@ -107,7 +106,8 @@ class ImageDisplayBase(Thread):
 
     return images
 
-  def _group_images(self, images: List[NamedImageType]) -> Dict[str, List[NamedImageType]]:
+  def _group_images(
+      self, images: List[NamedImageType]) -> Dict[str, List[NamedImageType]]:
     groups: Dict[str, List[NamedImageType]] = {}
     for image in images:
       name = image[0]
