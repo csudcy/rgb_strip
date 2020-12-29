@@ -55,7 +55,7 @@ def run(
     width: int,
     height: int,
     directory: str,
-    rotate: int,
+    rotate: str,
     alpha: int,
     delay: int,
     display: str,

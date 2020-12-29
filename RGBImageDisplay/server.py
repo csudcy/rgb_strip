@@ -5,6 +5,8 @@ import flask
 
 LOGGER = logging.getLogger(__name__)
 
+DISPLAY_THREAD = None
+
 app = flask.Flask(__name__)
 
 

@@ -6,7 +6,7 @@ import os
 import random
 import time
 from threading import Thread
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 import PIL
 from luma.core.device import device as LumaDevice
@@ -20,6 +20,15 @@ NamedImageType = Tuple[str, Image.Image]
 
 
 class ImageDisplayBase(Thread):
+
+  width: int
+  height: int
+  rotate: int
+  alpha: int
+  delay_seconds: int
+  device: Any
+  image_groups: Dict[str, List[NamedImageType]]
+
 
   def __init__(
       self,
@@ -68,7 +77,7 @@ class ImageDisplayBase(Thread):
         mapping.append(index)
     return mapping
 
-  def _get_device(self, width: int, height: int, rotate: int, alpha: int):
+  def _get_device(self):
     raise Exception('Must be overridden!')
 
   def _get_images(self, directory: str) -> List[NamedImageType]:
