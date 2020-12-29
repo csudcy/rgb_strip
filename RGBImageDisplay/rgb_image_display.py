@@ -6,7 +6,7 @@ import os
 import random
 import time
 from threading import Thread
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import PIL
 from luma.core.device import device as LumaDevice
@@ -37,7 +37,8 @@ class ImageDisplayBase(Thread):
     self.alpha = alpha
     self.delay_seconds = delay / 1000.0
     self.device = self._get_device()
-    self.images = self._get_images(directory)
+    images = self._get_images(directory)
+    self.image_groups = self._group_images(images)
 
   def _make_mapping(self):
     """
@@ -88,16 +89,29 @@ class ImageDisplayBase(Thread):
         continue
 
       LOGGER.info('  Good!')
-      images.append((filename, image))
+      images.append((filename.split('.')[0], image))
 
     if not images:
       raise Exception('No files found!')
 
+    images.sort()
+
     return images
+
+  def _group_images(self, images: List[NamedImageType]) -> Dict[str, List[NamedImageType]]:
+    groups: Dict[str, List[NamedImageType]] = {}
+    for image in images:
+      name = image[0]
+      prefix = name.split('_')[0]
+      if prefix not in groups:
+        groups[prefix] = []
+      groups[prefix].append(image)
+    return groups
 
   def run(self):
     while True:
-      name, image = random.choice(self.images)
+      images = random.choice(list(self.image_groups.values()))
+      name, image = random.choice(images)
       LOGGER.info(f'{name} ({image.n_frames} frames)')
 
       for frame_index in range(image.n_frames):
