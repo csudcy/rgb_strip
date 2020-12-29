@@ -34,6 +34,12 @@ def stream():
                         mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+@app.route('/api/move_next')
+def api_move_next():
+  DISPLAY_THREAD.move_next = True
+  return flask.jsonify(DISPLAY_THREAD.frame_info)
+
+
 def display_thread_iterator():
   LOGGER.info('Serving new image iterator...')
   current_image_bytes = None

@@ -31,6 +31,7 @@ class ImageDisplayBase(Thread):
   image_groups: Dict[str, List[NamedImageType]]
   image_bytes: bytes
   frame_info: Dict[str, str]
+  move_next: bool
 
   def __init__(
       self,
@@ -126,7 +127,11 @@ class ImageDisplayBase(Thread):
       name, image = random.choice(images)
       LOGGER.info(f'{name} ({image.n_frames} frames)')
 
+      self.move_next = False
       for frame_index in range(image.n_frames):
+        if self.move_next:
+          LOGGER.debug(f'Moving to next image...')
+          break
         LOGGER.debug(f'Seeking frame {frame_index}...')
         image.seek(frame_index)
 

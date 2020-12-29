@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-  <span class="left_panel">
+  <span class="left_panel border">
     Image Groups:
     <ul>
       {% for group_name, images in image_groups.items() %}
@@ -24,15 +24,19 @@
     </ul>
   </span>
 
-  <span>
-    {{ width }}x{{ height }}, {{ rotate * 90 }}°, {{ (alpha / 2.55) | int }}%, {{ (delay_seconds * 1000) | int }}ms
+  <span class="border">
+    {{ width }}x{{ height }},
+    {{ rotate * 90 }}°,
+    {{ (alpha / 2.55) | int }}%,
+    {{ (delay_seconds * 1000) | int }}ms
+    <button id="move_next">Next</button>
+    <span id="frame_name">?</span>,
+    <span id="frame_index">?</span>/<span id="frame_count">?</span>
   </span>
-  <span class="frame_info">
-    ?
-  </span>
+
   <br/>
 
-  <span class="right_panel">
+  <span class="right_panel border">
     <img src="/stream" style="width: {{ width * 7 }}px; height: {{ height * 7 }}px;" />
   </span>
 {% endblock %}

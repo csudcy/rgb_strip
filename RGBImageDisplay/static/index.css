@@ -1,6 +1,9 @@
 span {
-    border: 1px solid black;
     display: inline-block;
+}
+
+.border {
+    border: 1px solid black;
     margin: 2px;
     padding: 5px;
 }
@@ -13,8 +16,4 @@ span {
     float: left;
     height: 99%;
     overflow: auto;
-}
-
-.no_border {
-    border: none;
 }
