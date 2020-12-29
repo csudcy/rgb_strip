@@ -14,7 +14,7 @@
     "image-display:poetry:install": "cd RGBImageDisplay && poetry install",
     "image-display:poetry:export": "cd RGBImageDisplay && poetry export --format=requirements.txt --without-hashes > requirements.txt",
     "image-display:poetry:update": "cd RGBImageDisplay && poetry update && npm run image-display:poetry:export",
-    "image-display": "cd RGBImageDisplay && poetry run python main.py",
+    "image-display": "cd RGBImageDisplay && export FLASK_ENV=development && poetry run python main.py",
     "image-renderer:poetry:install": "cd RGBImageRenderer && poetry install",
     "image-renderer:poetry:export": "cd RGBImageRenderer && poetry export --format=requirements.txt --without-hashes > requirements.txt",
     "image-renderer:poetry:update": "cd RGBImageRenderer && poetry update && npm run image-renderer:poetry:export",

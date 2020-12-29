@@ -10,7 +10,15 @@ app = flask.Flask(__name__)
 
 @app.route('/')
 def main():
-  return flask.send_from_directory('.', 'index.html')
+  context = {
+      'width': DISPLAY_THREAD.width,
+      'height': DISPLAY_THREAD.height,
+      'rotate': DISPLAY_THREAD.rotate,
+      'alpha': DISPLAY_THREAD.alpha,
+      'delay_seconds': DISPLAY_THREAD.delay_seconds,
+      'image_groups': DISPLAY_THREAD.image_groups,
+  }
+  return flask.render_template('index.tpl', **context)
 
 
 @app.route('/stream')
