@@ -64,11 +64,11 @@ class Particle:
     return self.colours[0]
 
   @property
-  def x(self):
+  def x(self) -> float:
     return self.points[0][0]
 
   @property
-  def y(self):
+  def y(self) -> float:
     return self.points[0][1]
 
 
@@ -79,7 +79,7 @@ class FireworksEffect(base.BaseEffect):
       width: int,
       height: int,
       name: str,
-      palette: str,
+      palette: List[colours.ColourType],
       # Custom
       g_speed: float = 0.1,
       # Shots

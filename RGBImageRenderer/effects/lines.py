@@ -1,7 +1,8 @@
-from typing import Generator
+from typing import Generator, List
 
 from PIL import Image
 
+import colours
 from . import base
 
 
@@ -12,7 +13,7 @@ class LinesEffect(base.BaseEffect):
       width: int,
       height: int,
       name: str,
-      palette: str,
+      palette: List[colours.ColourType],
       # Custom
       reverse: bool = False,
       line_gap: int = 4,

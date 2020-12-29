@@ -58,7 +58,7 @@ class SparklesEffect(base.BaseEffect):
       width: int,
       height: int,
       name: str,
-      palette: str,
+      palette: List[colours.ColourType],
       # Custom
       coverage: int = 20,  # Percentage of lights which should be sparkling
       fade_steps: List[int] = (5, 20),  # Range of steps to fade for

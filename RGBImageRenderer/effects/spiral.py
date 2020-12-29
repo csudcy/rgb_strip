@@ -1,8 +1,9 @@
 import math
-from typing import Generator
+from typing import Generator, List
 
 from PIL import Image
 
+import colours
 from . import base
 
 
@@ -13,7 +14,7 @@ class SpiralEffect(base.BaseEffect):
       width: int,
       height: int,
       name: str,
-      palette: str,
+      palette: List[colours.ColourType],
       # Custom
       direction: str = 'forward',
       reverse: bool = False,

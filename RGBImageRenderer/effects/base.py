@@ -1,15 +1,17 @@
 import logging
 import os
-from typing import Any, Dict, Generator, Tuple
+from typing import Any, Dict, Generator, List, Tuple
 
 from PIL import Image, ImageDraw
+
+import colours
 
 LOGGER = logging.getLogger(__name__)
 
 
 class BaseEffect():
 
-  def __init__(self, width: int, height: int, name: str, palette: str):
+  def __init__(self, width: int, height: int, name: str, palette: List[colours.ColourType]):
     self.width = width
     self.height = height
     self.name = name
