@@ -78,7 +78,8 @@ def get_constants():
   """
   import inspect
 
-  from RGBStrip import constants, utils
+  from RGBStrip import constants
+  from RGBStrip import utils
 
   def get_args(klass_or_function, ignore=[]):
     if inspect.isclass(klass_or_function):

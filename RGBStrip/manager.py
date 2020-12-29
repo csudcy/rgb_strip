@@ -2,8 +2,8 @@
 # -*- coding: utf8 -*-
 import pickle
 import random
-import time
 from threading import Thread
+import time
 
 from RGBStrip import config
 

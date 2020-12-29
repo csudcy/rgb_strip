@@ -1,13 +1,14 @@
 import collections
+from dataclasses import dataclass
 import math
 import random
-from dataclasses import dataclass
 from typing import Deque, Generator, List, Optional, Tuple
 
-from PIL import Image, ImageDraw
+from PIL import Image
+from PIL import ImageDraw
 
-from . import base
 import colours
+from effects import base
 
 
 class Particle:

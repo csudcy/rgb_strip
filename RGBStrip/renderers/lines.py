@@ -2,8 +2,8 @@
 # -*- coding: utf8 -*-
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass
+import math
 from typing import List, Optional
 
 from RGBStrip import utils

@@ -2,7 +2,8 @@ import logging
 import os
 from typing import Any, Dict, Generator, List, Tuple
 
-from PIL import Image, ImageDraw
+from PIL import Image
+from PIL import ImageDraw
 
 import colours
 

@@ -4,14 +4,15 @@ import io
 import logging
 import os
 import random
-import time
 from threading import Thread
+import time
 from typing import Any, Dict, List, Tuple
 
-import PIL
 from luma.core.device import device as LumaDevice
-from luma.emulator.device import asciiblock, emulator
+from luma.emulator.device import asciiblock
+from luma.emulator.device import emulator
 from luma.led_matrix.device import ws2812
+import PIL
 from PIL import Image
 
 LOGGER = logging.getLogger(__name__)

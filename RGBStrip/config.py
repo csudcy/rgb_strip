@@ -5,8 +5,12 @@ from typing import List
 
 import yaml
 
-from RGBStrip import render_file, utils
-from RGBStrip.constants import CONTROLLERS, DISPLAYS, RENDERERS, SECTIONS
+from RGBStrip import render_file
+from RGBStrip import utils
+from RGBStrip.constants import CONTROLLERS
+from RGBStrip.constants import DISPLAYS
+from RGBStrip.constants import RENDERERS
+from RGBStrip.constants import SECTIONS
 
 
 class Config(object):

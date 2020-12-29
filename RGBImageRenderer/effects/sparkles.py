@@ -1,12 +1,13 @@
 import collections
-import random
 from dataclasses import dataclass
+import random
 from typing import Deque, Generator, Iterable, List, Optional
 
-from PIL import Image, ImageDraw
+from PIL import Image
+from PIL import ImageDraw
 
-from . import base
 import colours
+from effects import base
 
 
 @dataclass

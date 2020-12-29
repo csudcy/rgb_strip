@@ -5,7 +5,11 @@ from typing import Any, Dict, Generator, Iterable, List
 import yaml
 
 import colours
-from effects import base, fireworks, lines, sparkles, spiral
+from effects import base
+from effects import fireworks
+from effects import lines
+from effects import sparkles
+from effects import spiral
 
 LOGGER = logging.getLogger(__name__)
 

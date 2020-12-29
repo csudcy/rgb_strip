@@ -3,7 +3,7 @@ from typing import Generator, List
 from PIL import Image
 
 import colours
-from . import base
+from effects import base
 
 
 class LinesEffect(base.BaseEffect):
