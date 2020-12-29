@@ -9,7 +9,9 @@
   "scripts": {
     "check:imports": "poetry run isort --gitignore .",
     "check:style": "poetry run yapf -vv -r -i .",
-    "check:types": "poetry run pytype --config=pytype.cfg",
+    "check:types": "npm run check:types:display && npm run check:types:renderer",
+    "check:types:display": "poetry run pytype --config=pytype.cfg RGBImageDisplay",
+    "check:types:renderer": "poetry run pytype --config=pytype.cfg RGBImageRenderer",
     "check": "npm run check:imports && npm run check:style && npm run check:types",
     "image-display:poetry:install": "cd RGBImageDisplay && poetry install",
     "image-display:poetry:export": "cd RGBImageDisplay && poetry export --format=requirements.txt --without-hashes > requirements.txt",
