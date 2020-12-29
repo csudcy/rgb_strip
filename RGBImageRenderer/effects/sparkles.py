@@ -1,7 +1,7 @@
 import collections
 import random
 from dataclasses import dataclass
-from typing import Deque, Generator, List, Optional
+from typing import Deque, Generator, Iterable, List, Optional
 
 from PIL import Image, ImageDraw
 
@@ -13,10 +13,10 @@ import colours
 class Sparkle:
   width: int
   height: int
-  palette: List[List[float]]
-  fade_steps: List[int]
-  on_steps: List[int]
-  off_steps: List[int]
+  palette: List[colours.ColourType]
+  fade_steps: Iterable[int]
+  on_steps: Iterable[int]
+  off_steps: Iterable[int]
 
   # Not set at init
   x: int = 0

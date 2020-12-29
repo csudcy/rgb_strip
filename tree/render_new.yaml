@@ -49,3 +49,16 @@ effects:
       reverse:
         - False
         - True
+  -
+    name: fireworks_{palette}
+    type: fireworks
+    multis:
+      palette:
+        - red
+        - green
+        - blue
+        - pink
+        - white
+        - rainbow_7
+        - rainbow_120
+    render_count: 3

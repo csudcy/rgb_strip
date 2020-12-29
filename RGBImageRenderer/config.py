@@ -5,13 +5,14 @@ from typing import Any, Dict, Generator, Iterable, List
 import yaml
 
 import colours
-from effects import base, lines, sparkles, spiral
+from effects import base, fireworks, lines, sparkles, spiral
 
 LOGGER = logging.getLogger(__name__)
 
 EffectType = Dict[str, Any]
 
 EFFECTS = {
+    'fireworks': fireworks.FireworksEffect,
     'lines': lines.LinesEffect,
     'sparkles': sparkles.SparklesEffect,
     'spiral': spiral.SpiralEffect,
