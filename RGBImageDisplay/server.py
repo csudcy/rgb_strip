@@ -23,6 +23,11 @@ def main():
   return flask.render_template('index.tpl', **context)
 
 
+@app.route('/frame_info')
+def frame_info():
+  return flask.jsonify(DISPLAY_THREAD.frame_info)
+
+
 @app.route('/stream')
 def stream():
   return flask.Response(display_thread_iterator(),

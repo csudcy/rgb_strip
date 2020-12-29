@@ -1,0 +1,20 @@
+span {
+    border: 1px solid black;
+    display: inline-block;
+    margin: 2px;
+    padding: 5px;
+}
+
+.top_panel {
+    display: block;
+}
+
+.left_panel {
+    float: left;
+    height: 99%;
+    overflow: auto;
+}
+
+.no_border {
+    border: none;
+}

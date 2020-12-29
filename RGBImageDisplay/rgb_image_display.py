@@ -29,6 +29,8 @@ class ImageDisplayBase(Thread):
   delay_seconds: int
   device: Any
   image_groups: Dict[str, List[NamedImageType]]
+  image_bytes: bytes
+  frame_info: Dict[str, str]
 
   def __init__(
       self,
@@ -136,11 +138,16 @@ class ImageDisplayBase(Thread):
           LOGGER.debug('Converting...')
           current_image = current_image.convert('RGB')
 
-        # Dump a PNG of the image
+        # Dump a PNG of the image & current frame info
         LOGGER.debug('Dumping...')
         buffer = io.BytesIO()
         current_image.save(buffer, format='png')
         self.image_bytes = buffer.getvalue()
+        self.frame_info = {
+            'name': name,
+            'frames': image.n_frames,
+            'frame_index': frame_index,
+        }
 
         if self.device:
           LOGGER.debug('Displaying...')
