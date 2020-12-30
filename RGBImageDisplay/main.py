@@ -31,9 +31,19 @@ def main() -> None:
 @click.argument('height', type=int)
 @click.argument('directory')
 @click.option('--rotate',
-              help='How many degrees to rotate the display by',
+              help='How many degrees to rotate by (--display=terminal only)',
               type=click.Choice(ROTATE_MAP.keys()),
               default='0')
+@click.option('--flip_x',
+              help='Flip output around x axis (--display=ws2812 only)',
+              type=bool,
+              default=False,
+              is_flag=True)
+@click.option('--flip_y',
+              help='Flip output around y axis (--display=ws2812 only)',
+              type=bool,
+              default=False,
+              is_flag=True)
 @click.option('--alpha',
               help='How bright to show the pixels (0-255)',
               type=int,
@@ -56,6 +66,8 @@ def run(
     height: int,
     directory: str,
     rotate: str,
+    flip_x: bool,
+    flip_y: bool,
     alpha: int,
     delay: int,
     display: str,
@@ -67,8 +79,16 @@ def run(
     logging.basicConfig(level=logging.INFO)
 
   ImageDisplayClass = DISPLAYS[display]
-  display_thread = ImageDisplayClass(width, height, ROTATE_MAP[rotate], alpha,
-                                     delay, directory)
+  display_thread = ImageDisplayClass(
+      width=width,
+      height=height,
+      rotate=ROTATE_MAP[rotate],
+      flip_x=flip_x,
+      flip_y=flip_y,
+      alpha=alpha,
+      delay=delay,
+      directory=directory,
+  )
   display_thread.daemon = True
   display_thread.start()
 

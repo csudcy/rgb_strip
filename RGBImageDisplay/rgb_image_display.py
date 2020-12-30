@@ -17,6 +17,8 @@ from luma.led_matrix.device import ws2812
 import PIL
 from PIL import Image
 
+import led_mapping
+
 LOGGER = logging.getLogger(__name__)
 
 NamedImageType = Tuple[str, Image.Image]
@@ -48,6 +50,8 @@ class ImageDisplayBase(Thread):
   width: int
   height: int
   rotate: int
+  flip_x: bool
+  flip_y: bool
   alpha: int
   delay_seconds: int
   device: Any
@@ -58,9 +62,12 @@ class ImageDisplayBase(Thread):
 
   def __init__(
       self,
+      *,
       width: int,
       height: int,
       rotate: int,
+      flip_x: bool,
+      flip_y: bool,
       alpha: int,
       delay: int,
       directory: str,
@@ -69,39 +76,13 @@ class ImageDisplayBase(Thread):
     self.width = width
     self.height = height
     self.rotate = rotate
+    self.flip_x = flip_x
+    self.flip_y = flip_y
     self.alpha = alpha
     self.delay_seconds = delay / 1000.0
     self.device = self._get_device()
     image_infos = self._get_image_infos(directory)
     self.image_groups = self._group_images(image_infos)
-
-  def _make_mapping(self):
-    """
-    Given LEDs arranged like this:
-      0  7  8
-      1  6  9
-      2  5  10
-      3  4  11
-
-    Map them to positions expected like this:
-      0  1  2
-      3  4  5
-      6  7  8
-      9  10 11
-
-    Return an array like this:
-      [0, 7, 8, 1, 6, 9, 2, 5, 10, 3, 4, 11]
-    """
-    # TODO: Take self.rotate into account
-    mapping = []
-    for y in range(self.height):
-      for x in range(self.width):
-        if x % 2 == 0:
-          index = x * self.height + y
-        else:
-          index = x * self.height + (self.height - y - 1)
-        mapping.append(index)
-    return mapping
 
   def _get_device(self):
     raise Exception('Must be overridden!')
@@ -206,7 +187,8 @@ class ImageDisplayWS2812(ImageDisplayLumaBase):
   LUMA_CLASS = ws2812
 
   def _get_device(self):
-    mapping = self._make_mapping()
+    mapping = led_mapping.make_snake(self.width, self.height, self.flip_x,
+                                     self.flip_y)
     return super()._get_device(mapping=mapping)
 
 
