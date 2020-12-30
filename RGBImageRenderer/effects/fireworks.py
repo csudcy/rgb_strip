@@ -1,8 +1,6 @@
-import collections
-from dataclasses import dataclass
 import math
 import random
-from typing import Deque, Generator, List, Optional, Tuple
+from typing import Generator, List, Tuple
 
 from PIL import Image
 from PIL import ImageDraw

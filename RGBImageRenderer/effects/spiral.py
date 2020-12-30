@@ -1,4 +1,3 @@
-import math
 from typing import Generator, List
 
 from PIL import Image

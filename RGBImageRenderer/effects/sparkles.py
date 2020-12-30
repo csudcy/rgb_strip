@@ -1,7 +1,7 @@
 import collections
 from dataclasses import dataclass
 import random
-from typing import Deque, Generator, Iterable, List, Optional
+from typing import Deque, Generator, Iterable, List
 
 from PIL import Image
 from PIL import ImageDraw
