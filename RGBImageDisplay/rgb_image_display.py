@@ -125,38 +125,44 @@ class ImageDisplayBase(Thread):
       image_info = image_group.get_random()
       LOGGER.info(f'{image_info.name} ({image_info.image.n_frames} frames)')
 
-      self.move_next = False
-      for frame_index in range(image_info.image.n_frames):
-        if self.move_next:
-          LOGGER.debug(f'Moving to next image...')
-          break
-        LOGGER.debug(f'Seeking frame {frame_index}...')
-        image_info.image.seek(frame_index)
-        current_image = image_info.image
+      try:
+        self.show_image(image_info)
+      except Exception as ex:
+        LOGGER.exception('Error while showing image! Continuing...')
 
-        if current_image.size != (self.width, self.height):
-          LOGGER.debug('Resizing...')
-          current_image = current_image.resize((self.width, self.height))
-        if current_image.mode != 'RGB':
-          LOGGER.debug('Converting...')
-          current_image = current_image.convert('RGB')
+  def show_image(self, image_info: ImageInfo):
+    self.move_next = False
+    for frame_index in range(image_info.image.n_frames):
+      if self.move_next:
+        LOGGER.debug(f'Moving to next image...')
+        break
+      LOGGER.debug(f'Seeking frame {frame_index}...')
+      image_info.image.seek(frame_index)
+      current_image = image_info.image
 
-        # Dump a PNG of the image & current frame info
-        LOGGER.debug('Dumping...')
-        buffer = io.BytesIO()
-        current_image.save(buffer, format='png')
-        self.image_bytes = buffer.getvalue()
-        self.frame_info = {
-            'name': image_info.name,
-            'frames': image_info.image.n_frames,
-            'frame_index': frame_index,
-        }
+      if current_image.size != (self.width, self.height):
+        LOGGER.debug('Resizing...')
+        current_image = current_image.resize((self.width, self.height))
+      if current_image.mode != 'RGB':
+        LOGGER.debug('Converting...')
+        current_image = current_image.convert('RGB')
 
-        if self.device:
-          LOGGER.debug('Displaying...')
-          self.device.display(current_image)
-        LOGGER.debug('Waiting...')
-        time.sleep(self.delay_seconds)
+      # Dump a PNG of the image & current frame info
+      LOGGER.debug('Dumping...')
+      buffer = io.BytesIO()
+      current_image.save(buffer, format='png')
+      self.image_bytes = buffer.getvalue()
+      self.frame_info = {
+          'name': image_info.name,
+          'frames': image_info.image.n_frames,
+          'frame_index': frame_index,
+      }
+
+      if self.device:
+        LOGGER.debug('Displaying...')
+        self.device.display(current_image)
+      LOGGER.debug('Waiting...')
+      time.sleep(self.delay_seconds)
 
 
 class ImageDisplayLumaBase(ImageDisplayBase):
