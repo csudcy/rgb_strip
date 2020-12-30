@@ -10,6 +10,7 @@ from effects import fireworks
 from effects import lines
 from effects import sparkles
 from effects import spiral
+from effects import wandering_lines
 
 LOGGER = logging.getLogger(__name__)
 
@@ -20,6 +21,7 @@ EFFECTS = {
     'lines': lines.LinesEffect,
     'sparkles': sparkles.SparklesEffect,
     'spiral': spiral.SpiralEffect,
+    'wandering_lines': wandering_lines.WanderingLinesEffect,
 }
 
 
