@@ -11,12 +11,12 @@
   <span class="left_panel border">
     Image Groups:
     <ul>
-      {% for group_name, images in image_groups.items() %}
+      {% for image_group in image_groups %}
         <li>
-          <code>{{ group_name }}</code> ({{ images | length }}):
+          <code>{{ image_group.name }}</code> ({{ image_group.images | length }}):
           <ul>
-            {% for image_name, image in images %}
-              <li><code>{{ image_name }}</code></li>
+            {% for image_info in image_group.images %}
+              <li><code>{{ image_info.name }}</code></li>
             {% endfor %}
           </ul>
         </li>

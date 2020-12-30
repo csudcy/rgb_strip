@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
+from dataclasses import dataclass
 import io
+import itertools
 import logging
 import os
 import random
@@ -20,6 +22,27 @@ LOGGER = logging.getLogger(__name__)
 NamedImageType = Tuple[str, Image.Image]
 
 
+@dataclass
+class ImageInfo:
+  name: str
+  image: Image.Image
+
+  # Not set at init
+  prefix: str = ''
+
+  def __post_init__(self):
+    self.prefix = self.name.split('_')[0]
+
+
+@dataclass
+class ImageGroup:
+  name: str
+  images: List[ImageInfo]
+
+  def get_random(self) -> ImageInfo:
+    return random.choice(self.images)
+
+
 class ImageDisplayBase(Thread):
 
   width: int
@@ -28,7 +51,7 @@ class ImageDisplayBase(Thread):
   alpha: int
   delay_seconds: int
   device: Any
-  image_groups: Dict[str, List[NamedImageType]]
+  image_groups: List[ImageGroup]
   image_bytes: bytes
   frame_info: Dict[str, str]
   move_next: bool
@@ -49,8 +72,8 @@ class ImageDisplayBase(Thread):
     self.alpha = alpha
     self.delay_seconds = delay / 1000.0
     self.device = self._get_device()
-    images = self._get_images(directory)
-    self.image_groups = self._group_images(images)
+    image_infos = self._get_image_infos(directory)
+    self.image_groups = self._group_images(image_infos)
 
   def _make_mapping(self):
     """
@@ -83,8 +106,8 @@ class ImageDisplayBase(Thread):
   def _get_device(self):
     raise Exception('Must be overridden!')
 
-  def _get_images(self, directory: str) -> List[NamedImageType]:
-    images: List[NamedImageType] = []
+  def _get_image_infos(self, directory: str) -> List[ImageInfo]:
+    image_infos: List[ImageInfo] = []
     for filename in os.listdir(directory):
       filepath = os.path.join(directory, filename)
 
@@ -101,45 +124,39 @@ class ImageDisplayBase(Thread):
         continue
 
       LOGGER.info('  Good!')
-      images.append((filename.split('.')[0], image))
+      image_infos.append(ImageInfo(filename.split('.')[0], image))
 
-    if not images:
+    if not image_infos:
       raise Exception('No files found!')
 
-    images.sort()
+    return image_infos
 
-    return images
-
-  def _group_images(
-      self, images: List[NamedImageType]) -> Dict[str, List[NamedImageType]]:
-    groups: Dict[str, List[NamedImageType]] = {}
-    for image in images:
-      name = image[0]
-      prefix = name.split('_')[0]
-      if prefix not in groups:
-        groups[prefix] = []
-      groups[prefix].append(image)
+  def _group_images(self, image_infos: List[ImageInfo]) -> List[ImageGroup]:
+    image_infos.sort(key=lambda ii: ii.name)
+    groups: List[ImageGroup] = []
+    for key, group in itertools.groupby(image_infos, lambda ii: ii.prefix):
+      groups.append(ImageGroup(key, list(group)))
     return groups
 
   def run(self):
     while True:
-      images = random.choice(list(self.image_groups.values()))
-      name, image = random.choice(images)
-      LOGGER.info(f'{name} ({image.n_frames} frames)')
+      image_group = random.choice(self.image_groups)
+      image_info = image_group.get_random()
+      LOGGER.info(f'{image_info.name} ({image_info.image.n_frames} frames)')
 
       self.move_next = False
-      for frame_index in range(image.n_frames):
+      for frame_index in range(image_info.image.n_frames):
         if self.move_next:
           LOGGER.debug(f'Moving to next image...')
           break
         LOGGER.debug(f'Seeking frame {frame_index}...')
-        image.seek(frame_index)
+        image_info.image.seek(frame_index)
+        current_image = image_info.image
 
-        current_image = image
-        if image.size != (self.width, self.height):
+        if current_image.size != (self.width, self.height):
           LOGGER.debug('Resizing...')
           current_image = current_image.resize((self.width, self.height))
-        if image.mode != 'RGB':
+        if current_image.mode != 'RGB':
           LOGGER.debug('Converting...')
           current_image = current_image.convert('RGB')
 
@@ -149,8 +166,8 @@ class ImageDisplayBase(Thread):
         current_image.save(buffer, format='png')
         self.image_bytes = buffer.getvalue()
         self.frame_info = {
-            'name': name,
-            'frames': image.n_frames,
+            'name': image_info.name,
+            'frames': image_info.image.n_frames,
             'frame_index': frame_index,
         }
 
