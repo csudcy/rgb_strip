@@ -21,11 +21,10 @@ class LinesEffect(base.BaseEffect):
     super().__init__(width, height, name, palette)
     self.reverse = reverse
     self.line_gap = line_gap
-    self.frames = 1000
 
   def iter_images(self) -> Generator[Image.Image, None, None]:
     # Intro/outro take self.height frames each
-    on_screen_frames = self.frames - 2 * self.height
+    on_screen_frames = self.FRAMES - 2 * self.height
 
     if self.reverse:
       line_offsets = list(
@@ -35,7 +34,7 @@ class LinesEffect(base.BaseEffect):
       line_offsets = list(range(0, -on_screen_frames, -self.line_gap))
       move_by = 1
 
-    for i in range(self.frames):
+    for i in range(self.FRAMES):
       image, canvas = self.get_blank_image()
       move_by_total = move_by * i
       # Draw the lines

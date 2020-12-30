@@ -23,7 +23,6 @@ class SpiralEffect(base.BaseEffect):
     self.direction = direction
     self.reverse = reverse
     self.line_gap = line_gap
-    self.frames = 1000
 
   def iter_images(self) -> Generator[Image.Image, None, None]:
     if self.direction == 'forward':
@@ -42,7 +41,7 @@ class SpiralEffect(base.BaseEffect):
 
     line_count = max(self.width, self.height)
     current_y = 0
-    for i in range(self.frames):
+    for i in range(self.FRAMES):
       image, canvas = self.get_blank_image()
 
       for i in range(line_count):

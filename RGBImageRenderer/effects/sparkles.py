@@ -86,7 +86,7 @@ class SparklesEffect(base.BaseEffect):
         ) for _ in range(leds_on)
     ]
 
-    for i in range(1000):
+    for i in range(self.FRAMES):
       image, canvas = self.get_blank_image()
       for sparkle in sparkles:
         sparkle.draw(canvas)

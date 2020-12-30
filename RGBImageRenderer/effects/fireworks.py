@@ -107,7 +107,7 @@ class FireworksEffect(base.BaseEffect):
     shot_particles = []
     explosion_particles = []
 
-    for i in range(1000):
+    for i in range(self.FRAMES):
       image, canvas = self.get_blank_image()
 
       # Remove old explosions

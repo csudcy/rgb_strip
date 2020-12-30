@@ -12,6 +12,8 @@ LOGGER = logging.getLogger(__name__)
 
 class BaseEffect():
 
+  FRAMES = 1000
+
   def __init__(self, width: int, height: int, name: str,
                palette: List[colours.ColourType]):
     self.width = width
