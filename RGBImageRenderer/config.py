@@ -1,5 +1,6 @@
 import itertools
 import logging
+import pathlib
 from typing import Any, Dict, Generator, Iterable, List
 
 import yaml
@@ -99,8 +100,11 @@ class Config():
     )
 
   @classmethod
-  def from_file(cls, config_file: str) -> 'Config':
-    with open(config_file, 'r') as f:
-      config_yaml = yaml.load(f)
+  def from_file(cls, config_file: pathlib.Path) -> 'Config':
+    config_path = config_file.resolve()
+    if not config_path.exists():
+      raise Exception(f'Config ({config_path}) not found!')
+    with config_path.open('r') as f:
+      config_yaml = yaml.safe_load(f)
     return cls(config_yaml['width'], config_yaml['height'],
                config_yaml['effects'])

@@ -1,5 +1,6 @@
 import logging
 import os
+import pathlib
 from typing import Generator, List, Tuple
 
 from PIL import Image
@@ -21,12 +22,12 @@ class BaseEffect():
     self.name = name
     self.palette = palette
 
-  def render(self, directory: str) -> None:
+  def render(self, directory: pathlib.Path) -> None:
     # Save the images
     LOGGER.debug(f'{self.name}: Generating images...')
     images = list(self.iter_images())
     LOGGER.debug(f'{self.name}: Saving {len(images)} images to png...')
-    filename = os.path.join(directory, f'{self.name}.png')
+    filename = directory.joinpath(f'{self.name}.png')
     images[0].save(filename, save_all=True, append_images=images[1:])
     LOGGER.debug(f'{self.name}: Saved!')
 

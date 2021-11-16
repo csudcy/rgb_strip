@@ -19,7 +19,7 @@ class Config(object):
     self.YAML_CONFIG = yaml_config
 
     # Make Everything
-    config = yaml.load(yaml_config)
+    config = yaml.safe_load(yaml_config)
 
     # Requires nothing
     self.CONTROLLER = self._load_controller(config['controller'])

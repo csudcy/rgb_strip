@@ -1,5 +1,6 @@
 import logging
 import os
+import pathlib
 
 import click
 import config as config_loader
@@ -13,8 +14,8 @@ def main() -> None:
 
 
 @main.command()
-@click.argument('config', type=str)
-@click.argument('directory', type=str)
+@click.argument('config', type=pathlib.Path)
+@click.argument('directory', type=pathlib.Path)
 @click.option('--filter', help='Filter images rendered by name', type=str)
 @click.option('--debug',
               help='Enable debug output',
@@ -22,8 +23,8 @@ def main() -> None:
               default=False,
               is_flag=True)
 def render(
-    config: str,
-    directory: str,
+    config: pathlib.Path,
+    directory: pathlib.Path,
     filter: str,
     debug: bool,
 ):
@@ -35,11 +36,12 @@ def render(
   LOGGER.info('Loading config...')
   config_ = config_loader.Config.from_file(config)
   LOGGER.info('Rendering effects...')
-  os.makedirs(directory, exist_ok=True)
+  directory_path = directory.resolve()
+  directory_path.mkdir(parents=True, exist_ok=True)
   for index, effect in enumerate(config_.effects):
     LOGGER.info(
         f'({index} / {len(config_.effects)}) Rendering {effect.name}...')
-    effect.render(directory)
+    effect.render(directory_path)
 
 
 if __name__ == "__main__":

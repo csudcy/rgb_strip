@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 import logging
+import pathlib
 import traceback
 
 import click
@@ -29,7 +30,7 @@ def main() -> None:
 @main.command()
 @click.argument('width', type=int)
 @click.argument('height', type=int)
-@click.argument('directory')
+@click.argument('directory', type=pathlib.Path)
 @click.option('--rotate',
               help='How many degrees to rotate by (--display=terminal only)',
               type=click.Choice(ROTATE_MAP.keys()),
@@ -64,7 +65,7 @@ def main() -> None:
 def run(
     width: int,
     height: int,
-    directory: str,
+    directory: pathlib.Path,
     rotate: str,
     flip_x: bool,
     flip_y: bool,
@@ -87,7 +88,7 @@ def run(
       flip_y=flip_y,
       alpha=alpha,
       delay=delay,
-      directory=directory,
+      directory=directory.resolve(),
   )
   display_thread.daemon = True
   display_thread.start()

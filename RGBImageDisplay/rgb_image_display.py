@@ -5,6 +5,7 @@ import io
 import itertools
 import logging
 import os
+import pathlib
 import random
 from threading import Thread
 import time
@@ -70,7 +71,7 @@ class ImageDisplayBase(Thread):
       flip_y: bool,
       alpha: int,
       delay: int,
-      directory: str,
+      directory: pathlib.Path,
   ):
     super().__init__()
     self.width = width
@@ -87,10 +88,10 @@ class ImageDisplayBase(Thread):
   def _get_device(self):
     raise Exception('Must be overridden!')
 
-  def _get_image_infos(self, directory: str) -> List[ImageInfo]:
+  def _get_image_infos(self, directory: pathlib.Path) -> List[ImageInfo]:
     image_infos: List[ImageInfo] = []
-    for filename in os.listdir(directory):
-      filepath = os.path.join(directory, filename)
+    for filename in directory.iterdir():
+      filepath = directory.joinpath(filename)
 
       # Check it's an image
       LOGGER.info(f'Checking {filename}...')
