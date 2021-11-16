@@ -31,7 +31,7 @@ class BaseEffect():
     images[0].save(filename, save_all=True, append_images=images[1:])
     LOGGER.debug(f'{self.name}: Saved!')
 
-  def get_blank_image(self) -> Tuple[Image.Image, ImageDraw.Draw]:
+  def get_blank_image(self) -> Tuple[Image.Image, ImageDraw.ImageDraw]:
     image = Image.new('RGB', (self.width, self.height))
     canvas = ImageDraw.Draw(image)
     return image, canvas

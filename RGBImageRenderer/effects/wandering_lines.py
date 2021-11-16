@@ -66,7 +66,7 @@ class WanderingLine:
     self.speed_d = uniform_negatable(self.speed_d_range)
     self.angle_d = uniform_negatable(self.angle_d_range)
 
-  def draw(self, canvas: ImageDraw.Draw) -> None:
+  def draw(self, canvas: ImageDraw.ImageDraw) -> None:
     # Draw my lines
     angle = math.radians(self.angle)
     x1 = self.x + math.cos(angle) * self.line_length
@@ -85,7 +85,8 @@ class WanderingLine:
       )
 
     # Update position/speed/etc.
-    self.colour_index = (self.colour_index + self.colour_d) % len(self.palette)
+    self.colour_index = int(
+        (self.colour_index + self.colour_d) % len(self.palette))
     self.angle = clamp_negatable(self.angle + self.angle_d, *self.angle_range)
     self.speed = clamp_negatable(self.speed + self.speed_d, *self.speed_range)
     self.x = clamp(self.x + math.cos(self.angle) * self.speed, 0, self.width)

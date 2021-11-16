@@ -42,7 +42,7 @@ class Particle:
     ) for i in range(self.point_count + 1, 1, -1)]
     self.points = [(x, y)]
 
-  def draw(self, canvas: ImageDraw.Draw) -> None:
+  def draw(self, canvas: ImageDraw.ImageDraw) -> None:
     # Draw my points
     for (x, y), colour in zip(self.points, self.colours):
       canvas.point((int(x) % self.width, int(self.height - y)), colour)

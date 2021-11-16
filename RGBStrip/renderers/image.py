@@ -38,6 +38,7 @@ class ImageRenderer(BaseSingleTimedRenderer):
 
     # Load the image
     self.image = Image.open(image)
+    self.n_frames = getattr(self.image, 'n_frames')
     self.frame_index = 0
     self.FINISHED = False
 
@@ -57,6 +58,6 @@ class ImageRenderer(BaseSingleTimedRenderer):
 
   def do_render_step(self):
     self.frame_index += 1
-    if self.frame_index >= self.image.n_frames:
+    if self.frame_index >= self.n_frames:
       self.frame_index = 0
       self.FINISHED = True

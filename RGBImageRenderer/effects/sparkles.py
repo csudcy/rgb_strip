@@ -1,7 +1,7 @@
 import collections
 from dataclasses import dataclass
 import random
-from typing import Deque, Generator, Iterable, List
+from typing import Deque, Generator, List, Tuple
 
 from PIL import Image
 from PIL import ImageDraw
@@ -15,14 +15,14 @@ class Sparkle:
   width: int
   height: int
   palette: List[colours.ColourType]
-  fade_steps: Iterable[int]
-  on_steps: Iterable[int]
-  off_steps: Iterable[int]
+  fade_steps: Tuple[int, int]
+  on_steps: Tuple[int, int]
+  off_steps: Tuple[int, int]
 
   # Not set at init
   x: int = 0
   y: int = 0
-  stage_steps: Deque[List[float]] = collections.deque()
+  stage_steps: Deque[colours.ColourType] = collections.deque()
   first_run: bool = True
 
   def randomise(self) -> None:
@@ -42,7 +42,7 @@ class Sparkle:
       colour_fade = colour_fade[start_at:]
     self.stage_steps = collections.deque(reversed(colour_fade))
 
-  def draw(self, canvas: ImageDraw.Draw) -> None:
+  def draw(self, canvas: ImageDraw.ImageDraw) -> None:
     try:
       colour = self.stage_steps.pop()
     except IndexError:
@@ -62,9 +62,9 @@ class SparklesEffect(base.BaseEffect):
       palette: List[colours.ColourType],
       # Custom
       coverage: int = 20,  # Percentage of lights which should be sparkling
-      fade_steps: List[int] = (5, 20),  # Range of steps to fade for
-      on_steps: List[int] = (3, 10),  # Range of steps to stay on
-      off_steps: List[int] = (1, 3),  # Range of steps to stay off
+      fade_steps: Tuple[int, int] = (5, 20),  # Range of steps to fade for
+      on_steps: Tuple[int, int] = (3, 10),  # Range of steps to stay on
+      off_steps: Tuple[int, int] = (1, 3),  # Range of steps to stay off
   ):
     super().__init__(width, height, name, palette)
     self.coverage = coverage

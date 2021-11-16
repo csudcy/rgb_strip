@@ -9,7 +9,7 @@ import pathlib
 import random
 from threading import Thread
 import time
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 from luma.core.device import device as LumaDevice
 from luma.emulator.device import asciiblock
@@ -29,6 +29,7 @@ NamedImageType = Tuple[str, Image.Image]
 class ImageInfo:
   name: str
   image: Image.Image
+  n_frames: int
 
   # Not set at init
   prefix: str = ''
@@ -54,11 +55,11 @@ class ImageDisplayBase(Thread):
   flip_x: bool
   flip_y: bool
   alpha: int
-  delay_seconds: int
+  delay_seconds: float
   device: Any
   image_groups: List[ImageGroup]
   image_bytes: bytes
-  frame_info: Dict[str, str]
+  frame_info: Dict[str, Union[int, str]]
   move_next: bool
 
   def __init__(
@@ -106,7 +107,12 @@ class ImageDisplayBase(Thread):
         continue
 
       LOGGER.info('  Good!')
-      image_infos.append(ImageInfo(filename.split('.')[0], image))
+      image_infos.append(
+          ImageInfo(
+              name=filename.split('.')[0],
+              image=image,
+              n_frames=getattr(image, 'n_frames'),
+          ))
 
     if not image_infos:
       raise Exception('No files found!')
@@ -124,7 +130,7 @@ class ImageDisplayBase(Thread):
     while True:
       image_group = random.choice(self.image_groups)
       image_info = image_group.get_random()
-      LOGGER.info(f'{image_info.name} ({image_info.image.n_frames} frames)')
+      LOGGER.info(f'{image_info.name} ({image_info.n_frames} frames)')
 
       try:
         self.show_image(image_info)
@@ -133,7 +139,7 @@ class ImageDisplayBase(Thread):
 
   def show_image(self, image_info: ImageInfo):
     self.move_next = False
-    for frame_index in range(image_info.image.n_frames):
+    for frame_index in range(image_info.n_frames):
       if self.move_next:
         LOGGER.debug(f'Moving to next image...')
         break
@@ -155,7 +161,7 @@ class ImageDisplayBase(Thread):
       self.image_bytes = buffer.getvalue()
       self.frame_info = {
           'name': image_info.name,
-          'frames': image_info.image.n_frames,
+          'frames': image_info.n_frames,
           'frame_index': frame_index,
       }
 

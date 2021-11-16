@@ -39,7 +39,7 @@ def fade_in_out(
     fade_steps_out: int,
     fade_hold_on: int,
     fade_hold_off: int,
-):
+) -> List[ColourType]:
 
   def get_colour(frac: float) -> ColourType:
     return (
