@@ -11,10 +11,11 @@ set -o errtrace  # Trace ERR through sub-shell commands
 cd "${BASH_SOURCE%/*}"
 cd ..
 
-if [ ! -z "$(poetry env list)" ]; then
-  echo "Removing old env..."
-  poetry env remove python3
-fi
+poetry env list | while read LINE ; do
+  VERSION="${LINE%" (Activated)"}"
+  echo "Removing old env... ${VERSION}"
+  poetry env remove "${VERSION}"
+done
 
 echo "Upgrading pip..."
 poetry run pip install --upgrade pip
