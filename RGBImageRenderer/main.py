@@ -38,9 +38,14 @@ def render(
   LOGGER.info('Rendering effects...')
   directory_path = directory.resolve()
   directory_path.mkdir(parents=True, exist_ok=True)
-  for index, effect in enumerate(config_.effects):
-    LOGGER.info(
-        f'({index} / {len(config_.effects)}) Rendering {effect.name}...')
+  if filter:
+    effects = [effect for effect in config_.effects if filter in effect.name]
+    print(f'  Skipped {len(config_.effects) - len(effects)}...')
+  else:
+    effects = config_.effects
+
+  for index, effect in enumerate(effects):
+    LOGGER.info(f'({index} / {len(effects)}) Rendering {effect.name}...')
     effect.render(directory_path)
 
 
