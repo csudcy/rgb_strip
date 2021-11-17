@@ -25,6 +25,7 @@ class WanderingLine(utils.Line):
 
   def __post_init__(self):
     super().__post_init__()
+    self.angle = utils.uniform_negatable(self.angle_range)
     self.speed = utils.uniform_negatable(self.speed_range)
     self.randomise()
 

@@ -19,6 +19,14 @@ effects:
         - False
         - True
   -
+    name: scrolling_lines_{palette}
+    type: scrolling_lines
+    multis:
+      palette:
+        - rainbow_100
+        - rainbow_1000
+    render_count: 5
+  -
     name: sparkles_{palette}
     type: sparkles
     multis:

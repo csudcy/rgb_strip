@@ -35,6 +35,7 @@ class Line:
   palette: List[colours.ColourType]
   line_repeat: int
   angle_range: Tuple[float, float]
+  colour_d_range: Tuple[int, int] = (-2, 2)
 
   # Not set at init
   x: float = 0
@@ -48,9 +49,9 @@ class Line:
     self.x = random.uniform(0, self.width)
     self.y = random.uniform(0, self.height)
     self.colour_index = random.randint(0, len(self.palette) - 1)
-    self.colour_d = random.randint(-2, 2)
     self.line_length = max(self.width, self.height) * 20
-    self.angle = uniform_negatable(self.angle_range)
+    self.angle = random.uniform(*self.angle_range)
+    self.colour_d = random.randint(*self.colour_d_range)
 
   def draw(self, canvas: ImageDraw.ImageDraw) -> None:
     # Draw my lines
