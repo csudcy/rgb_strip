@@ -32,7 +32,7 @@ effects:
         - rainbow_120
     render_count: 3
   -
-    name: spiral_{direction}_{palette}_rev{reverse}
+    name: spiral_{palette}_{direction}_rev{reverse}
     type: spiral
     multis:
       palette:
