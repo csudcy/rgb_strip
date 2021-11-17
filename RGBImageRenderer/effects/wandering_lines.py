@@ -8,89 +8,42 @@ from PIL import ImageDraw
 
 import colours
 from effects import base
-
-
-def clamp(value: float, v_min: float, v_max: float) -> float:
-  return min(max(value, v_min), v_max)
-
-
-def clamp_negatable(value: float, v_min: float, v_max: float) -> float:
-  if value < 0:
-    return min(max(value, -v_max), -v_min)
-  else:
-    return min(max(value, v_min), v_max)
-
-
-def uniform_negatable(range: Tuple[float, float]):
-  value = random.uniform(*range)
-  if random.choice([False, True]):
-    return value
-  else:
-    return -value
+from effects import utils
 
 
 @dataclass
-class WanderingLine:
+class WanderingLine(utils.Line):
 
-  width: int
-  height: int
-  palette: List[colours.ColourType]
-  line_repeat: int
-  speed_range: Tuple[float, float]
-  speed_d_range: Tuple[float, float]
-  angle_range: Tuple[float, float]
-  angle_d_range: Tuple[float, float]
+  speed_range: Tuple[float, float] = (-1.0, 1.0)
+  speed_d_range: Tuple[float, float] = (-1.0, 1.0)
+  angle_d_range: Tuple[float, float] = (-1.0, 1.0)
 
   # Not set at init
-  x: float = 0
-  y: float = 0
-  colour_index: int = 0
-  colour_d: float = 0
   speed: float = 0
   speed_d: float = 0
-  angle: float = 0
   angle_d: float = 0
-  line_length: int = 0
 
   def __post_init__(self):
-    self.x = random.uniform(0, self.width)
-    self.y = random.uniform(0, self.height)
-    self.colour_index = random.randint(0, len(self.palette) - 1)
-    self.line_length = max(self.width, self.height) * 20
-    self.speed = uniform_negatable(self.speed_range)
-    self.angle = uniform_negatable(self.angle_range)
+    super().__post_init__()
+    self.speed = utils.uniform_negatable(self.speed_range)
     self.randomise()
 
   def randomise(self) -> None:
-    self.colour_d = random.randint(-2, 2)
-    self.speed_d = uniform_negatable(self.speed_d_range)
-    self.angle_d = uniform_negatable(self.angle_d_range)
+    self.speed_d = utils.uniform_negatable(self.speed_d_range)
+    self.angle_d = utils.uniform_negatable(self.angle_d_range)
 
   def draw(self, canvas: ImageDraw.ImageDraw) -> None:
-    # Draw my lines
-    angle = math.radians(self.angle)
-    x1 = self.x + math.cos(angle) * self.line_length
-    y1 = self.y + math.sin(angle) * self.line_length
-    x2 = self.x + math.cos(angle + math.pi) * self.line_length
-    y2 = self.y + math.sin(angle + math.pi) * self.line_length
-
-    colour = self.palette[self.colour_index]
-    for i in range(-self.line_repeat, self.line_repeat + 1):
-      canvas.line(
-          (
-              (int(x1 + i * self.width), int(y1)),
-              (int(x2 + i * self.width), int(y2)),
-          ),
-          fill=colour,
-      )
+    super().draw(canvas)
 
     # Update position/speed/etc.
-    self.colour_index = int(
-        (self.colour_index + self.colour_d) % len(self.palette))
-    self.angle = clamp_negatable(self.angle + self.angle_d, *self.angle_range)
-    self.speed = clamp_negatable(self.speed + self.speed_d, *self.speed_range)
-    self.x = clamp(self.x + math.cos(self.angle) * self.speed, 0, self.width)
-    self.y = clamp(self.y + math.sin(self.angle) * self.speed, 0, self.height)
+    self.angle = utils.clamp_negatable(self.angle + self.angle_d,
+                                       *self.angle_range)
+    self.speed = utils.clamp_negatable(self.speed + self.speed_d,
+                                       *self.speed_range)
+    self.x = utils.clamp(self.x + math.cos(self.angle) * self.speed, 0,
+                         self.width)
+    self.y = utils.clamp(self.y + math.sin(self.angle) * self.speed, 0,
+                         self.height)
 
     # Sometimes, change speed_d/angle_d
     if random.random() < 0.1:
