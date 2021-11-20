@@ -19,7 +19,7 @@ effects:
         - False
         - True
   -
-    name: scrolling/lines_{palette}
+    name: spiral_double/{palette}
     type: scrolling_lines
     multis:
       palette:
@@ -40,9 +40,14 @@ effects:
         - rainbow_120
     render_count: 3
   -
-    name: spiral/{palette}_{direction}_rev{reverse}
-    type: spiral
+    name: spiral/{palette}_{angle_speed_colour_d}
+    type: scrolling_lines
     multis:
+      angle_speed_colour_d:
+        - [[45, 1, 1]]
+        - [[135, 1, -1]]
+        - [[45, -1, -1]]
+        - [[135, -1, 1]]
       palette:
         - red
         - green
@@ -51,12 +56,6 @@ effects:
         - white
         - rainbow_7
         - rainbow_120
-      direction:
-        - forward
-        - backward
-      reverse:
-        - False
-        - True
   -
     name: fireworks/{palette}
     type: fireworks
