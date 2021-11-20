@@ -13,7 +13,7 @@ from effects import utils
 
 
 @dataclass
-class ScrollingLine(utils.Line):
+class MovingLine(utils.Line):
 
   dy: float = 0 # Have to add a default as it's after other kwargs
 
@@ -24,7 +24,7 @@ class ScrollingLine(utils.Line):
     self.y += self.dy
 
 
-class ScrollingLinesEffect(base.BaseEffect):
+class SpiralsEffect(base.BaseEffect):
 
   def __init__(
       self,
@@ -43,7 +43,7 @@ class ScrollingLinesEffect(base.BaseEffect):
 
   def iter_images(self) -> Generator[Image.Image, None, None]:
     lines = [
-        ScrollingLine(
+        MovingLine(
             width=self.width,
             height=self.height,
             palette=self.palette,

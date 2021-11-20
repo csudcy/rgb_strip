@@ -9,8 +9,8 @@ import colours
 from effects import base
 from effects import fireworks
 from effects import lines
-from effects import scrolling_lines
 from effects import sparkles
+from effects import spirals
 from effects import text
 from effects import wandering_lines
 
@@ -21,7 +21,7 @@ EffectType = Dict[str, Any]
 EFFECTS = {
     'fireworks': fireworks.FireworksEffect,
     'lines': lines.LinesEffect,
-    'scrolling_lines': scrolling_lines.ScrollingLinesEffect,
+    'spirals': spirals.SpiralsEffect,
     'sparkles': sparkles.SparklesEffect,
     'text': text.TextEffect,
     'wandering_lines': wandering_lines.WanderingLinesEffect,
