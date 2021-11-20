@@ -81,3 +81,16 @@ effects:
         - rainbow_100
         - rainbow_1000
     render_count: 5
+  -
+    name: text/{palette}
+    type: text
+    multis:
+      palette:
+        - red
+        - green
+        - blue
+        - pink
+        - white
+        - rainbow_7
+        - rainbow_100
+        - rainbow_1000

@@ -246,6 +246,14 @@ My DotStar (specifically, `APA102`) has these 4 connections:
 ## Image Display Notes
 
 ```
+# Locally
+
+rm -rf tree/image_renders && npm run image-renderer -- render ../tree/render_new.yaml ../tree/image_renders/ --filter scroll
+
+npm run image-display -- run 12 120 ../tree/image_renders/ --delay=1 --alpha=140
+
+
+
 git commit --amend --no-edit --author="csudcy <csudcy@gmail.com>" && git rebase --continue
 
 scp ./tree/image_renders/* pi@192.168.0.67:/home/pi/rgb_strip/tree/image_renders

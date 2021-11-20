@@ -1,0 +1,47 @@
+from typing import Generator, List
+
+from PIL import Image
+from PIL import ImageFont
+
+import colours
+from effects import base
+
+
+class TextEffect(base.BaseEffect):
+
+  def __init__(
+      self,
+      width: int,
+      height: int,
+      name: str,
+      palette: List[colours.ColourType],
+      # Custom
+      text: str = 'MERRY CHRISTMAS',
+      speed: float = 4.0,
+      font_name: str = 'MonumentValley12-X55o.otf',
+      font_size: int = 100,
+  ):
+    super().__init__(width, height, name, palette)
+    self.text = text
+    self.speed = speed
+    self.font = ImageFont.truetype(font_name, font_size)
+
+    self.x = width
+    self.colour_index = 0
+
+  def iter_images(self) -> Generator[Image.Image, None, None]:
+
+    for i in range(self.FRAMES):
+      image, canvas = self.get_blank_image()
+
+      canvas.text(
+          (self.x, 0),
+          text=self.text,
+          fill=self.palette[self.colour_index],
+          font=self.font,
+      )
+
+      self.x -= self.speed
+      self.colour_index = (self.colour_index + 1) % len(self.palette)
+
+      yield image
