@@ -31,12 +31,6 @@ class ImageInfo:
   image: Image.Image
   n_frames: int
 
-  # Not set at init
-  prefix: str = ''
-
-  def __post_init__(self):
-    self.prefix = self.name.split('_')[0]
-
 
 @dataclass
 class ImageGroup:
@@ -83,13 +77,29 @@ class ImageDisplayBase(Thread):
     self.alpha = alpha
     self.delay_seconds = delay / 1000.0
     self.device = self._get_device()
-    image_infos = self._get_image_infos(directory)
-    self.image_groups = self._group_images(image_infos)
+    self.image_groups = self._get_image_groups(directory)
 
   def _get_device(self):
     raise Exception('Must be overridden!')
 
+  def _get_image_groups(self, directory: pathlib.Path) -> List[ImageGroup]:
+    LOGGER.info(f'Loading groups {directory}...')
+    image_groups: List[ImageGroup] = []
+    for filename in directory.iterdir():
+      group_directory = directory.joinpath(filename)
+
+      if not group_directory.is_dir():
+        LOGGER.info(f'  Skipping non-directory {group_directory}')
+
+      image_groups.append(ImageGroup(filename, self._get_image_infos(group_directory)))
+
+    if not image_groups:
+      raise Exception(f'No groups found in {directory}!')
+    
+    return image_groups
+
   def _get_image_infos(self, directory: pathlib.Path) -> List[ImageInfo]:
+    LOGGER.info(f'Loading images {directory}...')
     image_infos: List[ImageInfo] = []
     for filename in directory.iterdir():
       filepath = directory.joinpath(filename)
@@ -109,22 +119,15 @@ class ImageDisplayBase(Thread):
       LOGGER.info('  Good!')
       image_infos.append(
           ImageInfo(
-              name=filename.split('.')[0],
+              name=filename.stem,
               image=image,
               n_frames=getattr(image, 'n_frames'),
           ))
 
     if not image_infos:
-      raise Exception('No files found!')
+      raise Exception(f'No files found in {directory}!')
 
     return image_infos
-
-  def _group_images(self, image_infos: List[ImageInfo]) -> List[ImageGroup]:
-    image_infos.sort(key=lambda ii: ii.name)
-    groups: List[ImageGroup] = []
-    for key, group in itertools.groupby(image_infos, lambda ii: ii.prefix):
-      groups.append(ImageGroup(key, list(group)))
-    return groups
 
   def run(self):
     while True:

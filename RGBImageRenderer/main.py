@@ -35,15 +35,21 @@ def render(
 
   LOGGER.info('Loading config...')
   config_ = config_loader.Config.from_file(config)
-  LOGGER.info('Rendering effects...')
+  LOGGER.info('Filtering...')
   directory_path = directory.resolve()
-  directory_path.mkdir(parents=True, exist_ok=True)
   if filter:
     effects = [effect for effect in config_.effects if filter in effect.name]
     print(f'  Skipped {len(config_.effects) - len(effects)}...')
   else:
     effects = config_.effects
 
+  # Ensure all directories are created
+  LOGGER.info('Creating directories...')
+  for effect in effects:
+    filename = effect.get_filepath(directory)
+    filename.parent.mkdir(parents=True, exist_ok=True)
+
+  LOGGER.info('Rendering effects...')
   for index, effect in enumerate(effects):
     LOGGER.info(f'({index} / {len(effects)}) Rendering {effect.name}...')
     effect.render(directory_path)

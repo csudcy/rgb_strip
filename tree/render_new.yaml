@@ -2,7 +2,7 @@ width: 12
 height: 120
 effects:
   -
-    name: lines_{palette}_rev{reverse}
+    name: lines/{palette}_rev{reverse}
     type: lines
     multis:
       palette:
@@ -19,7 +19,7 @@ effects:
         - False
         - True
   -
-    name: scrolling_lines_{palette}
+    name: scrolling/lines_{palette}
     type: scrolling_lines
     multis:
       palette:
@@ -27,7 +27,7 @@ effects:
         - rainbow_1000
     render_count: 5
   -
-    name: sparkles_{palette}
+    name: sparkles/{palette}
     type: sparkles
     multis:
       palette:
@@ -40,7 +40,7 @@ effects:
         - rainbow_120
     render_count: 3
   -
-    name: spiral_{palette}_{direction}_rev{reverse}
+    name: spiral/{palette}_{direction}_rev{reverse}
     type: spiral
     multis:
       palette:
@@ -58,7 +58,7 @@ effects:
         - False
         - True
   -
-    name: fireworks_{palette}
+    name: fireworks/{palette}
     type: fireworks
     multis:
       palette:
@@ -71,7 +71,7 @@ effects:
         - rainbow_120
     render_count: 3
   -
-    name: wandering_lines_{palette}
+    name: wandering_lines/{palette}
     type: wandering_lines
     multis:
       palette:
