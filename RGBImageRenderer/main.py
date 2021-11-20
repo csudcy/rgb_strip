@@ -1,11 +1,21 @@
+from contextlib import contextmanager
 import logging
-import os
 import pathlib
+import time
 
 import click
 import config as config_loader
 
 LOGGER = logging.getLogger(__name__)
+
+
+@contextmanager
+def time_it(name: str) -> None:
+  LOGGER.info(f'{name}...')
+  start_time = time.time()
+  yield
+  diff_time = time.time() - start_time
+  LOGGER.info(f'{name} done in {diff_time:.02f}s!')
 
 
 @click.group()
@@ -49,10 +59,10 @@ def render(
     filename = effect.get_filepath(directory)
     filename.parent.mkdir(parents=True, exist_ok=True)
 
-  LOGGER.info('Rendering effects...')
-  for index, effect in enumerate(effects):
-    LOGGER.info(f'({index} / {len(effects)}) Rendering {effect.name}...')
-    effect.render(directory_path)
+  with time_it('Rendering effects'):
+    for effect in effects:
+      with time_it(f'Rendering {effect.name}'):
+        effect.render(directory_path)
 
 
 if __name__ == "__main__":
