@@ -138,7 +138,7 @@ class FireworksEffect(base.BaseEffect):
 
       # Add a new shot (maybe)
       if len(shot_particles) < self.shots_max:
-        if random.random() < self.shot_add_chance:
+        if len(shot_particles) == 0 or random.random() < self.shot_add_chance:
           shot_particles.append(
               Particle(
                   g_speed=self.g_speed,
