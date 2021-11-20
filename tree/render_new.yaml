@@ -2,6 +2,22 @@ width: 12
 height: 120
 effects:
   -
+    name: fireworks/{palette}
+    type: fireworks
+    shot_add_chance: 0.06
+    shots_max: 4
+    shot_angle: [-10, 10]
+    multis:
+      palette:
+        - red
+        - green
+        - blue
+        - pink
+        - white
+        - rainbow_7
+        - rainbow_120
+    render_count: 3
+  -
     name: lines/{palette}_rev{reverse}
     type: lines
     multis:
@@ -18,14 +34,6 @@ effects:
       reverse:
         - False
         - True
-  -
-    name: spiral_double/{palette}
-    type: scrolling_lines
-    multis:
-      palette:
-        - rainbow_100
-        - rainbow_1000
-    render_count: 5
   -
     name: sparkles/{palette}
     type: sparkles
@@ -57,24 +65,8 @@ effects:
         - rainbow_7
         - rainbow_120
   -
-    name: fireworks/{palette}
-    type: fireworks
-    shot_add_chance: 0.06
-    shots_max: 4
-    shot_angle: [-10, 10]
-    multis:
-      palette:
-        - red
-        - green
-        - blue
-        - pink
-        - white
-        - rainbow_7
-        - rainbow_120
-    render_count: 3
-  -
-    name: wandering/{palette}
-    type: wandering_lines
+    name: spiral_double/{palette}
+    type: scrolling_lines
     multis:
       palette:
         - rainbow_100
