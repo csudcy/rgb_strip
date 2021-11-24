@@ -16,7 +16,7 @@ class TextEffect(base.BaseEffect):
       name: str,
       palette: List[colours.ColourType],
       # Custom
-      text: str = 'MERRY CHRISTMAS',
+      text: str = 'MERRY.CHRISTMAS...',
       speed: float = 4.0,
       font_name: str = 'MonumentValley12-X55o.otf',
       font_size: int = 100,
@@ -28,6 +28,9 @@ class TextEffect(base.BaseEffect):
 
     self.x = width
     self.colour_index = 0
+
+    text_w, _ = self.font.getsize(self.text)
+    self.min_x = -text_w
 
   def iter_images(self) -> Generator[Image.Image, None, None]:
 
@@ -42,6 +45,9 @@ class TextEffect(base.BaseEffect):
       )
 
       self.x -= self.speed
+      # Restart when the text is off the screen
+      if self.x <= self.min_x:
+        self.x = self.width
       self.colour_index = (self.colour_index + 1) % len(self.palette)
 
       yield image
