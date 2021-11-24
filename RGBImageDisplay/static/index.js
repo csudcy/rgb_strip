@@ -1,6 +1,9 @@
 function main() {
   setInterval(get_frame_info, 1000);
   document.querySelector("#move_next").onclick = move_next_click;
+  document.querySelectorAll(".play").forEach((ele) => {
+    ele.onclick = play_click;
+  });
 }
 
 function get_frame_info() {
@@ -19,6 +22,12 @@ function get_frame_info() {
 
 function move_next_click() {
   fetch("/api/move_next");
+}
+
+function play_click(ele) {
+  let ds = ele.target.dataset;
+  console.log(`Play: ${ds.group}/${ds.image}`)
+  fetch(`/api/play?group=${ds.group}&image=${ds.image}`);
 }
 
 window.onload = main;

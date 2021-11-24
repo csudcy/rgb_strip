@@ -250,9 +250,7 @@ My DotStar (specifically, `APA102`) has these 4 connections:
 
 rm -rf tree/image_renders && npm run image-renderer -- render ../tree/render_new.yaml ../tree/image_renders/ --filter scroll
 
-npm run image-display -- run 12 120 ../tree/image_renders/ --delay=1 --alpha=140
-
-
+npm run image-display -- run 12 120 ../tree/image_renders/ --delay=75 --alpha=255 --display=none
 
 git commit --amend --no-edit --author="csudcy <csudcy@gmail.com>" && git rebase --continue
 

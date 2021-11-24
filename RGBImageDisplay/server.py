@@ -37,7 +37,14 @@ def stream():
 @app.route('/api/move_next')
 def api_move_next():
   DISPLAY_THREAD.move_next = True
-  return flask.jsonify(DISPLAY_THREAD.frame_info)
+  return flask.jsonify({})
+
+
+@app.route('/api/play')
+def api_play():
+  DISPLAY_THREAD.play_next = (flask.request.args['group'], flask.request.args['image'])
+  DISPLAY_THREAD.move_next = True
+  return flask.jsonify({})
 
 
 def display_thread_iterator():

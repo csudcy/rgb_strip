@@ -9,7 +9,7 @@ import pathlib
 import random
 from threading import Thread
 import time
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, TypeVar, Union
 
 from luma.core.device import device as LumaDevice
 from luma.emulator.device import asciiblock
@@ -35,10 +35,13 @@ class ImageInfo:
 @dataclass
 class ImageGroup:
   name: str
-  images: List[ImageInfo]
+  images: Dict[str, ImageInfo]
 
-  def get_random(self) -> ImageInfo:
-    return random.choice(self.images)
+
+T = TypeVar('T')
+
+def random_dict_choice(d: Dict[Any, T]) -> T:
+  return random.choice(list(d.values()))
 
 
 class ImageDisplayBase(Thread):
@@ -54,7 +57,8 @@ class ImageDisplayBase(Thread):
   image_groups: List[ImageGroup]
   image_bytes: bytes
   frame_info: Dict[str, Union[int, str]]
-  move_next: bool
+  move_next: bool = False
+  play_next: Optional[Tuple[str, str]] = None
 
   def __init__(
       self,
@@ -82,25 +86,24 @@ class ImageDisplayBase(Thread):
   def _get_device(self):
     raise Exception('Must be overridden!')
 
-  def _get_image_groups(self, directory: pathlib.Path) -> List[ImageGroup]:
+  def _get_image_groups(self, directory: pathlib.Path) -> Dict[str, ImageGroup]:
     LOGGER.info(f'Loading groups {directory}...')
-    image_groups: List[ImageGroup] = []
-    for filename in directory.iterdir():
-      group_directory = directory.joinpath(filename)
-
+    image_groups: Dict[str, ImageGroup] = {}
+    for group_directory in directory.iterdir():
       if not group_directory.is_dir():
         LOGGER.info(f'  Skipping non-directory {group_directory}')
 
-      image_groups.append(ImageGroup(filename, self._get_image_infos(group_directory)))
+      image_groups[group_directory.name] = ImageGroup(
+          group_directory.name, self._get_image_infos(group_directory))
 
     if not image_groups:
       raise Exception(f'No groups found in {directory}!')
     
     return image_groups
 
-  def _get_image_infos(self, directory: pathlib.Path) -> List[ImageInfo]:
+  def _get_image_infos(self, directory: pathlib.Path) -> Dict[str, ImageInfo]:
     LOGGER.info(f'Loading images {directory}...')
-    image_infos: List[ImageInfo] = []
+    image_infos: Dict[str, ImageInfo] = {}
     for filename in directory.iterdir():
       filepath = directory.joinpath(filename)
 
@@ -117,12 +120,11 @@ class ImageDisplayBase(Thread):
         continue
 
       LOGGER.info('  Good!')
-      image_infos.append(
-          ImageInfo(
-              name=filename.stem,
-              image=image,
-              n_frames=getattr(image, 'n_frames'),
-          ))
+      image_infos[filename.stem] = ImageInfo(
+          name=filename.stem,
+          image=image,
+          n_frames=getattr(image, 'n_frames'),
+      )
 
     if not image_infos:
       raise Exception(f'No files found in {directory}!')
@@ -131,8 +133,14 @@ class ImageDisplayBase(Thread):
 
   def run(self):
     while True:
-      image_group = random.choice(self.image_groups)
-      image_info = image_group.get_random()
+      if self.play_next:
+        image_group = self.image_groups[self.play_next[0]]
+        image_info = image_group.images[self.play_next[1]]
+        self.play_next = None
+      else:
+        image_group = random_dict_choice(self.image_groups)
+        image_info = random_dict_choice(image_group.images)
+
       LOGGER.info(f'{image_info.name} ({image_info.n_frames} frames)')
 
       try:

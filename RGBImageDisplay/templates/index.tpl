@@ -11,12 +11,19 @@
   <span class="left_panel border">
     Image Groups:
     <ul>
-      {% for image_group in image_groups %}
+      {% for _, image_group in image_groups.items()|sort %}
         <li>
           <code>{{ image_group.name }}</code> ({{ image_group.images | length }}):
           <ul>
-            {% for image_info in image_group.images %}
-              <li><code>{{ image_info.name }}</code></li>
+            {% for _, image_info in image_group.images.items()|sort %}
+              <li>
+                <button class="play"
+                  data-group="{{ image_group.name }}"
+                  data-image="{{ image_info.name }}">
+                  Play
+                </button>
+                <code>{{ image_info.name }}</code>
+              </li>
             {% endfor %}
           </ul>
         </li>
