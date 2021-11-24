@@ -17,7 +17,7 @@ class TextEffect(base.BaseEffect):
       palette: List[colours.ColourType],
       # Custom
       text: str = 'MERRY.CHRISTMAS...',
-      speed: float = 4.0,
+      speed: float = 1.0,
       font_name: str = 'MonumentValley12-X55o.otf',
       font_size: int = 100,
   ):

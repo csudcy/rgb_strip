@@ -254,11 +254,15 @@ npm run image-display -- run 12 120 ../tree/image_renders/ --delay=75 --alpha=25
 
 git commit --amend --no-edit --author="csudcy <csudcy@gmail.com>" && git rebase --continue
 
-scp ./tree/image_renders/* pi@192.168.0.67:/home/pi/rgb_strip/tree/image_renders
-scp ./tree/image_renders/lines_red.gif pi@192.168.0.67:/home/pi/rgb_strip/tree/image_renders/
-scp ./RGBImageDisplay/* pi@192.168.0.67:/home/pi/rgb_strip/RGBImageDisplay/
+rsync -rvz ./RGBImageDisplay/ pi@192.168.0.67:/home/pi/rgb_strip/RGBImageDisplay/
+rsync -rvz ./tree/image_renders/ pi@192.168.0.67:/home/pi/rgb_strip/tree/image_renders/
 
-rsync -rvz ./tree/image_renders_new/ pi@192.168.0.67:/home/pi/rgb_strip/tree/image_renders/
+cd /home/pi/rgb_strip
+mv RGBImageDisplay RGBImageDisplay_bak
+mv RGBImageDisplay2 RGBImageDisplay
+mv tree/image_renders tree/image_renders_bak
+mv tree/image_renders2 tree/image_renders
+sudo systemctl restart rgbid
 
 scp ./init.d/* pi@192.168.0.67:/home/pi/rgb_strip/init.d/
 

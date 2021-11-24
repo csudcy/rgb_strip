@@ -62,11 +62,13 @@ effects:
         - blue
         - pink
         - white
-        - rainbow_7
         - rainbow_120
   -
     name: spiral_double/{palette}
     type: spirals
+    angle_speed_colour_d:
+      - [45, 0.6, 1]
+      - [135, -0.8, -1]
     multis:
       palette:
         - rainbow_100
@@ -82,6 +84,5 @@ effects:
         - blue
         - pink
         - white
-        - rainbow_7
         - rainbow_100
         - rainbow_1000
