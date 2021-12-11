@@ -87,10 +87,31 @@ effects:
         - rainbow_100
         - rainbow_1000
   -
-    name: spread/{palette}
+    name: spread/centre_{palette}
     type: spread
+    initiate: centre
     multis:
       palette:
-        - xmas: [red, green, white, red, green, white, red, green, white, black]
+        - xmas: [
+          red, red, red, red, red,
+          green, green, green, green, green,
+          white, white, white, white, white,
+          red, red, red, red, red,
+          green, green, green, green, green,
+          white, white, white, white, white,
+          black]
+        - [rainbow_20, black]
+        - [rainbow_120, black]
+  -
+    name: spread/edge_{palette}
+    type: spread
+    initiate: edge
+    multis:
+      palette:
+        - xmas: [
+          red, green, white,
+          red, green, white,
+          red, green, white,
+          black]
         - [rainbow_7, black]
         - [rainbow_20, black]
