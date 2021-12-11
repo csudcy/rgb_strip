@@ -11,6 +11,7 @@ from effects import fireworks
 from effects import lines
 from effects import sparkles
 from effects import spirals
+from effects import spread
 from effects import text
 from effects import wandering_lines
 
@@ -22,6 +23,7 @@ EFFECTS = {
     'fireworks': fireworks.FireworksEffect,
     'lines': lines.LinesEffect,
     'spirals': spirals.SpiralsEffect,
+    'spread': spread.SpreadEffect,
     'sparkles': sparkles.SparklesEffect,
     'text': text.TextEffect,
     'wandering_lines': wandering_lines.WanderingLinesEffect,

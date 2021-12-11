@@ -86,3 +86,11 @@ effects:
         - white
         - rainbow_100
         - rainbow_1000
+  -
+    name: spread/{palette}
+    type: spread
+    multis:
+      palette:
+        - xmas: [red, green, white, red, green, white, red, green, white, black]
+        - [rainbow_7, black]
+        - [rainbow_20, black]
