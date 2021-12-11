@@ -62,7 +62,6 @@ class Config():
         LOGGER.debug(f'Processing multi effect {count}...')
         permutation = dict(zip(multi_keys, values))
         permutation.update(effect)
-        permutation['name'] = permutation['name'].format(**permutation)
         yield permutation
       LOGGER.debug(f'Processed multi effect.')
     else:
@@ -90,14 +89,14 @@ class Config():
   def _load_effect(self, effect: EffectType) -> base.BaseEffect:
     effect_name = effect.pop('name')
     effect_type = effect.pop('type')
-    effect_palette = effect.pop('palette')
+    effect_palette = colours.resolve_palette(effect.pop('palette'))
     if effect_type not in EFFECTS:
       raise Exception(f'Unknown effect type in {effect_name}: {effect_type}')
     return EFFECTS[effect_type](
         width=self.width,
         height=self.height,
-        name=effect_name,
-        palette=colours.resolve_palette(effect_palette),
+        name=effect_name.format(palette=effect_palette.name, **effect),
+        palette=effect_palette,
         **effect,
     )
 

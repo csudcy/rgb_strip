@@ -31,7 +31,7 @@ class SpiralsEffect(base.BaseEffect):
       width: int,
       height: int,
       name: str,
-      palette: List[colours.ColourType],
+      palette: colours.Palette,
       # Custom
       angle_speed_colour_d: List[Tuple[float, float, float]] = [
           (30, 0.7, 1),

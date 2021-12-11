@@ -58,7 +58,7 @@ class WanderingLinesEffect(base.BaseEffect):
       width: int,
       height: int,
       name: str,
-      palette: List[colours.ColourType],
+      palette: colours.Palette,
       # Custom
       line_count_range: Tuple[int, int] = (3, 5),
       line_repeat_range: Tuple[int, int] = (2, 5),

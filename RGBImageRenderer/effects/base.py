@@ -16,7 +16,7 @@ class BaseEffect():
   FRAMES = 1000
 
   def __init__(self, width: int, height: int, name: str,
-               palette: List[colours.ColourType]):
+               palette: colours.Palette):
     self.width = width
     self.height = height
     self.name = name

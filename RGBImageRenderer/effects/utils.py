@@ -32,7 +32,7 @@ class Line:
 
   width: int
   height: int
-  palette: List[colours.ColourType]
+  palette: colours.Palette
   line_repeat: int
   angle_range: Tuple[float, float]
   colour_d_range: Tuple[int, int] = (-2, 2)

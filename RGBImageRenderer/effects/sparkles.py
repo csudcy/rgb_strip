@@ -14,7 +14,7 @@ from effects import base
 class Sparkle:
   width: int
   height: int
-  palette: List[colours.ColourType]
+  palette: colours.Palette
   fade_steps: Tuple[int, int]
   on_steps: Tuple[int, int]
   off_steps: Tuple[int, int]
@@ -59,7 +59,7 @@ class SparklesEffect(base.BaseEffect):
       width: int,
       height: int,
       name: str,
-      palette: List[colours.ColourType],
+      palette: colours.Palette,
       # Custom
       coverage: int = 20,  # Percentage of lights which should be sparkling
       fade_steps: Tuple[int, int] = (5, 20),  # Range of steps to fade for

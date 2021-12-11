@@ -78,7 +78,7 @@ class FireworksEffect(base.BaseEffect):
       width: int,
       height: int,
       name: str,
-      palette: List[colours.ColourType],
+      palette: colours.Palette,
       # Custom
       g_speed: float = 0.1,
       # Shots

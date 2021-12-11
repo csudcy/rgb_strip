@@ -13,7 +13,7 @@ class LinesEffect(base.BaseEffect):
       width: int,
       height: int,
       name: str,
-      palette: List[colours.ColourType],
+      palette: colours.Palette,
       # Custom
       reverse: bool = False,
       line_gap: int = 4,
