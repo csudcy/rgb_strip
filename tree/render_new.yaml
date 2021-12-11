@@ -101,7 +101,9 @@ effects:
           white, white, white, white, white,
           black]
         - [rainbow_20, black]
+        - [rainbow_20, rev_rainbow_20, black]
         - [rainbow_120, black]
+        - [rainbow_120, rev_rainbow_120, black]
   -
     name: spread/edge_{palette}
     type: spread
@@ -114,4 +116,6 @@ effects:
           red, green, white,
           black]
         - [rainbow_7, black]
+        - [rainbow_7, rev_rainbow_7, black]
         - [rainbow_20, black]
+        - [rainbow_20, rev_rainbow_20, black]

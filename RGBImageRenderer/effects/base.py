@@ -33,6 +33,8 @@ class BaseEffect():
     filename = self.get_filepath(directory)
     images[0].save(filename, save_all=True, append_images=images[1:])
     LOGGER.debug(f'{self.name}: Saved!')
+    loaded = Image.open(filename)
+    LOGGER.info(f'{self.name}: Generated {loaded.n_frames} frames!')
 
   def get_blank_image(self) -> Tuple[Image.Image, ImageDraw.ImageDraw]:
     image = Image.new('RGB', (self.width, self.height))

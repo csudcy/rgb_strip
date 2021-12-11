@@ -40,19 +40,29 @@ def resolve_palette(palette_input: Union[str, List[str], Dict[str, List[str]]]) 
       palette += sub_palette
     return palette
 
-  # A 'rainbow_{count}' palette
-  if palette_input.startswith('rainbow_'):
-    steps = int(palette_input[8:])
-    # Thanks to http://stackoverflow.com/questions/876853/generating-color-ranges-in-python
-    rgb_values = [
-        colorsys.hsv_to_rgb(degrees / steps, 1, 1) for degrees in range(steps)
-    ]
-    return Palette(palette_input,
-        *((int(r * 255), int(g * 255), int(b * 255)) for r, g, b in rgb_values)
-    )
+  if isinstance(palette_input, str):
+    # A 'rev_{palette}' palette
+    if palette_input.startswith('rev_'):
+      palette = resolve_palette(palette_input[4:])
+      palette.reverse()
+      return palette
 
-  # A single named colour
-  return Palette(palette_input, COLOURS[palette_input])
+    # A 'rainbow_{count}' palette
+    if palette_input.startswith('rainbow_'):
+      steps = int(palette_input[8:])
+      # Thanks to http://stackoverflow.com/questions/876853/generating-color-ranges-in-python
+      rgb_values = [
+          colorsys.hsv_to_rgb(degrees / steps, 1, 1) for degrees in range(steps)
+      ]
+      return Palette(palette_input,
+          *((int(r * 255), int(g * 255), int(b * 255)) for r, g, b in rgb_values)
+      )
+
+    # A single named colour
+    if palette_input in COLOURS:
+      return Palette(palette_input, COLOURS[palette_input])
+    
+  raise Exception(f'Cannot resolve palette: {palette_input}')
 
 
 def fade_in_out(
