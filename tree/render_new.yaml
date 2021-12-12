@@ -95,15 +95,15 @@ effects:
         - xmas: [
           red, red, red, red, red,
           green, green, green, green, green,
-          white, white, white, white, white,
           red, red, red, red, red,
           green, green, green, green, green,
-          white, white, white, white, white,
+          red, red, red, red, red,
+          green, green, green, green, green,
           black]
+        - [rainbow_7, black]
+        - [rainbow_7, rev_rainbow_7, black]
         - [rainbow_20, black]
         - [rainbow_20, rev_rainbow_20, black]
-        - [rainbow_120, black]
-        - [rainbow_120, rev_rainbow_120, black]
   -
     name: spread/edge_{palette}
     type: spread
@@ -111,11 +111,41 @@ effects:
     multis:
       palette:
         - xmas: [
-          red, green, white,
-          red, green, white,
-          red, green, white,
+          red, green,
+          red, green,
+          red, green,
           black]
         - [rainbow_7, black]
         - [rainbow_7, rev_rainbow_7, black]
         - [rainbow_20, black]
         - [rainbow_20, rev_rainbow_20, black]
+  -
+    name: spread/waves_{palette}
+    type: spread
+    initiate: centre
+    initiate_chance: 10.0
+    multis:
+      palette:
+        - xmas: [
+          red, red, red, red, red, green, green, green, green, green,
+          red, red, red, red, red, green, green, green, green, green,
+          red, red, red, red, red, green, green, green, green, green,
+          red, red, red, red, red, green, green, green, green, green,
+          red, red, red, red, red, green, green, green, green, green,
+          red, red, red, red, red, green, green, green, green, green,
+          red, red, red, red, red, green, green, green, green, green,
+          red, red, red, red, red, green, green, green, green, green,
+          red, red, red, red, red, green, green, green, green, green,
+          red, red, red, red, red, green, green, green, green, green,
+          black]
+        - rainbow_7_black: [
+          rainbow_7, rainbow_7, rainbow_7, rainbow_7, rainbow_7,
+          rainbow_7, rainbow_7, rainbow_7, rainbow_7, rainbow_7,
+          rainbow_7, rainbow_7, rainbow_7, rainbow_7, rainbow_7,
+          rainbow_7, rainbow_7, rainbow_7, rainbow_7, rainbow_7,
+          rainbow_7, rainbow_7, rainbow_7, rainbow_7, rainbow_7,
+          black]
+        - rainbow_20_black: [
+          rainbow_20, rainbow_20, rainbow_20, rainbow_20, rainbow_20,
+          rainbow_20, rainbow_20, rainbow_20, rainbow_20, rainbow_20,
+          black]
