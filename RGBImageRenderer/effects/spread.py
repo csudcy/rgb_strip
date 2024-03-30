@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import enum
 import random
 from typing import Generator, List, Optional
 
@@ -16,7 +17,7 @@ class Pixel:
   palette: colours.Palette
   # Not set at init
   palette_index: Optional[int] = None
-  neighbours: List['Pixel'] = None
+  neighbours: Optional[List['Pixel']] = None
 
   def next_colour(self):
     if self.palette_index is None:
@@ -33,7 +34,7 @@ class Pixel:
       self.palette_index = max(self.palette_index or 0, neighbour.palette_index)
 
 
-class Initate:
+class Initiate(enum.Enum):
   EDGE = 'edge'
   MID = 'mid'
   CENTRE = 'centre'
@@ -48,7 +49,7 @@ class SpreadEffect(base.BaseEffect):
       name: str,
       palette: colours.Palette,
       # Custom
-      initiate: Initate = Initate.MID,
+      initiate: Initiate = Initiate.MID,
       initiate_chance: float = 0.3,
   ):
     super().__init__(width, height, name, palette)
@@ -67,13 +68,13 @@ class SpreadEffect(base.BaseEffect):
             if (x + dx, y + dy) in pixel_dict
         ]
 
-    if initiate == Initate.EDGE:
+    if initiate == Initiate.EDGE:
       self.initiators = (
           [pixel_dict[(x, 0)] for x in range(self.width)] +
           [pixel_dict[(x, self.height - 1)] for x in range(self.width)] +
           [pixel_dict[(0, y)] for y in range(self.height)] +
           [pixel_dict[(self.width - 1, y)] for y in range(self.height)])
-    elif initiate == Initate.MID:
+    elif initiate == Initiate.MID:
       self.initiators = [
           pixel_dict[(x, y)]
           for x in range(int(0.25 * self.width), int(0.75 * self.width))
@@ -85,7 +86,7 @@ class SpreadEffect(base.BaseEffect):
           for x in range(int(0.45 * self.width), int(0.55 * self.width))
           for y in range(int(0.45 * self.height), int(0.55 * self.height))
       ]
-      # Centre is so small, make the initate chance lower
+      # Centre is so small, make the initiate chance lower
       self.initiate_chance /= 5
 
     self.pixels = list(pixel_dict.values())

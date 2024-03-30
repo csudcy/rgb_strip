@@ -38,8 +38,8 @@ def resolve_palette(
   # A list of sub-palettes
   if isinstance(palette_input, list):
     palette = Palette('_'.join(palette_input))
-    for sub_palette in map(resolve_palette, palette_input):
-      palette += sub_palette
+    for sub_palette in palette_input:
+      palette.extend(resolve_palette(sub_palette).values())
     return palette
 
   if isinstance(palette_input, str):

@@ -139,7 +139,7 @@ class ImageDisplayBase(Thread):
         image_info = image_group.images[self.play_next[1]]
         self.play_next = None
       else:
-        image_group = random_dict_choice(self.image_groups)
+        image_group = random.choice(self.image_groups)
         image_info = random_dict_choice(image_group.images)
 
       LOGGER.info(f'{image_info.name} ({image_info.n_frames} frames)')

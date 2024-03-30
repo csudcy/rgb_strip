@@ -29,7 +29,8 @@ class TextEffect(base.BaseEffect):
     self.x = width
     self.colour_index = 0
 
-    text_w, _ = self.font.getsize(self.text)
+    # No attribute 'getsize' on PIL.ImageFont.FreeTypeFont
+    text_w, _ = self.font.getsize(self.text)  # pytype: disable=attribute-error
     self.min_x = -text_w
 
   def iter_images(self) -> Generator[Image.Image, None, None]:

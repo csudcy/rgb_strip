@@ -2,6 +2,7 @@ from contextlib import contextmanager
 import logging
 import pathlib
 import time
+from typing import Generator
 
 import click
 import config as config_loader
@@ -10,7 +11,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 @contextmanager
-def time_it(name: str) -> None:
+def time_it(name: str) -> Generator[None, None, None]:
   LOGGER.info(f'{name}...')
   start_time = time.time()
   yield
