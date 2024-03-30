@@ -42,7 +42,8 @@ def api_move_next():
 
 @app.route('/api/play')
 def api_play():
-  DISPLAY_THREAD.play_next = (flask.request.args['group'], flask.request.args['image'])
+  DISPLAY_THREAD.play_next = (flask.request.args['group'],
+                              flask.request.args['image'])
   DISPLAY_THREAD.move_next = True
   return flask.jsonify({})
 

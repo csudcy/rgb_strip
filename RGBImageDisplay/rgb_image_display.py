@@ -40,6 +40,7 @@ class ImageGroup:
 
 T = TypeVar('T')
 
+
 def random_dict_choice(d: Dict[Any, T]) -> T:
   return random.choice(list(d.values()))
 
@@ -98,7 +99,7 @@ class ImageDisplayBase(Thread):
 
     if not image_groups:
       raise Exception(f'No groups found in {directory}!')
-    
+
     return image_groups
 
   def _get_image_infos(self, directory: pathlib.Path) -> Dict[str, ImageInfo]:

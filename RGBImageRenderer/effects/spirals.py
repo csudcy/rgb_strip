@@ -11,11 +11,10 @@ from effects import base
 from effects import utils
 
 
-
 @dataclass
 class MovingLine(utils.Line):
 
-  dy: float = 0 # Have to add a default as it's after other kwargs
+  dy: float = 0  # Have to add a default as it's after other kwargs
 
   def draw(self, canvas: ImageDraw.ImageDraw) -> None:
     super().draw(canvas)
@@ -51,8 +50,7 @@ class SpiralsEffect(base.BaseEffect):
             angle_range=(angle, angle),
             colour_d_range=(colour_d, colour_d),
             dy=speed,
-        )
-        for angle, speed, colour_d in self.angle_speed_colour_d
+        ) for angle, speed, colour_d in self.angle_speed_colour_d
     ]
 
     for i in range(self.FRAMES):

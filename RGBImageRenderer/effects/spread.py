@@ -27,7 +27,7 @@ class Pixel:
   def draw(self, canvas: ImageDraw.ImageDraw) -> None:
     if self.palette_index is not None:
       canvas.point((self.x, self.y), self.palette[self.palette_index])
-    
+
     neighbour = random.choice(self.neighbours)
     if neighbour.palette_index is not None:
       self.palette_index = max(self.palette_index or 0, neighbour.palette_index)
@@ -55,8 +55,7 @@ class SpreadEffect(base.BaseEffect):
     self.initiate_chance = initiate_chance
 
     pixel_dict = {
-        (x, y): Pixel(x, y, self.palette)
-        for x in range(self.width)
+        (x, y): Pixel(x, y, self.palette) for x in range(self.width)
         for y in range(self.height)
     }
     for x in range(self.width):
@@ -70,11 +69,10 @@ class SpreadEffect(base.BaseEffect):
 
     if initiate == Initate.EDGE:
       self.initiators = (
-          [pixel_dict[(x, 0)] for x in range(self.width)] + 
-          [pixel_dict[(x, self.height - 1)] for x in range(self.width)] + 
-          [pixel_dict[(0, y)] for y in range(self.height)] + 
-          [pixel_dict[(self.width - 1, y)] for y in range(self.height)]
-      )
+          [pixel_dict[(x, 0)] for x in range(self.width)] +
+          [pixel_dict[(x, self.height - 1)] for x in range(self.width)] +
+          [pixel_dict[(0, y)] for y in range(self.height)] +
+          [pixel_dict[(self.width - 1, y)] for y in range(self.height)])
     elif initiate == Initate.MID:
       self.initiators = [
           pixel_dict[(x, y)]

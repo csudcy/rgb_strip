@@ -21,7 +21,7 @@ class BaseEffect():
     self.height = height
     self.name = name
     self.palette = palette
-  
+
   def get_filepath(self, directory: pathlib.Path) -> pathlib.Path:
     return directory.joinpath(f'{self.name}.png')
 

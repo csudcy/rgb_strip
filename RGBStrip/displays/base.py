@@ -20,8 +20,10 @@ def _clockless_bytes(byte: int, alpha: int) -> List[int]:
   ]
 
 
-CLOCKLESS_BYTE_LOOKUP = {(alpha, byte): _clockless_bytes(byte, alpha)
-                         for byte in range(256) for alpha in range(32)}
+CLOCKLESS_BYTE_LOOKUP = {
+    (alpha, byte): _clockless_bytes(byte, alpha) for byte in range(256)
+    for alpha in range(32)
+}
 
 
 class BaseDisplay(object):

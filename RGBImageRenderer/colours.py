@@ -14,6 +14,7 @@ COLOURS = {
     'white': (255, 255, 255),
 }
 
+
 class Palette(List[ColourType]):
   name: str
 
@@ -22,12 +23,13 @@ class Palette(List[ColourType]):
     self.name = name
 
 
-def resolve_palette(palette_input: Union[str, List[str], Dict[str, List[str]]]) -> Palette:
+def resolve_palette(
+    palette_input: Union[str, List[str], Dict[str, List[str]]]) -> Palette:
   # A single dict of name -> palettes
   if isinstance(palette_input, dict):
     if len(palette_input) != 1:
       raise Exception('Named palettes must have exactly 1 key & value!')
-    
+
     name, colours = list(palette_input.items())[0]
     palette = resolve_palette(colours)
     palette.name = name
@@ -54,14 +56,15 @@ def resolve_palette(palette_input: Union[str, List[str], Dict[str, List[str]]]) 
       rgb_values = [
           colorsys.hsv_to_rgb(degrees / steps, 1, 1) for degrees in range(steps)
       ]
-      return Palette(palette_input,
-          *((int(r * 255), int(g * 255), int(b * 255)) for r, g, b in rgb_values)
-      )
+      return Palette(
+          palette_input,
+          *((int(r * 255), int(g * 255), int(b * 255))
+            for r, g, b in rgb_values))
 
     # A single named colour
     if palette_input in COLOURS:
       return Palette(palette_input, COLOURS[palette_input])
-    
+
   raise Exception(f'Cannot resolve palette: {palette_input}')
 
 
