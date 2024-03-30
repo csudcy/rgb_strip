@@ -1,12 +1,12 @@
-bottle==0.12.19
-cffi==1.15.0; platform_python_implementation == "CPython" and sys_platform == "win32" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_version > "3.5")
-click==8.0.3; python_version >= "3.6"
-colorama==0.4.4; python_version >= "3.6" and python_full_version < "3.0.0" and platform_system == "Windows" or platform_system == "Windows" and python_version >= "3.6" and python_full_version >= "3.5.0"
+bottle==0.12.25
+cffi==1.16.0; platform_python_implementation == "CPython" and sys_platform == "win32" and python_version >= "3.8"
+click==8.1.7; python_version >= "3.7"
+colorama==0.4.6; python_version >= "3.7" and python_full_version < "3.0.0" and platform_system == "Windows" or platform_system == "Windows" and python_version >= "3.7" and python_full_version >= "3.7.0"
 gevent-websocket==0.10.1
-gevent==21.8.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_version > "3.5")
-greenlet==1.1.2; python_version >= "2.7" and python_full_version < "3.0.0" and platform_python_implementation == "CPython" or python_version > "3.5" and python_full_version < "3.0.0" and platform_python_implementation == "CPython" or python_version > "3.5" and platform_python_implementation == "CPython" and python_full_version >= "3.5.0"
-pillow==8.4.0; python_version >= "3.6"
-pycparser==2.21; python_version >= "2.7" and python_full_version < "3.0.0" and platform_python_implementation == "CPython" and sys_platform == "win32" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_version > "3.5") or platform_python_implementation == "CPython" and sys_platform == "win32" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_version > "3.5") and python_full_version >= "3.4.0"
-pyyaml==6.0; python_version >= "3.6"
-zope.event==4.5.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_version > "3.5" and python_full_version < "3.0.0" or python_version > "3.5"
-zope.interface==5.4.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_version > "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version > "3.5"
+gevent==24.2.1; python_version >= "3.8"
+greenlet==3.0.3; platform_python_implementation == "CPython" and python_version < "3.11" and python_version >= "3.8"
+pillow==10.2.0; python_version >= "3.8"
+pycparser==2.22; platform_python_implementation == "CPython" and sys_platform == "win32" and python_version >= "3.8"
+pyyaml==6.0.1; python_version >= "3.6"
+zope.event==5.0; python_version >= "3.8"
+zope.interface==6.2; python_version >= "3.8"
