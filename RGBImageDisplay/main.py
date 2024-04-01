@@ -137,7 +137,7 @@ def clock(
     height: int,
     alpha: int,
     rainbow_seconds: int,
-    device: str,
+    display: str,
     debug: bool,
 ):
   if debug:
@@ -147,7 +147,7 @@ def clock(
 
   logging.info('Running clock...')
 
-  DeviceClass = DEVICES[device]
+  DeviceClass = DEVICES[display]
   device = DeviceClass(
       width=width,
       height=height,
