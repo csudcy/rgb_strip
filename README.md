@@ -76,6 +76,26 @@ sudo apt-get install --upgrade git cmake python3-pip
 # For Pillow support
 sudo apt-get install libopenjp2-7 libtiff5
 
+# Setup pyenv
+sudo apt update
+sudo apt install build-essential libssl-dev zlib1g-dev \
+  libbz2-dev libreadline-dev libsqlite3-dev curl \
+  libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+curl https://pyenv.run | bash
+
+nano ~/.bash_profile
+# Add:
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+# Write - ctrl+o then enter
+# Quit - ctrl+x
+
+# Apply the changes
+source ~/.bash_profile
+
+pyenv install 3.11.8
+
 # Now we have to update pip...
 python3 -m pip install --upgrade pip
 
