@@ -62,7 +62,7 @@ class ImageDisplayBase(Thread):
   device: Any
   image_groups: Dict[str, ImageGroup]
   image_bytes: bytes
-  frame_info: Dict[str, Union[int, str]]
+  frame_info: FrameInfo
   _move_next: bool = False
   _next_image_info: Optional[ImageInfo] = None
 
@@ -150,7 +150,9 @@ class ImageDisplayBase(Thread):
         image_group = random_dict_choice(self.image_groups)
         image_info = random_dict_choice(image_group.images)
 
-      LOGGER.info(f'{image_info.parent}:{image_info.name} ({image_info.n_frames} frames)')
+      LOGGER.info(
+          f'{image_info.parent}:{image_info.name} ({image_info.n_frames} frames)'
+      )
 
       try:
         self.show_image(image_info)
@@ -246,11 +248,12 @@ class ImageDisplayWS2812Boards(ImageDisplayLumaBase):
       raise Exception(f'Width ({self.width}) must be a multiple of board width'
                       f' ({self.BOARD_WIDTH})!')
     if self.height % self.BOARD_HEIGHT != 0:
-      raise Exception(f'Height ({self.height}) must be a multiple of board height'
-                      f' ({self.BOARD_HEIGHT})!')
+      raise Exception(
+          f'Height ({self.height}) must be a multiple of board height'
+          f' ({self.BOARD_HEIGHT})!')
 
-    boards_wide = self.width / self.BOARD_WIDTH
-    boards_high = self.height / self.BOARD_HEIGHT
+    boards_wide = int(self.width / self.BOARD_WIDTH)
+    boards_high = int(self.height / self.BOARD_HEIGHT)
 
     mapping = self._make_mapping(boards_wide, boards_high)
     return super()._get_device(mapping=mapping)
@@ -264,9 +267,9 @@ class ImageDisplayWS2812Boards(ImageDisplayLumaBase):
           board_number = (board_row * boards_wide) + board_col
           board_offset = board_number * self.BOARD_LED_COUNT
           for col in range(0, self.BOARD_WIDTH):
-            if col % 2 == 0: # Even
+            if col % 2 == 0:  # Even
               offset = (self.BOARD_HEIGHT * col) + row
-            else: # Odd
+            else:  # Odd
               offset = (self.BOARD_HEIGHT * (col + 1)) - (1 + row)
 
             mapping.append(board_offset + offset)

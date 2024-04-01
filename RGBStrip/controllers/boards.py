@@ -23,7 +23,8 @@ class BoardsController(BaseController):
         'boards_high': boards_high,
         'type': 'boards',
     }
-    BaseController.__init__(self, config, boards_wide * boards_high * BOARD_LED_COUNT, a)
+    BaseController.__init__(self, config,
+                            boards_wide * boards_high * BOARD_LED_COUNT, a)
 
   def _get_index(self, x, y):
     return self._mapping[y * self.boards_wide * BOARD_WIDTH + x]
@@ -45,9 +46,9 @@ class BoardsController(BaseController):
           board_number = (board_row * self.boards_wide) + board_col
           board_offset = board_number * BOARD_LED_COUNT
           for col in range(0, BOARD_WIDTH):
-            if col % 2 == 0: # Even
+            if col % 2 == 0:  # Even
               offset = (BOARD_HEIGHT * col) + row
-            else: # Odd
+            else:  # Odd
               offset = (BOARD_HEIGHT * (col + 1)) - (1 + row)
 
             mapping.append(board_offset + offset)
