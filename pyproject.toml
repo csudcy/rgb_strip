@@ -9,7 +9,7 @@ authors = [
 readme = 'README.md'
 
 [tool.poetry.dependencies]
-python = "^3.11,<3.12"  # Compatible python versions must be declared here
+python = "^3.9,<3.10"  # Compatible python versions must be declared here
 PyYAML = ">=5.4"
 # To use the web server
 bottle = ">=0.12.18"

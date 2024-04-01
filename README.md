@@ -76,26 +76,6 @@ sudo apt-get install --upgrade git cmake python3-pip
 # For Pillow support
 sudo apt-get install libopenjp2-7 libtiff5
 
-# Setup pyenv
-sudo apt update
-sudo apt install build-essential libssl-dev zlib1g-dev \
-  libbz2-dev libreadline-dev libsqlite3-dev curl \
-  libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-curl https://pyenv.run | bash
-
-nano ~/.bash_profile
-# Add:
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-# Write - ctrl+o then enter
-# Quit - ctrl+x
-
-# Apply the changes
-source ~/.bash_profile
-
-pyenv install 3.11.8
-
 # Now we have to update pip...
 python3 -m pip install --upgrade pip
 
@@ -190,16 +170,18 @@ cd ~
 git clone https://github.com/csudcy/rgb_strip
 cd rgb_strip
 
-# Install requirements
-python3 -m pip install -r requirements.txt
-
-# Test the old-style server
-python3 -m RGBStrip server ./configs/test.yaml
-
 # TODO: Test the new-style pre-rendered images
 
 # Test clock
-npm run image-display -- clock 64 8 --alpha=255
+cd RGBImageDisplay
+sudo python3 -m pip install -r requirements.txt
+sudo python3 -m pip install rpi-ws281x ws2812
+sudo python3 main.py clock 64 8 --alpha=255
+
+
+# Test the old-style server
+python3 -m pip install -r requirements.txt
+python3 -m RGBStrip server ./configs/test.yaml
 
 # Copy pre-renders to the pi
 scp -r ./tree/renders/ pi@<IP>:/home/pi/rgb_strip/tree/renders

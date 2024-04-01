@@ -171,7 +171,7 @@ files = [
 
 [package.dependencies]
 cffi = {version = ">=1.12.2", markers = "platform_python_implementation == \"CPython\" and sys_platform == \"win32\""}
-greenlet = {version = ">=3.0rc3", markers = "platform_python_implementation == \"CPython\" and python_version >= \"3.11\""}
+greenlet = {version = ">=2.0.0", markers = "platform_python_implementation == \"CPython\" and python_version < \"3.11\""}
 "zope.event" = "*"
 "zope.interface" = "*"
 
@@ -996,5 +996,5 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.11,<3.12"
-content-hash = "937711b1bae053545304ff9a7f2dda9efdcc4d6631ccec46c769dc715967fe94"
+python-versions = "^3.9,<3.10"
+content-hash = "01f46a5eb93993218532b612da1fa281fbe2da88c0e855dbdc7ed9e122c930f9"
