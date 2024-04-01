@@ -173,8 +173,13 @@ cd rgb_strip
 # Install requirements
 python3 -m pip install -r requirements.txt
 
-# Test the server
+# Test the old-style server
 python3 -m RGBStrip server ./configs/test.yaml
+
+# TODO: Test the new-style pre-rendered images
+
+# Test clock
+npm run image-display -- clock 64 8 --alpha=255
 
 # Copy pre-renders to the pi
 scp -r ./tree/renders/ pi@<IP>:/home/pi/rgb_strip/tree/renders

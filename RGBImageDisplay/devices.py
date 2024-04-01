@@ -17,9 +17,9 @@ class ImageDevice:
       width: int,
       height: int,
       alpha: int,
-      rotate: int,
-      flip_x: bool,
-      flip_y: bool,
+      rotate: int = 0,
+      flip_x: bool = False,
+      flip_y: bool = False,
   ):
     self.width = width
     self.height = height

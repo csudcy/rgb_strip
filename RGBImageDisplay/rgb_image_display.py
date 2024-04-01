@@ -9,7 +9,6 @@ import time
 from typing import Any, Dict, Optional, TypeVar
 
 import devices
-from luma.core.device import device as LumaDevice
 import PIL
 from PIL import Image
 

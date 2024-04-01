@@ -1,11 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
+from datetime import datetime
 import logging
 import pathlib
+import time
 import traceback
 
 import click
 import devices
+from luma.core.render import canvas
+from PIL import ImageFont
 import rgb_image_display
 import server
 
@@ -22,6 +26,11 @@ ROTATE_MAP = {
     '180': 2,
     '270': 3,
 }
+
+CURRENT_DIR = pathlib.Path(__file__).parent
+FONT_FILE = CURRENT_DIR / 'pixelmix.ttf'
+
+HSL_FORMAT = 'hsl({hue}, 100%, 50%)'
 
 
 @click.group()
@@ -101,6 +110,64 @@ def run(
 
   # Block on the server
   server.run(device, display_thread)
+
+
+@main.command()
+@click.argument('width', type=int)
+@click.argument('height', type=int)
+@click.option('--alpha',
+              help='How bright to show the pixels (0-255)',
+              type=int,
+              default=40)
+@click.option('--device',
+              help='The device to use for output',
+              type=click.Choice(DEVICES.keys()),
+              default='terminal')
+@click.option('--debug',
+              help='Enable debug output',
+              type=bool,
+              default=False,
+              is_flag=True)
+def clock(
+    width: int,
+    height: int,
+    alpha: int,
+    device: str,
+    debug: bool,
+):
+  if debug:
+    logging.basicConfig(level=logging.DEBUG)
+  else:
+    logging.basicConfig(level=logging.INFO)
+
+  DeviceClass = DEVICES[device]
+  device = DeviceClass(
+      width=width,
+      height=height,
+      alpha=alpha,
+  )
+
+  font = ImageFont.truetype(FONT_FILE.as_posix(), 8)
+
+  while True:
+    now = datetime.now()
+    text = now.strftime('%H : %M')
+    rainbow_fraction = now.second / 60
+    hue = int(rainbow_fraction * 360.0)
+
+    with canvas(device.device) as draw:
+      # Clear the canvas
+      draw.rectangle(((0, 0), (device.device.width, device.device.height)),
+                     fill='black')
+
+      # Work out where to draw the text
+      text_width = draw.textlength(text, font=font)
+      offset = int(float(device.device.width - text_width) / 2.0)
+
+      # Draw the text
+      draw.text((offset, 0), text, font=font, fill=HSL_FORMAT.format(hue=hue))
+
+    time.sleep(0.01)
 
 
 if __name__ == "__main__":

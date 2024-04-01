@@ -2,9 +2,8 @@ import io
 import logging
 import time
 
-import flask
-
 import devices
+import flask
 import rgb_image_display
 
 LOGGER = logging.getLogger(__name__)
@@ -81,7 +80,8 @@ def display_thread_iterator():
       yield output
 
 
-def run(device: devices.ImageDevice, display_thread: rgb_image_display.ImageDisplay):
+def run(device: devices.ImageDevice,
+        display_thread: rgb_image_display.ImageDisplay):
   global DEVICE, DISPLAY_THREAD
   DEVICE = device
   DISPLAY_THREAD = display_thread
