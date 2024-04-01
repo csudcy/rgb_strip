@@ -93,7 +93,7 @@ With this, you pre-render images from another computer, upload them to the Pi & 
 # Copy pre-renders to the pi from your computer
 scp -r ./tree/renders/ pi@rpi-display.local:/home/pi/rgb_strip/tree/renders
 
-sudo python3 main.py run 120 12 /home/pi/rgb_strip/tree/image_renders/ --delay=5 --alpha=40 --device=ws2812
+sudo python3 main.py run 120 12 /home/pi/rgb_strip/tree/image_renders/ --delay=5 --alpha=40 --display=ws2812
 ```
 
 ### Setup for Clock
@@ -101,7 +101,7 @@ sudo python3 main.py run 120 12 /home/pi/rgb_strip/tree/image_renders/ --delay=5
 This renders a lovely clock!
 
 ```
-sudo python3 main.py clock 64 8 --alpha=10 --device=ws2812_boards
+sudo python3 main.py clock 64 8 --alpha=10 --display=ws2812_boards
 ```
 
 ### Running
@@ -132,7 +132,7 @@ sudo systemctl restart rgbs
 
 rm -rf tree/image_renders && npm run image-renderer -- render ../tree/render_new.yaml ../tree/image_renders/ --filter scroll
 
-npm run image-display -- run 12 120 ../tree/image_renders/ --delay=75 --alpha=255 --device=none
+npm run image-display -- run 12 120 ../tree/image_renders/ --delay=75 --alpha=255 --display=none
 ```
 
 Renderer

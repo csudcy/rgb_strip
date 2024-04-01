@@ -176,7 +176,7 @@ sudo python3 main.py clock 64 8 --alpha=10
 cd RGBImageDisplay
 sudo python3 -m pip install -r requirements.txt
 sudo python3 -m pip install rpi-ws281x
-sudo python3 main.py clock 64 8 --alpha=10 --device=ws2812_boards
+sudo python3 main.py clock 64 8 --alpha=10 --display=ws2812_boards
 
 # Test the old-style server
 python3 -m pip install -r requirements.txt
@@ -260,7 +260,7 @@ My DotStar (specifically, `APA102`) has these 4 connections:
 
 rm -rf tree/image_renders && npm run image-renderer -- render ../tree/render_new.yaml ../tree/image_renders/ --filter scroll
 
-npm run image-display -- run 12 120 ../tree/image_renders/ --delay=75 --alpha=255 --device=none
+npm run image-display -- run 12 120 ../tree/image_renders/ --delay=75 --alpha=255 --display=none
 
 rsync -rvz ./RGBImageDisplay/ pi@192.168.0.67:/home/pi/rgb_strip/RGBImageDisplay/
 rsync -rvz ./tree/image_renders/ pi@192.168.0.67:/home/pi/rgb_strip/tree/image_renders/
@@ -277,7 +277,7 @@ scp ./init.d/* pi@192.168.0.67:/home/pi/rgb_strip/init.d/
 cd RGBImageDisplay
 sudo python3 -m pip install -r requirements.txt
 sudo python3 -m pip install rpi-ws281x ws2812
-sudo python3 main.py run 120 12 /home/pi/rgb_strip/tree/image_renders/ --delay=5 --alpha=40 --device=ws2812
+sudo python3 main.py run 120 12 /home/pi/rgb_strip/tree/image_renders/ --delay=5 --alpha=40 --display=ws2812
 ```
 Renderer
   Add rain effect

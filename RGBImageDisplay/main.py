@@ -64,7 +64,7 @@ def main() -> None:
               help='How many ms to delay between frames',
               type=int,
               default=0)
-@click.option('--device',
+@click.option('--display',
               help='The device to use for output',
               type=click.Choice(DEVICES.keys()),
               default='terminal')
@@ -123,7 +123,7 @@ def run(
               help='How many seconds to cycle through the rainbow over',
               type=int,
               default=60)
-@click.option('--device',
+@click.option('--display',
               help='The device to use for output',
               type=click.Choice(DEVICES.keys()),
               default='terminal')
