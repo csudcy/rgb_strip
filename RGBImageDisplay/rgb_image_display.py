@@ -26,7 +26,7 @@ NamedImageType = Tuple[str, Image.Image]
 class ImageInfo:
   parent: str
   name: str
-  image: Image.Image
+  filepath: pathlib.Path
   n_frames: int
 
 
@@ -130,8 +130,8 @@ class ImageDisplayBase(Thread):
       image_infos[filename.stem] = ImageInfo(
           parent=directory.name,
           name=filename.stem,
-          image=image,
-          n_frames=getattr(image, 'n_frames'),
+          filepath=filepath,
+          n_frames=image.n_frames,
       )
 
     if not image_infos:
@@ -142,13 +142,15 @@ class ImageDisplayBase(Thread):
   def run(self):
     while True:
       if self._next_image_info:
+        LOGGER.info(f'Using next image_info...')
         image_info = self._next_image_info
         self._next_image_info = None
       else:
+        LOGGER.info(f'Using random image_info...')
         image_group = random_dict_choice(self.image_groups)
         image_info = random_dict_choice(image_group.images)
 
-      LOGGER.info(f'{image_info.name} ({image_info.n_frames} frames)')
+      LOGGER.info(f'{image_info.parent}:{image_info.name} ({image_info.n_frames} frames)')
 
       try:
         self.show_image(image_info)
@@ -157,13 +159,14 @@ class ImageDisplayBase(Thread):
 
   def show_image(self, image_info: ImageInfo):
     self._move_next = False
+    image = Image.open(image_info.filepath)
     for frame_index in range(image_info.n_frames):
       if self._move_next:
-        LOGGER.debug(f'Moving to next image...')
+        LOGGER.info(f'Moving to next image...')
         break
       LOGGER.debug(f'Seeking frame {frame_index}...')
-      image_info.image.seek(frame_index)
-      current_image = image_info.image
+      image.seek(frame_index)
+      current_image = image.copy()
 
       if current_image.size != (self.width, self.height):
         LOGGER.debug('Resizing...')
