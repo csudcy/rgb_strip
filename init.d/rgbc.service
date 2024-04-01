@@ -1,0 +1,10 @@
+[Unit]
+Description=RGBImageDisplay Clock Service
+
+[Service]
+WorkingDirectory=/home/pi/rgb_strip/RGBImageDisplay/
+User=root
+ExecStart=/usr/bin/python3 main.py clock 64 8 --alpha=100 --display=ws2812_boards
+
+[Install]
+WantedBy=multi-user.target
