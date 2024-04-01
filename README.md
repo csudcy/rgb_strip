@@ -115,6 +115,8 @@ apt-get install build-essential libffi-dev
 
 ### 2. Using SPI for WS2812b Pixels
 
+**TODO: Is this needed for luma?**
+
 Because there's no clock signal for WS2812b pixles, the timing is very important. Therefore, you should really be using SPI (`Serial Peripheral Interface`) for WS2812b pixels. Unfortunately, it seems like having to do multiple SPI writes is too slow. Therefore, we have to make sure the data for all pixels can be sent in one go. But, that's limited by the buffer size.
 
 WS2812b pixels use 9 bytes per pixel (3 channels and 3 bytes per channel). Therefore, the maximum number of pixels which can be sent in one go are:
@@ -223,6 +225,9 @@ There are 2 main types of LEDs which can be used:
 
 TODO: Add this once I have some NeoPixels!
 
+- For old style server, connect to [pin 19 - SPI MOSI](https://pinout.xyz/pinout/pin19_gpio10/)
+- For new style image display, connect to [pin 12 - PCM Clock](https://pinout.xyz/pinout/pin12_gpio18/)
+
 ### Connecting DotStar's
 
 My DotStar (specifically, `APA102`) has these 4 connections:
@@ -259,8 +264,6 @@ My DotStar (specifically, `APA102`) has these 4 connections:
 rm -rf tree/image_renders && npm run image-renderer -- render ../tree/render_new.yaml ../tree/image_renders/ --filter scroll
 
 npm run image-display -- run 12 120 ../tree/image_renders/ --delay=75 --alpha=255 --device=none
-
-git commit --amend --no-edit --author="csudcy <csudcy@gmail.com>" && git rebase --continue
 
 rsync -rvz ./RGBImageDisplay/ pi@192.168.0.67:/home/pi/rgb_strip/RGBImageDisplay/
 rsync -rvz ./tree/image_renders/ pi@192.168.0.67:/home/pi/rgb_strip/tree/image_renders/
