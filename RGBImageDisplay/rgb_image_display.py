@@ -6,20 +6,14 @@ import pathlib
 import random
 from threading import Thread
 import time
-from typing import Any, Dict, List, Optional, Tuple, TypeVar, Union
+from typing import Any, Dict, Optional, TypeVar
 
+import devices
 from luma.core.device import device as LumaDevice
-from luma.emulator.device import asciiblock
-from luma.emulator.device import emulator
-from luma.led_matrix.device import ws2812
 import PIL
 from PIL import Image
 
-import led_mapping
-
 LOGGER = logging.getLogger(__name__)
-
-NamedImageType = Tuple[str, Image.Image]
 
 
 @dataclass
@@ -50,16 +44,9 @@ def random_dict_choice(d: Dict[Any, T]) -> T:
   return random.choice(list(d.values()))
 
 
-class ImageDisplayBase(Thread):
-
-  width: int
-  height: int
-  rotate: int
-  flip_x: bool
-  flip_y: bool
-  alpha: int
+class ImageDisplay(Thread):
+  device: devices.ImageDevice
   delay_seconds: float
-  device: Any
   image_groups: Dict[str, ImageGroup]
   image_bytes: bytes
   frame_info: FrameInfo
@@ -69,28 +56,14 @@ class ImageDisplayBase(Thread):
   def __init__(
       self,
       *,
-      width: int,
-      height: int,
-      rotate: int,
-      flip_x: bool,
-      flip_y: bool,
-      alpha: int,
+      device: devices.ImageDevice,
       delay: int,
       directory: pathlib.Path,
   ):
     super().__init__()
-    self.width = width
-    self.height = height
-    self.rotate = rotate
-    self.flip_x = flip_x
-    self.flip_y = flip_y
-    self.alpha = alpha
+    self.device = device
     self.delay_seconds = delay / 1000.0
-    self.device = self._get_device()
     self.image_groups = self._get_image_groups(directory)
-
-  def _get_device(self):
-    raise Exception('Must be overridden!')
 
   def _get_image_groups(self, directory: pathlib.Path) -> Dict[str, ImageGroup]:
     LOGGER.info(f'Loading groups {directory}...')
@@ -170,9 +143,10 @@ class ImageDisplayBase(Thread):
       image.seek(frame_index)
       current_image = image.copy()
 
-      if current_image.size != (self.width, self.height):
+      if current_image.size != (self.device.width, self.device.height):
         LOGGER.debug('Resizing...')
-        current_image = current_image.resize((self.width, self.height))
+        current_image = current_image.resize(
+            (self.device.width, self.device.height))
       if current_image.mode != 'RGB':
         LOGGER.debug('Converting...')
         current_image = current_image.convert('RGB')
@@ -185,9 +159,8 @@ class ImageDisplayBase(Thread):
           image=current_image,
       )
 
-      if self.device:
-        LOGGER.debug('Displaying...')
-        self.device.display(current_image)
+      LOGGER.debug('Displaying...')
+      self.device.display(current_image)
       LOGGER.debug('Waiting...')
       time.sleep(self.delay_seconds)
 
@@ -199,85 +172,3 @@ class ImageDisplayBase(Thread):
     image_info = image_group.images[image_name]
     self._next_image_info = image_info
     self._move_next = True
-
-
-class ImageDisplayLumaBase(ImageDisplayBase):
-
-  LUMA_CLASS = None
-
-  def _get_device(self, **kwargs):
-    if self.rotate in (1, 3):
-      # Display is rotated; switch width & height
-      width, height = self.height, self.width
-    else:
-      width, height = self.width, self.height
-    device = self.LUMA_CLASS(width=width,
-                             height=height,
-                             rotate=self.rotate,
-                             **kwargs)
-    device.contrast(self.alpha)
-    return device
-
-
-class ImageDisplayTerminal(ImageDisplayLumaBase):
-
-  LUMA_CLASS = asciiblock
-
-
-class ImageDisplayWS2812(ImageDisplayLumaBase):
-
-  LUMA_CLASS = ws2812
-
-  def _get_device(self):
-    mapping = led_mapping.make_snake(self.width, self.height, self.flip_x,
-                                     self.flip_y)
-    return super()._get_device(mapping=mapping)
-
-
-class ImageDisplayWS2812Boards(ImageDisplayLumaBase):
-
-  LUMA_CLASS = ws2812
-  BOARD_WIDTH = 32
-  BOARD_HEIGHT = 8
-  BOARD_LED_COUNT = BOARD_WIDTH * BOARD_HEIGHT
-
-  def _get_device(self):
-    if self.flip_x or self.flip_y:
-      raise Exception('TODO: Implement flip with WS2812 boards!')
-    if self.width % self.BOARD_WIDTH != 0:
-      raise Exception(f'Width ({self.width}) must be a multiple of board width'
-                      f' ({self.BOARD_WIDTH})!')
-    if self.height % self.BOARD_HEIGHT != 0:
-      raise Exception(
-          f'Height ({self.height}) must be a multiple of board height'
-          f' ({self.BOARD_HEIGHT})!')
-
-    boards_wide = int(self.width / self.BOARD_WIDTH)
-    boards_high = int(self.height / self.BOARD_HEIGHT)
-
-    mapping = self._make_mapping(boards_wide, boards_high)
-    return super()._get_device(mapping=mapping)
-
-  def _make_mapping(self, boards_wide: int, boards_high: int) -> List[int]:
-    mapping = []
-
-    for board_row in range(0, boards_high):
-      for row in range(0, self.BOARD_HEIGHT):
-        for board_col in range(0, boards_wide):
-          board_number = (board_row * boards_wide) + board_col
-          board_offset = board_number * self.BOARD_LED_COUNT
-          for col in range(0, self.BOARD_WIDTH):
-            if col % 2 == 0:  # Even
-              offset = (self.BOARD_HEIGHT * col) + row
-            else:  # Odd
-              offset = (self.BOARD_HEIGHT * (col + 1)) - (1 + row)
-
-            mapping.append(board_offset + offset)
-
-    return mapping
-
-
-class ImageDisplayNone(ImageDisplayBase):
-
-  def _get_device(self):
-    return None

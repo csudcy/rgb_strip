@@ -4,9 +4,13 @@ import time
 
 import flask
 
+import devices
+import rgb_image_display
+
 LOGGER = logging.getLogger(__name__)
 
 DISPLAY_THREAD = None
+DEVICE = None
 
 app = flask.Flask(__name__)
 
@@ -14,10 +18,10 @@ app = flask.Flask(__name__)
 @app.route('/')
 def main():
   context = {
-      'width': DISPLAY_THREAD.width,
-      'height': DISPLAY_THREAD.height,
-      'rotate': DISPLAY_THREAD.rotate,
-      'alpha': DISPLAY_THREAD.alpha,
+      'width': DEVICE.width,
+      'height': DEVICE.height,
+      'rotate': DEVICE.rotate,
+      'alpha': DEVICE.alpha,
       'delay_seconds': DISPLAY_THREAD.delay_seconds,
       'image_groups': DISPLAY_THREAD.image_groups,
   }
@@ -77,7 +81,8 @@ def display_thread_iterator():
       yield output
 
 
-def run(display_thread):
-  global DISPLAY_THREAD
+def run(device: devices.ImageDevice, display_thread: rgb_image_display.ImageDisplay):
+  global DEVICE, DISPLAY_THREAD
+  DEVICE = device
   DISPLAY_THREAD = display_thread
   app.run(host='0.0.0.0')

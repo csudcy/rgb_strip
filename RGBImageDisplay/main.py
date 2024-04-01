@@ -5,14 +5,15 @@ import pathlib
 import traceback
 
 import click
+import devices
 import rgb_image_display
 import server
 
-DISPLAYS = {
-    'none': rgb_image_display.ImageDisplayNone,
-    'terminal': rgb_image_display.ImageDisplayTerminal,
-    'ws2812': rgb_image_display.ImageDisplayWS2812,
-    'ws2812_boards': rgb_image_display.ImageDisplayWS2812Boards,
+DEVICES = {
+    'none': devices.ImageDevice,
+    'terminal': devices.ImageDeviceTerminal,
+    'ws2812': devices.ImageDeviceWS2812,
+    'ws2812_boards': devices.ImageDeviceWS2812Boards,
 }
 
 ROTATE_MAP = {
@@ -54,9 +55,9 @@ def main() -> None:
               help='How many ms to delay between frames',
               type=int,
               default=0)
-@click.option('--display',
-              help='The display to use for output',
-              type=click.Choice(DISPLAYS.keys()),
+@click.option('--device',
+              help='The device to use for output',
+              type=click.Choice(DEVICES.keys()),
               default='terminal')
 @click.option('--debug',
               help='Enable debug output',
@@ -72,7 +73,7 @@ def run(
     flip_y: bool,
     alpha: int,
     delay: int,
-    display: str,
+    device: str,
     debug: bool,
 ):
   if debug:
@@ -80,14 +81,18 @@ def run(
   else:
     logging.basicConfig(level=logging.INFO)
 
-  ImageDisplayClass = DISPLAYS[display]
-  display_thread = ImageDisplayClass(
+  DeviceClass = DEVICES[device]
+  device = DeviceClass(
       width=width,
       height=height,
+      alpha=alpha,
       rotate=ROTATE_MAP[rotate],
       flip_x=flip_x,
       flip_y=flip_y,
-      alpha=alpha,
+  )
+
+  display_thread = rgb_image_display.ImageDisplay(
+      device=device,
       delay=delay,
       directory=directory.resolve(),
   )
@@ -95,7 +100,7 @@ def run(
   display_thread.start()
 
   # Block on the server
-  server.run(display_thread)
+  server.run(device, display_thread)
 
 
 if __name__ == "__main__":
