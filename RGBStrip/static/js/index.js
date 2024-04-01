@@ -45,6 +45,12 @@ function config_has_changed(old_config, new_config) {
             ||
             old_config.levels.toString() !== new_config.levels.toString()
         );
+    } else if (old_config.type == 'boards') {
+        return (
+            old_config.boards_wide !== new_config.boards_wide
+            ||
+            old_config.boards_high !== new_config.boards_high
+        );
     } else {
         throw new Error(`Unknown controller type: ${old_config.type}`);
     }
@@ -60,6 +66,14 @@ function apply_config(new_config) {
         layout = _get_leds_rectangle(LED_CONFIG);
     } else if (LED_CONFIG.type == 'cone') {
         layout = _get_leds_cone(LED_CONFIG);
+    } else if (LED_CONFIG.type == 'boards') {
+        const RECT_CONFIG = {
+            height: LED_CONFIG.boards_high * 8,
+            width: LED_CONFIG.boards_wide * 32,
+            reverse_x: false,
+            reverse_y: false,
+        }
+        layout = _get_leds_rectangle(RECT_CONFIG);
     } else {
         throw new Error(`Unknown controller type: ${LED_CONFIG.type}`);
     }

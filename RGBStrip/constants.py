@@ -1,3 +1,4 @@
+from RGBStrip.controllers.boards import BoardsController
 from RGBStrip.controllers.cone import ConeController
 from RGBStrip.controllers.rectangular import RectangularController
 from RGBStrip.displays.rpi_spi import RPiSPIDisplay
@@ -34,6 +35,7 @@ COLOURS = {
 }
 
 CONTROLLERS = {
+    'boards': BoardsController,
     'cone': ConeController,
     'rectangular': RectangularController,
 }
