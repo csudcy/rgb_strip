@@ -55,7 +55,7 @@ class ImageDisplayBase(Thread):
   alpha: int
   delay_seconds: float
   device: Any
-  image_groups: List[ImageGroup]
+  image_groups: Dict[str, ImageGroup]
   image_bytes: bytes
   frame_info: Dict[str, Union[int, str]]
   move_next: bool = False
@@ -93,6 +93,7 @@ class ImageDisplayBase(Thread):
     for group_directory in directory.iterdir():
       if not group_directory.is_dir():
         LOGGER.info(f'  Skipping non-directory {group_directory}')
+        continue
 
       image_groups[group_directory.name] = ImageGroup(
           group_directory.name, self._get_image_infos(group_directory))
@@ -139,7 +140,7 @@ class ImageDisplayBase(Thread):
         image_info = image_group.images[self.play_next[1]]
         self.play_next = None
       else:
-        image_group = random.choice(self.image_groups)
+        image_group = random_dict_choice(self.image_groups)
         image_info = random_dict_choice(image_group.images)
 
       LOGGER.info(f'{image_info.name} ({image_info.n_frames} frames)')
@@ -215,6 +216,48 @@ class ImageDisplayWS2812(ImageDisplayLumaBase):
     mapping = led_mapping.make_snake(self.width, self.height, self.flip_x,
                                      self.flip_y)
     return super()._get_device(mapping=mapping)
+
+
+class ImageDisplayWS2812Boards(ImageDisplayLumaBase):
+
+  LUMA_CLASS = ws2812
+  BOARD_WIDTH = 32
+  BOARD_HEIGHT = 8
+  BOARD_LED_COUNT = BOARD_WIDTH * BOARD_HEIGHT
+
+  def _get_device(self):
+    if self.flip_x or self.flip_y:
+      raise Exception('TODO: Implement flip with WS2812 boards!')
+    if self.width % self.BOARD_WIDTH != 0:
+      raise Exception(f'Width ({self.width}) must be a multiple of board width'
+                      f' ({self.BOARD_WIDTH})!')
+    if self.height % self.BOARD_HEIGHT != 0:
+      raise Exception(f'Height ({self.height}) must be a multiple of board height'
+                      f' ({self.BOARD_HEIGHT})!')
+
+    boards_wide = self.width / self.BOARD_WIDTH
+    boards_high = self.height / self.BOARD_HEIGHT
+
+    mapping = self._make_mapping(boards_wide, boards_high)
+    return super()._get_device(mapping=mapping)
+
+  def _make_mapping(self, boards_wide: int, boards_high: int) -> List[int]:
+    mapping = []
+
+    for board_row in range(0, boards_high):
+      for row in range(0, self.BOARD_HEIGHT):
+        for board_col in range(0, boards_wide):
+          board_number = (board_row * boards_wide) + board_col
+          board_offset = board_number * self.BOARD_LED_COUNT
+          for col in range(0, self.BOARD_WIDTH):
+            if col % 2 == 0: # Even
+              offset = (self.BOARD_HEIGHT * col) + row
+            else: # Odd
+              offset = (self.BOARD_HEIGHT * (col + 1)) - (1 + row)
+
+            mapping.append(board_offset + offset)
+
+    return mapping
 
 
 class ImageDisplayNone(ImageDisplayBase):

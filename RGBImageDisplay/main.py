@@ -12,6 +12,7 @@ DISPLAYS = {
     'none': rgb_image_display.ImageDisplayNone,
     'terminal': rgb_image_display.ImageDisplayTerminal,
     'ws2812': rgb_image_display.ImageDisplayWS2812,
+    'ws2812_boards': rgb_image_display.ImageDisplayWS2812Boards,
 }
 
 ROTATE_MAP = {
