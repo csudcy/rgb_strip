@@ -10,6 +10,7 @@ function get_frame_info() {
   fetch('/frame_info')
     .then((response) => {
       response.json().then((data) => {
+        document.querySelector("#frame_parent").textContent = data.parent;
         document.querySelector("#frame_name").textContent = data.name;
         document.querySelector("#frame_index").textContent = data.frame_index;
         document.querySelector("#frame_count").textContent = data.frames;

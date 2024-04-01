@@ -27,8 +27,9 @@ def main():
 @app.route('/frame_info')
 def frame_info():
   frame_info_dict = {
-      'name': DISPLAY_THREAD.frame_info.name,
-      'frames': DISPLAY_THREAD.frame_info.frames,
+      'parent': DISPLAY_THREAD.frame_info.image_info.parent,
+      'name': DISPLAY_THREAD.frame_info.image_info.name,
+      'frames': DISPLAY_THREAD.frame_info.image_info.n_frames,
       'frame_index': DISPLAY_THREAD.frame_info.frame_index,
   }
   return flask.jsonify(frame_info_dict)

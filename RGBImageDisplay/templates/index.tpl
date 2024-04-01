@@ -37,7 +37,7 @@
     {{ (alpha / 2.55) | int }}%,
     {{ (delay_seconds * 1000) | int }}ms
     <button id="move_next">Next</button>
-    <span id="frame_name">?</span>,
+    <span id="frame_parent">?</span>:<span id="frame_name">?</span>,
     <span id="frame_index">?</span>/<span id="frame_count">?</span>
   </span>
 

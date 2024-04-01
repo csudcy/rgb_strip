@@ -24,6 +24,7 @@ NamedImageType = Tuple[str, Image.Image]
 
 @dataclass
 class ImageInfo:
+  parent: str
   name: str
   image: Image.Image
   n_frames: int
@@ -37,10 +38,9 @@ class ImageGroup:
 
 @dataclass
 class FrameInfo:
-  image: Image.Image
-  name: str
-  frames: int
+  image_info: ImageInfo
   frame_index: int
+  image: Image.Image
 
 
 T = TypeVar('T')
@@ -128,6 +128,7 @@ class ImageDisplayBase(Thread):
 
       LOGGER.info('  Good!')
       image_infos[filename.stem] = ImageInfo(
+          parent=directory.name,
           name=filename.stem,
           image=image,
           n_frames=getattr(image, 'n_frames'),
@@ -175,10 +176,9 @@ class ImageDisplayBase(Thread):
       # Dump a PNG of the image & current frame info
       LOGGER.debug('Dumping...')
       self.frame_info = FrameInfo(
-          image=current_image,
-          name=image_info.name,
-          frames=image_info.n_frames,
+          image_info=image_info,
           frame_index=frame_index,
+          image=current_image,
       )
 
       if self.device:
