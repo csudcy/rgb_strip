@@ -4,7 +4,7 @@ Description=RGBImageDisplay Clock Service
 [Service]
 WorkingDirectory=/home/pi/rgb_strip/RGBImageDisplay/
 User=root
-ExecStart=/usr/bin/python3 main.py clock 64 8 --alpha=100 --display=ws2812_boards
+ExecStart=/usr/bin/python3 main.py clock 64 8 --alpha=40 --display=ws2812_boards  --font=PixelOperatorMono8.ttf --format=%%H:%%M
 
 [Install]
 WantedBy=multi-user.target

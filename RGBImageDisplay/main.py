@@ -27,9 +27,6 @@ ROTATE_MAP = {
     '270': 3,
 }
 
-CURRENT_DIR = pathlib.Path(__file__).parent
-FONT_FILE = CURRENT_DIR / 'pixelmix.ttf'
-
 HSL_FORMAT = 'hsl({hue}, 100%, 50%)'
 
 
@@ -127,6 +124,14 @@ def run(
               help='The device to use for output',
               type=click.Choice(DEVICES.keys()),
               default='terminal')
+@click.option('--font',
+              help='The font file to use',
+              type=str,
+              default='pixelmix.ttf')
+@click.option('--format',
+              help='The strftime format to use',
+              type=str,
+              default='%H : %M')
 @click.option('--debug',
               help='Enable debug output',
               type=bool,
@@ -138,6 +143,8 @@ def clock(
     alpha: int,
     rainbow_seconds: int,
     display: str,
+    font: str,
+    format: str,
     debug: bool,
 ):
   if debug:
@@ -154,11 +161,12 @@ def clock(
       alpha=alpha,
   )
 
-  font = ImageFont.truetype(FONT_FILE.as_posix(), 8)
+  font_object = ImageFont.truetype(font, 8)
+
   seconds_multiplier = 360 / rainbow_seconds
   while True:
     now = datetime.now()
-    text = now.strftime('%H : %M')
+    text = now.strftime(format)
     seconds = now.timestamp() % rainbow_seconds
     hue = int(seconds * seconds_multiplier)
 
@@ -168,11 +176,11 @@ def clock(
                      fill='black')
 
       # Work out where to draw the text
-      text_width = draw.textlength(text, font=font)
+      text_width = draw.textlength(text, font=font_object)
       offset = int(float(device.device.width - text_width) / 2.0)
 
       # Draw the text
-      draw.text((offset, 0), text, font=font, fill=HSL_FORMAT.format(hue=hue))
+      draw.text((offset, 0), text, font=font_object, fill=HSL_FORMAT.format(hue=hue))
 
     time.sleep(0.01)
 
