@@ -1,3 +1,4 @@
+import io
 import logging
 import time
 
@@ -25,7 +26,12 @@ def main():
 
 @app.route('/frame_info')
 def frame_info():
-  return flask.jsonify(DISPLAY_THREAD.frame_info)
+  frame_info_dict = {
+      'name': DISPLAY_THREAD.frame_info.name,
+      'frames': DISPLAY_THREAD.frame_info.frames,
+      'frame_index': DISPLAY_THREAD.frame_info.frame_index,
+  }
+  return flask.jsonify(frame_info_dict)
 
 
 @app.route('/stream')
@@ -50,20 +56,22 @@ def api_play():
 
 def display_thread_iterator():
   LOGGER.info('Serving new image iterator...')
-  current_image_bytes = None
+  current_frame_info = None
   while True:
-    if current_image_bytes == DISPLAY_THREAD.image_bytes:
+    if current_frame_info == DISPLAY_THREAD.frame_info:
       # Wait for a bit
       time.sleep(0.001)
     else:
       # Show a new image
       LOGGER.debug('Showing new image...')
-      current_image_bytes = DISPLAY_THREAD.image_bytes
+      current_frame_info = DISPLAY_THREAD.frame_info
+      buffer = io.BytesIO()
+      current_frame_info.image.save(buffer, format='png')
       output = b'\r\n'.join((
           b'--frame',
           b'Content-Type: image/png',
           b'',
-          current_image_bytes,
+          buffer.getvalue(),
           b'',
       ))
       LOGGER.debug('Sending bytes...')

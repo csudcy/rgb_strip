@@ -1,10 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 from dataclasses import dataclass
-import io
-import itertools
 import logging
-import os
 import pathlib
 import random
 from threading import Thread
@@ -36,6 +33,14 @@ class ImageInfo:
 class ImageGroup:
   name: str
   images: Dict[str, ImageInfo]
+
+
+@dataclass
+class FrameInfo:
+  image: Image.Image
+  name: str
+  frames: int
+  frame_index: int
 
 
 T = TypeVar('T')
@@ -169,14 +174,12 @@ class ImageDisplayBase(Thread):
 
       # Dump a PNG of the image & current frame info
       LOGGER.debug('Dumping...')
-      buffer = io.BytesIO()
-      current_image.save(buffer, format='png')
-      self.image_bytes = buffer.getvalue()
-      self.frame_info = {
-          'name': image_info.name,
-          'frames': image_info.n_frames,
-          'frame_index': frame_index,
-      }
+      self.frame_info = FrameInfo(
+          image=current_image,
+          name=image_info.name,
+          frames=image_info.n_frames,
+          frame_index=frame_index,
+      )
 
       if self.device:
         LOGGER.debug('Displaying...')
