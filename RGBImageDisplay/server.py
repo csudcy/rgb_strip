@@ -43,31 +43,29 @@ def stream():
 
 @app.route('/api/move_next')
 def api_move_next():
-  DISPLAY_THREAD.move_next = True
+  DISPLAY_THREAD.next()
   return flask.jsonify({})
 
 
 @app.route('/api/play')
 def api_play():
-  DISPLAY_THREAD.play_next = (flask.request.args['group'],
-                              flask.request.args['image'])
-  DISPLAY_THREAD.move_next = True
+  DISPLAY_THREAD.play(flask.request.args['group'], flask.request.args['image'])
   return flask.jsonify({})
 
 
 def display_thread_iterator():
   LOGGER.info('Serving new image iterator...')
-  current_frame_info = None
+  current_image = None
   while True:
-    if current_frame_info == DISPLAY_THREAD.frame_info:
+    if current_image == DISPLAY_THREAD.frame_info.image:
       # Wait for a bit
       time.sleep(0.001)
     else:
       # Show a new image
       LOGGER.debug('Showing new image...')
-      current_frame_info = DISPLAY_THREAD.frame_info
+      current_image = DISPLAY_THREAD.frame_info.image
       buffer = io.BytesIO()
-      current_frame_info.image.save(buffer, format='png')
+      current_image.save(buffer, format='png')
       output = b'\r\n'.join((
           b'--frame',
           b'Content-Type: image/png',

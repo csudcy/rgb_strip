@@ -63,8 +63,8 @@ class ImageDisplayBase(Thread):
   image_groups: Dict[str, ImageGroup]
   image_bytes: bytes
   frame_info: Dict[str, Union[int, str]]
-  move_next: bool = False
-  play_next: Optional[Tuple[str, str]] = None
+  _move_next: bool = False
+  _next_image_info: Optional[ImageInfo] = None
 
   def __init__(
       self,
@@ -141,10 +141,9 @@ class ImageDisplayBase(Thread):
 
   def run(self):
     while True:
-      if self.play_next:
-        image_group = self.image_groups[self.play_next[0]]
-        image_info = image_group.images[self.play_next[1]]
-        self.play_next = None
+      if self._next_image_info:
+        image_info = self._next_image_info
+        self._next_image_info = None
       else:
         image_group = random_dict_choice(self.image_groups)
         image_info = random_dict_choice(image_group.images)
@@ -157,9 +156,9 @@ class ImageDisplayBase(Thread):
         LOGGER.exception('Error while showing image! Continuing...')
 
   def show_image(self, image_info: ImageInfo):
-    self.move_next = False
+    self._move_next = False
     for frame_index in range(image_info.n_frames):
-      if self.move_next:
+      if self._move_next:
         LOGGER.debug(f'Moving to next image...')
         break
       LOGGER.debug(f'Seeking frame {frame_index}...')
@@ -186,6 +185,15 @@ class ImageDisplayBase(Thread):
         self.device.display(current_image)
       LOGGER.debug('Waiting...')
       time.sleep(self.delay_seconds)
+
+  def next(self) -> None:
+    self._move_next = True
+
+  def play(self, group_name: str, image_name: str) -> None:
+    image_group = self.image_groups[group_name]
+    image_info = image_group.images[image_name]
+    self._next_image_info = image_info
+    self._move_next = True
 
 
 class ImageDisplayLumaBase(ImageDisplayBase):

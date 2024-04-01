@@ -8,6 +8,12 @@
 {% endblock %}
 
 {% block content %}
+  <span class="border">
+    <img src="/stream" style="width: {{ width * 7 }}px; height: {{ height * 7 }}px;" />
+  </span>
+
+  <br/>
+
   <span class="left_panel border">
     Image Groups:
     <ul>
@@ -39,11 +45,5 @@
     <button id="move_next">Next</button>
     <span id="frame_parent">?</span>:<span id="frame_name">?</span>,
     <span id="frame_index">?</span>/<span id="frame_count">?</span>
-  </span>
-
-  <br/>
-
-  <span class="right_panel border">
-    <img src="/stream" style="width: {{ width * 7 }}px; height: {{ height * 7 }}px;" />
   </span>
 {% endblock %}
