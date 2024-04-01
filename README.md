@@ -42,33 +42,27 @@ Some common notes:
 
 ### 1a. Raspberry Pi OS
 
-* Download [Raspberry Pi OS](https://www.raspberrypi.org/software/operating-systems/) (recommend the "Lite" version) & flash it
-* Setup [headless wifi](https://www.raspberrypi.org/documentation/configuration/wireless/headless.md) & [headless ssh](https://www.raspberrypi.org/documentation/remote-access/ssh/):
-  * Create a file called `wpa_supplicant.conf` on the boot partition and put this in it:
-```
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-update_config=1
-country=<Insert 2 letter ISO 3166-1 country code here>
-
-network={
-  ssid="<Name of your wireless LAN>"
-  psk="<Password for your wireless LAN>"
-}
-```
-  * Create a file called `ssh` on the boot partition.
+* Download [Raspberry Pi Image](https://www.raspberrypi.com/software/)
+* Go through the imaging process
+  * You can use the "Lite" version cause we don't need a desktop environment running
+  * Set a host name e.g. `rpi-display`
+  * Setup a user e.g. `pi`
+  * Setup WiFi
+  * Enable SSH
+  * Flash it
 * Boot the Pi
   * On first boot, the partition will be resized
-* `ssh pi@<IP>`, password `raspberry`
+* `ssh pi@rpi-display.local`, password is what you entered in the Imager
 * To enable the SPI interface:
   * `sudo raspi-config`
-    * `Interfacing Options`
+    * `Interface Options`
     * `SPI`
     * `Enable`
 * Update everything & install requirements:
 ```
 # Update everything
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get full-upgrade
 
 # Install things which don't come with defaut Raspberry Pi OS (lite at least)
 sudo apt-get install --upgrade git cmake python3-pip
@@ -172,19 +166,26 @@ cd rgb_strip
 
 # TODO: Test the new-style pre-rendered images
 
-# Test clock
+# [Optional] Test clock using terminal emulator
+# Note: Terminal didn't seem to work well over SSH
+cd RGBImageDisplay
+sudo apt-get install python3-sdl2
+sudo python3 -m pip install -r requirements.txt
+sudo python3 -m pip install pygame
+sudo python3 main.py clock 64 8 --alpha=10
+
+# [Optional] Test clock using ws2182 boards over SPI
 cd RGBImageDisplay
 sudo python3 -m pip install -r requirements.txt
-sudo python3 -m pip install rpi-ws281x ws2812
-sudo python3 main.py clock 64 8 --alpha=255
-
+sudo python3 -m pip install rpi-ws281x
+sudo python3 main.py clock 64 8 --alpha=10 --device=ws2812_boards
 
 # Test the old-style server
 python3 -m pip install -r requirements.txt
 python3 -m RGBStrip server ./configs/test.yaml
 
 # Copy pre-renders to the pi
-scp -r ./tree/renders/ pi@<IP>:/home/pi/rgb_strip/tree/renders
+scp -r ./tree/renders/ pi@rpi-display.local:/home/pi/rgb_strip/tree/renders
 ```
 
 ### Running
@@ -257,7 +258,7 @@ My DotStar (specifically, `APA102`) has these 4 connections:
 
 rm -rf tree/image_renders && npm run image-renderer -- render ../tree/render_new.yaml ../tree/image_renders/ --filter scroll
 
-npm run image-display -- run 12 120 ../tree/image_renders/ --delay=75 --alpha=255 --display=none
+npm run image-display -- run 12 120 ../tree/image_renders/ --delay=75 --alpha=255 --device=none
 
 git commit --amend --no-edit --author="csudcy <csudcy@gmail.com>" && git rebase --continue
 
@@ -276,7 +277,7 @@ scp ./init.d/* pi@192.168.0.67:/home/pi/rgb_strip/init.d/
 cd RGBImageDisplay
 sudo python3 -m pip install -r requirements.txt
 sudo python3 -m pip install rpi-ws281x ws2812
-sudo python3 main.py run 120 12 /home/pi/rgb_strip/tree/image_renders/ --delay=5 --alpha=40 --display=ws2812
+sudo python3 main.py run 120 12 /home/pi/rgb_strip/tree/image_renders/ --delay=5 --alpha=40 --device=ws2812
 ```
 Renderer
   Add rain effect

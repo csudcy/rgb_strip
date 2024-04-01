@@ -119,6 +119,10 @@ def run(
               help='How bright to show the pixels (0-255)',
               type=int,
               default=40)
+@click.option('--rainbow-seconds',
+              help='How many seconds to cycle through the rainbow over',
+              type=int,
+              default=60)
 @click.option('--device',
               help='The device to use for output',
               type=click.Choice(DEVICES.keys()),
@@ -132,6 +136,7 @@ def clock(
     width: int,
     height: int,
     alpha: int,
+    rainbow_seconds: int,
     device: str,
     debug: bool,
 ):
@@ -139,6 +144,8 @@ def clock(
     logging.basicConfig(level=logging.DEBUG)
   else:
     logging.basicConfig(level=logging.INFO)
+
+  logging.info('Running clock...')
 
   DeviceClass = DEVICES[device]
   device = DeviceClass(
@@ -148,12 +155,12 @@ def clock(
   )
 
   font = ImageFont.truetype(FONT_FILE.as_posix(), 8)
-
+  seconds_multiplier = 360 / rainbow_seconds
   while True:
     now = datetime.now()
     text = now.strftime('%H : %M')
-    rainbow_fraction = now.second / 60
-    hue = int(rainbow_fraction * 360.0)
+    seconds = now.timestamp() % rainbow_seconds
+    hue = int(seconds * seconds_multiplier)
 
     with canvas(device.device) as draw:
       # Clear the canvas
