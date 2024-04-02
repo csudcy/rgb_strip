@@ -180,9 +180,71 @@ def clock(
       offset = int(float(device.device.width - text_width) / 2.0)
 
       # Draw the text
-      draw.text((offset, 0), text, font=font_object, fill=HSL_FORMAT.format(hue=hue))
+      draw.text((offset, 0),
+                text,
+                font=font_object,
+                fill=HSL_FORMAT.format(hue=hue))
 
     time.sleep(0.01)
+
+
+@main.command()
+@click.argument('width', type=int)
+@click.argument('height', type=int)
+@click.option('--display',
+              help='The device to use for output',
+              type=click.Choice(DEVICES.keys()),
+              default='terminal')
+@click.option('--font',
+              help='The font file to use',
+              type=str,
+              default='pixelmix.ttf')
+@click.option('--debug',
+              help='Enable debug output',
+              type=bool,
+              default=False,
+              is_flag=True)
+def test_alpha(
+    width: int,
+    height: int,
+    display: str,
+    font: str,
+    debug: bool,
+):
+  if debug:
+    logging.basicConfig(level=logging.DEBUG)
+  else:
+    logging.basicConfig(level=logging.INFO)
+
+  logging.info('Running alpha test...')
+
+  DeviceClass = DEVICES[display]
+  device = DeviceClass(
+      width=width,
+      height=height,
+      alpha=10,
+  )
+
+  font_object = ImageFont.truetype(font, 8)
+
+  while True:
+    for alpha in (1, 10, 20, 30, 40, 50, 100, 150, 200, 250):
+      for hue in range(0, 360, 5):
+        device.set_alpha(alpha)
+        text = f'{alpha:3} {hue:3}°'
+
+        with canvas(device.device) as draw:
+          # Clear the canvas
+          draw.rectangle(((0, 0), (device.device.width, device.device.height)),
+                         fill='black')
+
+          # Draw the text
+          draw.text((0, 0),
+                    text,
+                    font=font_object,
+                    fill=HSL_FORMAT.format(hue=hue))
+
+        time.sleep(0.02)
 
 
 if __name__ == "__main__":

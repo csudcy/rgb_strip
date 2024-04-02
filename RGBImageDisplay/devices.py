@@ -36,6 +36,9 @@ class ImageDevice:
     if self.device:
       self.device.display(image)
 
+  def set_alpha(self, alpha: int) -> None:
+    self.alpha = alpha
+
 
 class ImageDeviceLumaBase(ImageDevice):
 
@@ -53,6 +56,10 @@ class ImageDeviceLumaBase(ImageDevice):
                              **kwargs)
     device.contrast(self.alpha)
     return device
+
+  def set_alpha(self, alpha: int) -> None:
+    super().set_alpha(alpha)
+    self.device.contrast(self.alpha)
 
 
 class ImageDeviceTerminal(ImageDeviceLumaBase):
