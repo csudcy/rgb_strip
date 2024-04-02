@@ -112,10 +112,14 @@ def run(
 @main.command()
 @click.argument('width', type=int)
 @click.argument('height', type=int)
-@click.option('--alpha',
-              help='How bright to show the pixels (0-255)',
+@click.option('--alpha-min',
+              help='Minimum brightness for pixels (0-255)',
               type=int,
-              default=40)
+              default=10)
+@click.option('--alpha-max',
+              help='Maximum brightness for pixels (0-255)',
+              type=int,
+              default=100)
 @click.option('--rainbow-seconds',
               help='How many seconds to cycle through the rainbow over',
               type=int,
@@ -140,7 +144,8 @@ def run(
 def clock(
     width: int,
     height: int,
-    alpha: int,
+    alpha_min: int,
+    alpha_max: int,
     rainbow_seconds: int,
     display: str,
     font: str,
@@ -158,10 +163,28 @@ def clock(
   device = DeviceClass(
       width=width,
       height=height,
-      alpha=alpha,
+      alpha=alpha_min,
   )
 
   font_object = ImageFont.truetype(font, 8)
+
+  # Work out alpha values to use per-minute
+  alpha_ranges = (
+      # (hour from, hour to, alpha from, alpha to)
+      (0, 6, alpha_min, alpha_min),
+      (6, 8, alpha_min, alpha_max),
+      (8, 20, alpha_max, alpha_max),
+      (20, 22, alpha_max, alpha_min),
+      (22, 24, alpha_min, alpha_min),
+  )
+  alpha_lookup = []
+  for hour_from, hour_to, alpha_from, alpha_to in alpha_ranges:
+    length_minutes = (hour_to - hour_from) * 60
+    alpha_diff = (alpha_to - alpha_from)
+    for minute in range(length_minutes):
+      alpha_lookup.append(alpha_from +
+                          int(alpha_diff * minute / length_minutes))
+  assert len(alpha_lookup) == 24 * 60, 'Alpha lookup length incorrect!'
 
   seconds_multiplier = 360 / rainbow_seconds
   while True:
@@ -169,6 +192,9 @@ def clock(
     text = now.strftime(format)
     seconds = now.timestamp() % rainbow_seconds
     hue = int(seconds * seconds_multiplier)
+
+    alpha = alpha_lookup[now.hour * 60 + now.minute]
+    device.set_alpha(alpha)
 
     with canvas(device.device) as draw:
       # Clear the canvas
