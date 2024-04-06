@@ -9,6 +9,7 @@ import traceback
 import click
 import devices
 from luma.core.render import canvas
+from PIL import Image
 from PIL import ImageFont
 import rgb_image_display
 import server
@@ -28,6 +29,10 @@ ROTATE_MAP = {
 }
 
 HSL_FORMAT = 'hsl({hue}, 100%, 50%)'
+
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent
+WEATHER_DIRECTORY = CURRENT_DIRECTORY / 'weather'
+WEATHER_IMAGES = WEATHER_DIRECTORY.glob('*.png')
 
 
 @click.group()
@@ -271,6 +276,52 @@ def test_alpha(
                     fill=HSL_FORMAT.format(hue=hue))
 
         time.sleep(0.02)
+
+
+@main.command()
+@click.argument('width', type=int)
+@click.argument('height', type=int)
+@click.option('--display',
+              help='The device to use for output',
+              type=click.Choice(DEVICES.keys()),
+              default='terminal')
+@click.option('--alpha',
+              help='How bright to show the pixels (0-255)',
+              type=int,
+              default=40)
+@click.option('--debug',
+              help='Enable debug output',
+              type=bool,
+              default=False,
+              is_flag=True)
+def test_weather(
+    width: int,
+    height: int,
+    display: str,
+    alpha: int,
+    debug: bool,
+):
+  if debug:
+    logging.basicConfig(level=logging.DEBUG)
+  else:
+    logging.basicConfig(level=logging.INFO)
+
+  logging.info('Running weather test...')
+
+  DeviceClass = DEVICES[display]
+  device = DeviceClass(
+      width=width,
+      height=height,
+      alpha=alpha,
+  )
+
+  while True:
+    for weather_filepath in WEATHER_IMAGES:
+      image = Image.open(weather_filepath)
+      device_image = Image.new('RGB', (width, height))
+      device_image.paste(image)
+      device.device.display(device_image)
+      time.sleep(2)
 
 
 if __name__ == "__main__":
