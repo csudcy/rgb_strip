@@ -5,3 +5,6 @@ pip-log.txt
 *.yaml
 .pytype
 rgbstrip.egg-info
+
+scripts/weather/**/*.png
+scripts/weather/**/*.xbm
