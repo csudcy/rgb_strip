@@ -32,7 +32,6 @@ HSL_FORMAT = 'hsl({hue}, 100%, 50%)'
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent
 WEATHER_DIRECTORY = CURRENT_DIRECTORY / 'weather'
-WEATHER_IMAGES = WEATHER_DIRECTORY.glob('*.png')
 
 
 @click.group()
@@ -316,7 +315,7 @@ def test_weather(
   )
 
   while True:
-    for weather_filepath in WEATHER_IMAGES:
+    for weather_filepath in WEATHER_DIRECTORY.glob('*.png'):
       image = Image.open(weather_filepath)
       device_image = Image.new('RGB', (width, height))
       device_image.paste(image)
