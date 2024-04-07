@@ -8,9 +8,10 @@ from threading import Thread
 import time
 from typing import Any, Dict, Optional, TypeVar
 
-import devices
 import PIL
 from PIL import Image
+
+import devices
 
 LOGGER = logging.getLogger(__name__)
 

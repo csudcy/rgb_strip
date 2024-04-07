@@ -28,6 +28,11 @@ profile = "google"
 
 known_first_party = [
     "colours",
+    "constants",
+    "devices",
     "effects",
     "led_mapping",
+    "rgb_clock",
+    "rgb_image_display",
+    "server",
 ]

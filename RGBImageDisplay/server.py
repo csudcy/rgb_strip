@@ -2,8 +2,9 @@ import io
 import logging
 import time
 
-import devices
 import flask
+
+import devices
 import rgb_image_display
 
 LOGGER = logging.getLogger(__name__)

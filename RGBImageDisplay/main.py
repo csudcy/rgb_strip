@@ -6,10 +6,11 @@ import time
 import traceback
 
 import click
-import devices
 from luma.core.render import canvas
 from PIL import Image
 from PIL import ImageFont
+
+import devices
 import rgb_clock
 import rgb_image_display
 import server

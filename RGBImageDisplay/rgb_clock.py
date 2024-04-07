@@ -3,9 +3,10 @@
 from datetime import datetime
 import time
 
-import devices
 from luma.core.render import canvas
 from PIL import ImageFont
+
+import devices
 
 
 class Clock:
