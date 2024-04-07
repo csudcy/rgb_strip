@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-from datetime import datetime
 import logging
 import pathlib
 import time
@@ -11,6 +10,7 @@ import devices
 from luma.core.render import canvas
 from PIL import Image
 from PIL import ImageFont
+import rgb_clock
 import rgb_image_display
 import server
 
@@ -27,8 +27,6 @@ ROTATE_MAP = {
     '180': 2,
     '270': 3,
 }
-
-HSL_FORMAT = 'hsl({hue}, 100%, 50%)'
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent
 WEATHER_DIRECTORY = CURRENT_DIRECTORY / 'weather'
@@ -170,52 +168,15 @@ def clock(
       alpha=alpha_min,
   )
 
-  font_object = ImageFont.truetype(font, 8)
-
-  # Work out alpha values to use per-minute
-  alpha_ranges = (
-      # (hour from, hour to, alpha from, alpha to)
-      (0, 6, alpha_min, alpha_min),
-      (6, 8, alpha_min, alpha_max),
-      (8, 20, alpha_max, alpha_max),
-      (20, 22, alpha_max, alpha_min),
-      (22, 24, alpha_min, alpha_min),
+  clock = rgb_clock.Clock(
+      device=device,
+      alpha_min=alpha_min,
+      alpha_max=alpha_max,
+      rainbow_seconds=rainbow_seconds,
+      font=font,
+      format=format,
   )
-  alpha_lookup = []
-  for hour_from, hour_to, alpha_from, alpha_to in alpha_ranges:
-    length_minutes = (hour_to - hour_from) * 60
-    alpha_diff = (alpha_to - alpha_from)
-    for minute in range(length_minutes):
-      alpha_lookup.append(alpha_from +
-                          int(alpha_diff * minute / length_minutes))
-  assert len(alpha_lookup) == 24 * 60, 'Alpha lookup length incorrect!'
-
-  seconds_multiplier = 360 / rainbow_seconds
-  while True:
-    now = datetime.now()
-    text = now.strftime(format)
-    seconds = now.timestamp() % rainbow_seconds
-    hue = int(seconds * seconds_multiplier)
-
-    alpha = alpha_lookup[now.hour * 60 + now.minute]
-    device.set_alpha(alpha)
-
-    with canvas(device.device) as draw:
-      # Clear the canvas
-      draw.rectangle(((0, 0), (device.device.width, device.device.height)),
-                     fill='black')
-
-      # Work out where to draw the text
-      text_width = draw.textlength(text, font=font_object)
-      offset = int(float(device.device.width - text_width) / 2.0)
-
-      # Draw the text
-      draw.text((offset, 0),
-                text,
-                font=font_object,
-                fill=HSL_FORMAT.format(hue=hue))
-
-    time.sleep(0.01)
+  clock.run()
 
 
 @main.command()
@@ -272,7 +233,7 @@ def test_alpha(
           draw.text((0, 0),
                     text,
                     font=font_object,
-                    fill=HSL_FORMAT.format(hue=hue))
+                    fill=f'hsl({hue}, 100%, 50%)')
 
         time.sleep(0.02)
 
