@@ -14,6 +14,7 @@ import devices
 import rgb_clock
 import rgb_image_display
 import server
+import weather
 
 DEVICES = {
     'none': devices.ImageDevice,
@@ -28,9 +29,6 @@ ROTATE_MAP = {
     '180': 2,
     '270': 3,
 }
-
-CURRENT_DIRECTORY = pathlib.Path(__file__).parent
-WEATHER_DIRECTORY = CURRENT_DIRECTORY / 'weather'
 
 
 @click.group()
@@ -277,7 +275,7 @@ def test_weather(
   )
 
   while True:
-    for weather_filepath in WEATHER_DIRECTORY.glob('*.png'):
+    for weather_filepath in weather.WEATHER_DIRECTORY.glob('*.png'):
       image = Image.open(weather_filepath)
       device_image = Image.new('RGB', (width, height))
       device_image.paste(image)
