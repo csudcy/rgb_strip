@@ -244,6 +244,10 @@ def test_alpha(
               help='The device to use for output',
               type=click.Choice(DEVICES.keys()),
               default='terminal')
+@click.option('--font',
+              help='The font file to use',
+              type=str,
+              default='pixelmix.ttf')
 @click.option('--alpha',
               help='How bright to show the pixels (0-255)',
               type=int,
@@ -257,6 +261,7 @@ def test_weather(
     width: int,
     height: int,
     display: str,
+    font: str,
     alpha: int,
     debug: bool,
 ):
@@ -273,13 +278,28 @@ def test_weather(
       height=height,
       alpha=alpha,
   )
+  font_object = ImageFont.truetype(font, 8)
 
   while True:
     for weather_filepath in weather.WEATHER_DIRECTORY.glob('*.png'):
       image = Image.open(weather_filepath)
-      device_image = Image.new('RGB', (width, height))
-      device_image.paste(image)
-      device.device.display(device_image)
+
+      _canvas = canvas(device.device)
+      with _canvas as draw:
+        # Clear the canvas
+        draw.rectangle(
+            ((0, 0), (device.device.width, device.device.height)),
+            fill='black')
+
+        # Draw the text
+        draw.text((10, 0),
+                  weather_filepath.stem,
+                  font=font_object,
+                  fill='hsl(1, 100%, 100%)')
+
+        # Show the image
+        _canvas.image.paste(image)
+
       time.sleep(2)
 
 
