@@ -11,7 +11,6 @@ from PIL import Image
 import requests_cache
 import retry_requests
 
-
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent
 WEATHER_DIRECTORY = CURRENT_DIRECTORY / 'weather'
 
@@ -154,7 +153,9 @@ class WeatherService(threading.Thread):
     """
 
     hourly = response_json['hourly']
-    start_times = [datetime.datetime.fromisoformat(iso_time) for iso_time in hourly['time']]
+    start_times = [
+        datetime.datetime.fromisoformat(iso_time) for iso_time in hourly['time']
+    ]
     temperatures = hourly['temperature_2m']
     weather_codes = hourly['weather_code']
     combined = zip(start_times, temperatures, weather_codes)
@@ -168,8 +169,7 @@ class WeatherService(threading.Thread):
             temperature=temperature,
             weather_code=weather_code,
             weather_icon=WEATHER_ICON_BY_CODE.get(weather_code),
-        )
-        for start_time, temperature, weather_code in combined
+        ) for start_time, temperature, weather_code in combined
     ]
 
   def get_current_forecast(self) -> Optional[ForecastData]:

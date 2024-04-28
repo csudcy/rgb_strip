@@ -302,9 +302,8 @@ def test_weather(
       _canvas = canvas(device.device)
       with _canvas as draw:
         # Clear the canvas
-        draw.rectangle(
-            ((0, 0), (device.device.width, device.device.height)),
-            fill='black')
+        draw.rectangle(((0, 0), (device.device.width, device.device.height)),
+                       fill='black')
 
         # Draw the text
         draw.text((10, 0),
