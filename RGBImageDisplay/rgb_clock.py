@@ -2,11 +2,14 @@
 # -*- coding: utf8 -*-
 from datetime import datetime
 import time
+from typing import Optional
 
 from luma.core.render import canvas
+from PIL import Image
 from PIL import ImageFont
 
 import devices
+import weather as _weather
 
 
 class Clock:
@@ -20,6 +23,7 @@ class Clock:
       rainbow_seconds: int,
       font: str,
       format: str,
+      weather: Optional[_weather.WeatherService],
   ):
     # Save basic things
     self.device = device
@@ -27,6 +31,7 @@ class Clock:
     self.seconds_multiplier = 360 / rainbow_seconds
     self.font_object = ImageFont.truetype(font, 8)
     self.format = format
+    self.weather = weather
 
     # Work out alpha values to use per-minute
     alpha_ranges = (
@@ -56,7 +61,13 @@ class Clock:
       alpha = self.alpha_lookup[now.hour * 60 + now.minute]
       self.device.set_alpha(alpha)
 
-      with canvas(self.device.device) as draw:
+      if self.weather:
+        weather_icon = self.weather.get_current_icon()
+      else:
+        weather_icon = None
+
+      _canvas = canvas(self.device.device)
+      with _canvas as draw:
         # Clear the canvas
         draw.rectangle(
             ((0, 0), (self.device.device.width, self.device.device.height)),
@@ -71,5 +82,8 @@ class Clock:
                   text,
                   font=self.font_object,
                   fill=f'hsl({hue}, 100%, 50%)')
+
+        if weather_icon:
+          _canvas.image.paste(weather_icon)
 
       time.sleep(0.01)

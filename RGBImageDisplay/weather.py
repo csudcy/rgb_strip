@@ -7,6 +7,7 @@ import threading
 import time
 from typing import Optional
 
+from PIL import Image
 import requests_cache
 import retry_requests
 
@@ -94,6 +95,12 @@ class WeatherService(threading.Thread):
         'forecast_days': 1
     }
 
+    # Load weather icons
+    self.weather_image_by_icon = {
+        weather_filepath.stem: Image.open(weather_filepath)
+        for weather_filepath in WEATHER_DIRECTORY.glob('*.png')
+    }
+
     # Pole for forecast updates
     self.pull_interval_seconds = pull_interval_minutes * 60
     self.forecast_data = []
@@ -172,6 +179,11 @@ class WeatherService(threading.Thread):
         return forecast_data
 
     return None
+
+  def get_current_icon(self) -> Optional[Image.Image]:
+    current_forecast = self.get_current_forecast()
+    if current_forecast:
+      return self.weather_image_by_icon.get(current_forecast.weather_icon)
 
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ import logging
 import pathlib
 import time
 import traceback
+from typing import Optional
 
 import click
 from luma.core.render import canvas
@@ -137,6 +138,12 @@ def run(
               help='The strftime format to use',
               type=str,
               default='%H : %M')
+@click.option('--lat',
+              help='Latitude to use for weather forecasting',
+              type=float)
+@click.option('--lng',
+              help='Longitude to use for weather forecasting',
+              type=float)
 @click.option('--debug',
               help='Enable debug output',
               type=bool,
@@ -151,6 +158,8 @@ def clock(
     display: str,
     font: str,
     format: str,
+    lat: Optional[float],
+    lng: Optional[float],
     debug: bool,
 ):
   if debug:
@@ -167,6 +176,11 @@ def clock(
       alpha=alpha_min,
   )
 
+  if lat and lng:
+    _weather = weather.WeatherService(latitude=lat, longitude=lng)
+  else:
+    _weather = None
+
   clock = rgb_clock.Clock(
       device=device,
       alpha_min=alpha_min,
@@ -174,6 +188,7 @@ def clock(
       rainbow_seconds=rainbow_seconds,
       font=font,
       format=format,
+      weather=_weather,
   )
   clock.run()
 
