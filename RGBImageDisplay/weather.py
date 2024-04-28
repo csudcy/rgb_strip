@@ -4,6 +4,7 @@ from dataclasses import dataclass
 import datetime
 import pathlib
 import threading
+import time
 from typing import Optional
 
 import requests_cache
@@ -77,7 +78,10 @@ class WeatherService(threading.Thread):
       *,
       latitude: float,
       longitude: float,
+      pull_interval_minutes: int = 30,
   ):
+    super().__init__(daemon=True, name='Weather Forecast')
+
     # Make a session for getting open-meteo data
     cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
     self.session = retry_requests.retry(cache_session,
@@ -89,6 +93,19 @@ class WeatherService(threading.Thread):
         'hourly': ['temperature_2m', 'weather_code'],
         'forecast_days': 1
     }
+
+    # Pole for forecast updates
+    self.pull_interval_seconds = pull_interval_minutes * 60
+    self.forecast_data = []
+    self.start()
+
+  def run(self):
+    while True:
+      # Fetch new forecast
+      self.forecast_data = self._fetch_forecast()
+
+      # Wait...
+      time.sleep(self.pull_interval_seconds)
 
   # TODO: Cache this!
   def _fetch_forecast(self) -> list[ForecastData]:
@@ -149,11 +166,8 @@ class WeatherService(threading.Thread):
     ]
 
   def get_current_forecast(self) -> Optional[ForecastData]:
-    # TODO: Move this to a threaded timer
-    forecast = self._fetch_forecast()
-
     now = datetime.datetime.now()
-    for forecast_data in forecast:
+    for forecast_data in self.forecast_data:
       if forecast_data.start_time <= now <= forecast_data.end_time:
         return forecast_data
 
@@ -162,4 +176,6 @@ class WeatherService(threading.Thread):
 
 if __name__ == '__main__':
   weather = WeatherService(latitude=52.52, longitude=13.41)
-  print(weather.get_current_forecast())
+  while True:
+    print(weather.get_current_forecast())
+    time.sleep(5)
