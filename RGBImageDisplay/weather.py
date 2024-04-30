@@ -8,7 +8,7 @@ import time
 from typing import Optional
 
 from PIL import Image
-import requests_cache
+from requests import Session
 import retry_requests
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent
@@ -83,8 +83,7 @@ class WeatherService(threading.Thread):
     super().__init__(daemon=True, name='Weather Forecast')
 
     # Make a session for getting open-meteo data
-    cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
-    self.session = retry_requests.retry(cache_session,
+    self.session = retry_requests.retry(Session(),
                                         retries=5,
                                         backoff_factor=0.2)
     self.params = {
