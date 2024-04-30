@@ -64,9 +64,6 @@ WEATHER_ICON_BY_CODE = {
 
 @dataclass
 class ForecastData:
-  start_time: datetime.datetime
-  end_time: datetime.datetime
-  temperature: float
   weather_code: int
   weather_icon: Optional[str]
 
@@ -78,7 +75,8 @@ class WeatherService(threading.Thread):
       *,
       latitude: float,
       longitude: float,
-      pull_interval_minutes: int = 30,
+      timezone: str = 'Europe/London',
+      pull_interval_minutes: int = 5,
   ):
     super().__init__(daemon=True, name='Weather Forecast')
 
@@ -89,7 +87,8 @@ class WeatherService(threading.Thread):
     self.params = {
         'latitude': latitude,
         'longitude': longitude,
-        'hourly': ['temperature_2m', 'weather_code'],
+        'current': ['weather_code'],
+        'timezone': timezone,
         'forecast_days': 1
     }
 
@@ -101,19 +100,18 @@ class WeatherService(threading.Thread):
 
     # Pole for forecast updates
     self.pull_interval_seconds = pull_interval_minutes * 60
-    self.forecast_data = []
+    self.current_forecast = None
     self.start()
 
   def run(self):
     while True:
       # Fetch new forecast
-      self.forecast_data = self._fetch_forecast()
+      self.current_forecast = self._fetch_current_forecast()
 
       # Wait...
       time.sleep(self.pull_interval_seconds)
 
-  # TODO: Cache this!
-  def _fetch_forecast(self) -> list[ForecastData]:
+  def _fetch_current_forecast(self) -> Optional[ForecastData]:
     response = self.session.get(FORECAST_API, params=self.params)
     response.raise_for_status()
     response_json = response.json()
@@ -126,67 +124,33 @@ class WeatherService(threading.Thread):
       "timezone": "GMT",
       "timezone_abbreviation": "GMT",
       "elevation": 38,
-      "hourly_units": {
-        "time": "iso8601",
-        "temperature_2m": "°C",
-        "weather_code": "wmo code"
+      "current_units":{
+        "time":"iso8601",
+        "interval":"seconds",
+        "weather_code":"wmo code"
       },
-      "hourly": {
-        "time": [
-          "2024-04-07T00:00",
-          ...,
-          "2024-04-07T23:00"
-        ],
-        "temperature_2m": [
-          15.5,
-          ...,
-          16.7
-        ],
-        "weather_code": [
-          1,
-          ...,
-          3
-        ]
+      "current":{
+        "time":"2024-04-30T21:30",
+        "interval":900,
+        "weather_code":2
       }
     }
     """
-
-    hourly = response_json['hourly']
-    start_times = [
-        datetime.datetime.fromisoformat(iso_time) for iso_time in hourly['time']
-    ]
-    temperatures = hourly['temperature_2m']
-    weather_codes = hourly['weather_code']
-    combined = zip(start_times, temperatures, weather_codes)
-
-    one_hour = datetime.timedelta(hours=1)
-
-    return [
-        ForecastData(
-            start_time=start_time,
-            end_time=start_time + one_hour,
-            temperature=temperature,
-            weather_code=weather_code,
-            weather_icon=WEATHER_ICON_BY_CODE.get(weather_code),
-        ) for start_time, temperature, weather_code in combined
-    ]
-
-  def get_current_forecast(self) -> Optional[ForecastData]:
-    now = datetime.datetime.now()
-    for forecast_data in self.forecast_data:
-      if forecast_data.start_time <= now <= forecast_data.end_time:
-        return forecast_data
-
-    return None
+    weather_code = response_json['current']['weather_code']
+    return ForecastData(
+        weather_code=weather_code,
+        weather_icon=WEATHER_ICON_BY_CODE.get(weather_code),
+    )
 
   def get_current_icon(self) -> Optional[Image.Image]:
-    current_forecast = self.get_current_forecast()
-    if current_forecast:
-      return self.weather_image_by_icon.get(current_forecast.weather_icon)
+    if self.current_forecast:
+      return self.weather_image_by_icon.get(self.current_forecast.weather_icon)
+    else:
+      return None
 
 
 if __name__ == '__main__':
   weather = WeatherService(latitude=52.52, longitude=13.41)
   while True:
-    print(weather.get_current_forecast())
+    print(weather.current_forecast)
     time.sleep(5)
