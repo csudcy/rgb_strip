@@ -64,6 +64,8 @@ WEATHER_ICON_BY_CODE = {
 
 @dataclass
 class ForecastData:
+  sunrise: datetime.datetime
+  sunset: datetime.datetime
   weather_code: int
   weather_icon: Optional[str]
 
@@ -88,6 +90,7 @@ class WeatherService(threading.Thread):
         'latitude': latitude,
         'longitude': longitude,
         'current': ['weather_code'],
+        'daily': ['sunrise', 'sunset'],
         'timezone': timezone,
         'forecast_days': 1
     }
@@ -133,18 +136,36 @@ class WeatherService(threading.Thread):
         "time":"2024-04-30T21:30",
         "interval":900,
         "weather_code":2
+      },
+      "daily_units":{
+        "time":"iso8601",
+        "sunrise":"iso8601",
+        "sunset":"iso8601"
+      },
+      "daily":{
+        "time":["2024-04-30"],
+        "sunrise":["2024-04-30T05:34"],
+        "sunset":["2024-04-30T20:24"]
       }
     }
     """
     weather_code = response_json['current']['weather_code']
+    sunrise = datetime.datetime.fromisoformat(response_json['daily']['sunrise'][0])
+    sunset = datetime.datetime.fromisoformat(response_json['daily']['sunset'][0])
     return ForecastData(
+        sunrise=sunrise,
+        sunset=sunset,
         weather_code=weather_code,
         weather_icon=WEATHER_ICON_BY_CODE.get(weather_code),
     )
 
   def get_current_icon(self) -> Optional[Image.Image]:
     if self.current_forecast:
-      return self.weather_image_by_icon.get(self.current_forecast.weather_icon)
+      now = datetime.datetime.now()
+      if now < self.current_forecast.sunrise or self.current_forecast.sunset < now:
+        return self.weather_image_by_icon.get('moon')
+      else:
+        return self.weather_image_by_icon.get(self.current_forecast.weather_icon)
     else:
       return None
 
